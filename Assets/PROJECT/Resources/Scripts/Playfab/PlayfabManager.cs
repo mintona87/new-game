@@ -56,7 +56,7 @@ public class PlayfabManager : MonoBehaviour
     }
 
     // Registering
-    public void RegisterButton()
+    public void RegisterButtonPressed()
     {
         var request = new RegisterPlayFabUserRequest
         {
@@ -137,7 +137,7 @@ public class PlayfabManager : MonoBehaviour
     #endregion
 
     // Logging in
-    public void LoginButton()
+    public void LoginButtonPressed()
     {
         var request = new LoginWithEmailAddressRequest
         {
@@ -188,7 +188,7 @@ public class PlayfabManager : MonoBehaviour
 
         PlayerPrefs.SetString("username", name);
 
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
 
         GetStatistics();//leaderboard stuffs
     }
@@ -207,7 +207,7 @@ public class PlayfabManager : MonoBehaviour
     void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)
     {
         Debug.Log("Updated display name!");
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
         // leaderboardWindow.SetActive(true);
     }
 

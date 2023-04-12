@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 7756963554577582963}
   - component: {fileID: 7756963554577582974}
   - component: {fileID: 7756963554577582973}
-  - component: {fileID: 7756963554577582972}
+  - component: {fileID: 8037619411637463226}
   m_Layer: 0
   m_Name: Player2SwordSlashEffect
   m_TagString: Untagged
@@ -175,7 +175,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &7756963554577582972
+--- !u!95 &8037619411637463226
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -185,7 +185,7 @@ Animator:
   m_GameObject: {fileID: 7756963554577582962}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6bce3667d362d37489f5a4d8d18c0a39, type: 2}
+  m_Controller: {fileID: 9100000, guid: fa1eb85f37a5ddf419b2eecc0f0ce034, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
