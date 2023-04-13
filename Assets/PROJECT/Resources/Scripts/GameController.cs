@@ -87,36 +87,36 @@ public class GameController : MonoBehaviour
     }
 
    public void UpdateHonorUI()
-{
-    honorText.text = $"P1 Honor: {playerHonor[0]} | P2 Honor: {playerHonor[1]}";
-}
+   {
+        honorText.text = $"P1 Honor: {playerHonor[0]} | P2 Honor: {playerHonor[1]}";
+   }
 
 
 
    public void OnPlayer1AttackButtonClicked()
-{
-    if (player1Script.HasLost()) return;
-
-    int damage = player1Script.Attack();
-
-    if (!player2Script.Dodge()) // Check if Player 2 dodged the attack
     {
-        player2Script.ChangeHP(-damage);
-        StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player1ActionText));
-    }
-    else
-    {
-        StartCoroutine(ShowActionText("Player 1 missed the attack!", player1ActionText));
-    }
+        if (player1Script.HasLost()) return;
 
-    Turn++;
-    player2TurnsSinceCharge++;
-    StartCoroutine(PlayPlayer1SwordSlashEffect());
+        int damage = player1Script.Attack();
 
-    UpdateHealthUI();
-    UpdateChargeButtons();
-    SwitchPlayerTurn();
-}
+        if (!player2Script.Dodge()) // Check if Player 2 dodged the attack
+        {
+            player2Script.ChangeHP(-damage);
+            StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player1ActionText));
+        }
+        else
+        {
+            StartCoroutine(ShowActionText("Player 1 missed the attack!", player1ActionText));
+        }
+
+        Turn++;
+        player2TurnsSinceCharge++;
+        StartCoroutine(PlayPlayer1SwordSlashEffect());
+
+        UpdateHealthUI();
+        UpdateChargeButtons();
+        SwitchPlayerTurn();
+    }
 
 
 public void OnPlayer2AttackButtonClicked()
