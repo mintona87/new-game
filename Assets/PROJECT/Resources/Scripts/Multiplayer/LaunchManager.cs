@@ -249,51 +249,51 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 	}
 
 	
+	
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log("playerentered");
 
-	//public override void OnPlayerEnteredRoom(Player newPlayer)
-	//{
-	//	Debug.Log("playerentered");
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            //Hashtable customProperties = new Hashtable();
+            //customProperties["IsOpenToNonSpectatorPlayer"] = false;
+            //PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+        }
+        Debug.Log("IsOpenToNonSpectatorPlayer " + PhotonNetwork.CurrentRoom.CustomProperties["IsOpenToNonSpectatorPlayer"]);
 
-	//	if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-	//	{
-	//		//Hashtable customProperties = new Hashtable();
-	//		//customProperties["IsOpenToNonSpectatorPlayer"] = false;
-	//		//PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-	//	}
-	//	Debug.Log("IsOpenToNonSpectatorPlayer " + PhotonNetwork.CurrentRoom.CustomProperties["IsOpenToNonSpectatorPlayer"]);
+        //Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItemHandler>().SetUp(newPlayer);
+        Hashtable customProperties = new Hashtable();
 
-	//	//Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItemHandler>().SetUp(newPlayer);
-	//	Hashtable customProperties = new Hashtable();
+        int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
+        NonSpectatorPlayerCount += 1;
+        customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+    }
 
-	//	int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
-	//	NonSpectatorPlayerCount += 1;
-	//	customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
-	//	PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-	//}
+    //public override void OnPlayerLeftRoom(Player otherPlayer)
+    //{
+    //	if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+    //	{
+    //		//Hashtable customProperties = new Hashtable();
+    //		//customProperties["IsOpenToNonSpectatorPlayer"] = true;
+    //		//PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+    //	}
+    //	Hashtable customProperties = new Hashtable();
 
-	//public override void OnPlayerLeftRoom(Player otherPlayer)
-	//{
-	//	if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
-	//	{
-	//		//Hashtable customProperties = new Hashtable();
-	//		//customProperties["IsOpenToNonSpectatorPlayer"] = true;
-	//		//PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-	//	}
-	//	Hashtable customProperties = new Hashtable();
+    //	int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
+    //	NonSpectatorPlayerCount -= 1;
+    //	customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
+    //	PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+    //}
 
-	//	int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
-	//	NonSpectatorPlayerCount -= 1;
-	//	customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
-	//	PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-	//}
+    //public override void OnMasterClientSwitched(Player newMasterClient)
+    //{
+    //	startGameButton.SetActive(PhotonNetwork.IsMasterClient);
 
-	//public override void OnMasterClientSwitched(Player newMasterClient)
-	//{
-	//	startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+    //}
 
-	//}
-
-	public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
 	{
 		Debug.Log("listUpdate called");
 

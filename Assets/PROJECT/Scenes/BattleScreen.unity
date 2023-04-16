@@ -412,7 +412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &183331435
 RectTransform:
   m_ObjectHideFlags: 0
@@ -693,7 +693,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &382977044
 RectTransform:
   m_ObjectHideFlags: 0
@@ -828,7 +828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &442102951
 RectTransform:
   m_ObjectHideFlags: 0
@@ -894,10 +894,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 613450995}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: OnPlayer2ChargeButtonClicked
-        m_Mode: 1
+      - m_Target: {fileID: 613450997}
+        m_TargetAssemblyTypeName: UnityEngine.Component, UnityEngine
+        m_MethodName: SendMessage
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1099,8 +1099,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1494759196}
     m_Modifications:
+    - target: {fileID: 5550924582161526485, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6340590901066523877, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7756963554729804448, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7756963554832582891, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
@@ -1109,7 +1117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7756963554832582893, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
       propertyPath: m_Name
-      value: Player1(1)
+      value: Player2
       objectReference: {fileID: 0}
     - target: {fileID: 7756963554832582894, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
       propertyPath: m_Pivot.x
@@ -1234,7 +1242,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &546689849
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1377,9 +1385,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 613450994}
+  - component: {fileID: 613450995}
   - component: {fileID: 613450999}
   - component: {fileID: 613450998}
-  - component: {fileID: 613450995}
   - component: {fileID: 613450997}
   - component: {fileID: 613450996}
   m_Layer: 5
@@ -1455,7 +1463,7 @@ MonoBehaviour:
   honorText: {fileID: 657027873}
   Turn: 1
   Player1SwordSlashEffect: {fileID: 1578961102}
-  Player2SwordSlashEffect: {fileID: 1114573865}
+  Player2SwordSlashEffect: {fileID: 0}
   swordSlashAnimatorP1: {fileID: 1578961101}
   swordSlashAnimatorP2: {fileID: 0}
   swordSlashAnimationClip: {fileID: 7400000, guid: 838a23302d8e93d41ad58bb0a2e35798, type: 2}
@@ -1470,9 +1478,9 @@ MonoBehaviour:
   defendAnimatorP2: {fileID: 2101637252}
   defendAnimationClip: {fileID: 7400000, guid: 119b02bd1e66fff40b347c9e60b89ca6, type: 2}
   Player1ChargeEffect: {fileID: 1085106618}
-  Player2ChargeEffect: {fileID: 1437023668}
+  Player2ChargeEffect: {fileID: 0}
   chargeAnimatorP1: {fileID: 1085106617}
-  chargeAnimatorP2: {fileID: 1437023667}
+  chargeAnimatorP2: {fileID: 0}
   chargeAnimationClip: {fileID: 7400000, guid: cb2866826ddbcce498971bf4188fbc3f, type: 2}
   player1AttackButton: {fileID: 1916523611}
   player1HealButton: {fileID: 728040589}
@@ -1482,6 +1490,8 @@ MonoBehaviour:
   player2HealButton: {fileID: 1441576405}
   player2DefendButton: {fileID: 914269393}
   player2ChargeButton: {fileID: 442102952}
+  audioManager: {fileID: 0}
+  playerList: []
 --- !u!212 &613450996
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1567,6 +1577,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa4aaf7a51803fd43808242b7a0a2184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverText: {fileID: 0}
+  player1ActionText: {fileID: 0}
+  player2ActionText: {fileID: 0}
+  honorText: {fileID: 0}
+  player1AttackButton: {fileID: 0}
+  player1HealButton: {fileID: 0}
+  player1DefendButton: {fileID: 0}
+  player1ChargeButton: {fileID: 0}
+  player2AttackButton: {fileID: 0}
+  player2HealButton: {fileID: 0}
+  player2DefendButton: {fileID: 0}
+  player2ChargeButton: {fileID: 0}
 --- !u!114 &613450999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1591,28 +1613,34 @@ MonoBehaviour:
     source: {fileID: 0}
   sounds:
   - name: attackSound
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+    clip: {fileID: 8300000, guid: ed7c5a1f79c3ada44b306e496c999072, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: healSound
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+    clip: {fileID: 8300000, guid: a4d92bc601ecbb440a2afa86a8f67df5, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: chargeSound
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+    clip: {fileID: 8300000, guid: ba017d04f4589e347a6f4e9bd1a8a102, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: defendSound
-    clip: {fileID: 0}
-    volume: 0
-    pitch: 0
+    clip: {fileID: 8300000, guid: 5ea825e682333fd47a68b480daf63f34, type: 3}
+    volume: 1
+    pitch: 1
     loop: 0
+    source: {fileID: 0}
+  - name: bgm1
+    clip: {fileID: 0}
+    volume: 1
+    pitch: 1
+    loop: 1
     source: {fileID: 0}
   shoudPlayBgm: 0
 --- !u!95 &644257080 stripped
@@ -1724,7 +1752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &657027872
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1860,7 +1888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &676694682
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1994,7 +2022,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &728040588
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2282,7 +2310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &914269392
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2416,7 +2444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &987750132
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2546,17 +2574,6 @@ Animator:
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1144267941586549942, guid: b8c384f5c5ae9c24ea4638335fb8a8a0, type: 3}
   m_PrefabInstance: {fileID: 1144267940519957772}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1114573865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7756963554577582973, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
-  m_PrefabInstance: {fileID: 7756963555618883412}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 0
@@ -2931,7 +2948,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1346874814
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3047,22 +3064,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346874813}
   m_CullTransparentMesh: 1
---- !u!95 &1437023667 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7756963554237332199, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
-  m_PrefabInstance: {fileID: 7756963555618883412}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1437023668 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7756963554237332192, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
-  m_PrefabInstance: {fileID: 7756963555618883412}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1441576403
 GameObject:
   m_ObjectHideFlags: 0
@@ -3081,7 +3082,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1441576404
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3290,10 +3291,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 651024312}
+  - {fileID: 1894082260}
   - {fileID: 824315834}
   - {fileID: 498337474}
   - {fileID: 993126135}
-  - {fileID: 1894082260}
   - {fileID: 356064701}
   - {fileID: 454606491}
   m_Father: {fileID: 0}
@@ -3473,7 +3474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1764436835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3606,7 +3607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1765045034
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3754,7 +3755,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1494759196}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4011,7 +4012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1916523610
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4514,7 +4515,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1144267940640502778, guid: b8c384f5c5ae9c24ea4638335fb8a8a0, type: 3}
       propertyPath: m_Name
-      value: Player2
+      value: Player2(Will be deleted)
       objectReference: {fileID: 0}
     - target: {fileID: 1144267940640502778, guid: b8c384f5c5ae9c24ea4638335fb8a8a0, type: 3}
       propertyPath: m_IsActive
@@ -4709,6 +4710,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8037619411637463226, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6bce3667d362d37489f5a4d8d18c0a39, type: 2}
     - target: {fileID: 8584766708174797220, guid: ddfe7fec9f80de84dbd417e18b0a0972, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

@@ -33,7 +33,9 @@ public class AudioManager : MonoBehaviour
     }
     void Start()
     {
+        SetSoundList();
         InitVolumeBar();
+        
     }
 
 
@@ -97,7 +99,7 @@ public class AudioManager : MonoBehaviour
 {
         foreach (Sound s in sfxSources)
         {
-            s.source.volume = sfxSlider.value;
+            //s.source.volume = sfxSlider.value;
 
             //gm.player.GetStats().sfxVolume = sfxSlider.value;
             //gm.player.sfxVolume = gm.player.GetStats().sfxVolume;
@@ -109,7 +111,7 @@ public class AudioManager : MonoBehaviour
         foreach (Sound bgm in bgmSources)
         {
 
-            bgm.source.volume = bgmSlider.value;
+            //bgm.source.volume = bgmSlider.value;
 
            
             //gm.player.GetStats().bgmVolume = bgmSlider.value;

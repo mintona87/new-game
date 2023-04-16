@@ -17,19 +17,61 @@ public class Player : MonoBehaviour
 
    public int Gold { get; private set; } = 0;
 
+    public int TurnsSinceCharge = 6;
+
+
+    public GameController gameController;
     public PlayerUI playerUI;
+    public PlayerCombat playerCombat;
+    public PlayerEffect playerEffect;
     PlayerStats playerStats;
+
+    public float[] playerHonor = new float[2];
+
+    public bool canPlay;
+
 
     private void Awake()
     {
+        gameController = FindObjectOfType<GameController>();
         playerUI = GetComponent<PlayerUI>();
+        playerCombat = GetComponent<PlayerCombat>();
+        playerEffect = GetComponent<PlayerEffect>();
         playerStats = new PlayerStats(HP, MaxHP, HasCharged, isDefending, isStunned, ATK, DEF, SPD, LUCK, Gold);
-        
+    }
+    private void Start()
+    {
+        playerCombat.SetDefaultTarget();
+        playerUI.SetMaxHealth();
+        //playerUI.UpdateHealthUI();
+        playerUI.UpdateHonorUI();
+        //playerUI.UpdateChargeButtons();
     }
 
     public PlayerStats GetPlayerStats()
     {
         return playerStats;
+    }
+
+
+    public void OnSwitchTurnSettings()
+    {
+        if (isStunned)
+        {
+            gameController.Turn++;
+            canPlay = false;
+            
+            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText+" is stunned!", playerUI.ActionText));
+            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+            isStunned = false;
+        }
+         playerUI.playerAttackButton.interactable = canPlay;
+         playerUI.playerHealButton.interactable = canPlay;
+         playerUI.playerDefendButton.interactable = canPlay;
+         playerUI.playerChargeButton.interactable = canPlay;
+         playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
+
+
     }
 
     public void AddGold(int amount)
