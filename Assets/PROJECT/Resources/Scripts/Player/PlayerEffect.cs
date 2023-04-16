@@ -1,4 +1,3 @@
-using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerEffect : MonoBehaviour
 {
-    Player player;
+    PlayerManager player;
     public Image swordSlashEffect;
     public Image healEffect;
     public Image defendEffect;
@@ -21,7 +20,7 @@ public class PlayerEffect : MonoBehaviour
 
     void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerManager>();
         audioManager = player.gameController.audioManager;
     }
 
@@ -29,7 +28,7 @@ public class PlayerEffect : MonoBehaviour
     {
         // play attack sound
         //audioAttackSource.PlayOneShot(attackSound);
-        Player targetScript = player.playerCombat.targetScript;
+        PlayerManager targetScript = player.playerCombat.targetScript;
 
 
         audioManager.Play("attackSound");

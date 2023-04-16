@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class OnLoadingScreen : MonoBehaviour
 {
     public static OnLoadingScreen Instance;
 
     public bool onlyOnceDisableLoadPanel;
+
+    public TextMeshProUGUI loadingText;
 
     CanvasGroup canvasGroup;
 

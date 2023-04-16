@@ -22,8 +22,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioClip defendSound;
     public AudioSource backgroundMusic;
 
-    [SerializeField] private Player player1Script;
-    [SerializeField] private Player player2Script;
+    [SerializeField] private PlayerManager player1Script;
+    [SerializeField] private PlayerManager player2Script;
 
     public int player1Honor = 0;
     public int player2Honor = 0;
@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
     private bool isGameOver = false;
 
     public AudioManager audioManager;
-    public List<Player> playerList = new List<Player>();
+    public List<PlayerManager> playerList = new List<PlayerManager>();
 
 
     private void Awake()
@@ -87,8 +87,8 @@ public class GameController : MonoBehaviour
         //backgroundMusic.Play();
         //UpdateChargeButtons();
         //SwitchPlayerTurn();
-        playerList.Add(GameObject.Find("Player1").GetComponent<Player>());
-        playerList.Add(GameObject.Find("Player2").GetComponent<Player>());
+        playerList.Add(GameObject.Find("Player1").GetComponent<PlayerManager>());
+        playerList.Add(GameObject.Find("Player2").GetComponent<PlayerManager>());
         SwitchPlayerTurn();
     }
 
@@ -523,7 +523,7 @@ private void UpdateChargeButtons()
             playerList[0].canPlay = false;
         }
 
-        foreach(Player player in playerList)
+        foreach(PlayerManager player in playerList)
         {
             player.OnSwitchTurnSettings();
         }

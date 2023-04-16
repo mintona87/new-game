@@ -19,11 +19,11 @@ public class PlayerUI : MonoBehaviour
     public Button playerChargeButton;
 
     public Slider hpSlider;
-    Player player;
+    PlayerManager player;
     
     void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerManager>();
         
     }
     public void SetMaxHealth()

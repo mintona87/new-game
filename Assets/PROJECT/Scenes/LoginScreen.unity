@@ -996,7 +996,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3026099977544118184, guid: cc29dfca0945d034395b27c127031d57, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6442602819338171664, guid: cc29dfca0945d034395b27c127031d57, type: 3}
@@ -2634,7 +2634,7 @@ MonoBehaviour:
   accountID: 
   IsitOnPlayerDebugMode: 0
   playfabNameText: {fileID: 0}
-  localPlayerELOScore: 0
+  localPlayerHonor: 0
   LoginUserNameInput: {fileID: 100281968}
   LoginPasswordInput: {fileID: 100281967}
   RegisterEmailInput: {fileID: 100281965}
@@ -2782,6 +2782,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 333490811423676627, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 290
+      objectReference: {fileID: 0}
+    - target: {fileID: 333490811423676627, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -116
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013427464932592728, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.53157
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013427464932592728, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.53157
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013427464932592728, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.53157
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013427464932592728, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 172
+      objectReference: {fileID: 0}
+    - target: {fileID: 2013427464932592728, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.1543
+      objectReference: {fileID: 0}
     - target: {fileID: 3312624788341105952, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
       propertyPath: m_Pivot.x
       value: 0

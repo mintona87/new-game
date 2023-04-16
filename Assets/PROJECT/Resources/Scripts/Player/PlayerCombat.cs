@@ -8,15 +8,15 @@ public class PlayerCombat : MonoBehaviour
 {
 
     public GameObject targetObj;
-    public Player targetScript;
+    public PlayerManager targetScript;
 
-    Player player;
+    PlayerManager player;
     PlayerEffect playerEffect;
 
 
     void Start()
     {
-        player = GetComponent<Player>();
+        player = GetComponent<PlayerManager>();
         playerEffect = player.playerEffect;
         
     }
@@ -31,7 +31,7 @@ public class PlayerCombat : MonoBehaviour
         {
             targetObj = GameObject.Find("Player1");
         }
-        targetScript = targetObj.GetComponent<Player>();
+        targetScript = targetObj.GetComponent<PlayerManager>();
     }
 
     void Update()
@@ -44,7 +44,7 @@ public class PlayerCombat : MonoBehaviour
 
         int damage = player.Attack();
 
-        Player targetScript = targetObj.GetComponent<Player>();
+        PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
         // to do set target
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {

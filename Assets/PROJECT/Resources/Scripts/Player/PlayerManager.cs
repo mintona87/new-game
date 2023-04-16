@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     public int HP = 100;
     public int MaxHP = 100;
@@ -167,7 +167,7 @@ public class Player : MonoBehaviour
         return healing;
     }
 
-    public int Charge(Player opponent)
+    public int Charge(PlayerManager opponent)
     {
         int damage = 0;
         if (!HasCharged)

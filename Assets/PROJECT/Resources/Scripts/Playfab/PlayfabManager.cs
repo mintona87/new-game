@@ -22,7 +22,7 @@ public class PlayfabManager : MonoBehaviour
 
     public Text playfabNameText;
     
-    public int localPlayerELOScore;
+    public int localPlayerHonor;
 
     public TMP_InputField LoginUserNameInput;
     public TMP_InputField LoginPasswordInput;
@@ -94,7 +94,7 @@ public class PlayfabManager : MonoBehaviour
         {
             Statistics = new List<StatisticUpdate> {
                 new StatisticUpdate {
-                    StatisticName = "ELO", // <- CHANGE YOUR LEADERBOARD NAME HERE!
+                    StatisticName = "Honor_Leaderboard", // 
                     Value = score
                     //Value = Random.Range(10,100) <- ⭐️ Use this to test out random send data
                 }
@@ -122,11 +122,11 @@ public class PlayfabManager : MonoBehaviour
         Debug.Log("Received the following Statistics:");
         foreach (var eachStat in result.Statistics)
         {
-            if(eachStat.StatisticName == "ELO")
+            if(eachStat.StatisticName == "Honor_Leaderboard")
             {
                 //Launcher.Instance.rankELOFromPlayfab = eachStat.Value;
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
-                localPlayerELOScore = eachStat.Value;
+                localPlayerHonor = eachStat.Value;
                 //debugUI.playfabLocalPlayerELOText.text = "ELO: " + localPlayerELOScore;
             }
         }
