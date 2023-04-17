@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class GameController : MonoBehaviour
 {
@@ -73,10 +75,17 @@ public class GameController : MonoBehaviour
     public AudioManager audioManager;
     public List<PlayerManager> playerList = new List<PlayerManager>();
 
+    public GameObject playerPrefab;
+    public GameObject PlayerListContainer;
+    public bool didGameFinishLoad;
+
+    PhotonView pv;
+
 
     private void Awake()
     {
         audioManager = GetComponent<AudioManager>();
+        pv = GetComponent<PhotonView>();
     }
 
 
@@ -87,10 +96,49 @@ public class GameController : MonoBehaviour
         //backgroundMusic.Play();
         //UpdateChargeButtons();
         //SwitchPlayerTurn();
-        playerList.Add(GameObject.Find("Player1").GetComponent<PlayerManager>());
-        playerList.Add(GameObject.Find("Player2").GetComponent<PlayerManager>());
-        SwitchPlayerTurn();
+
+        StartCoroutine(SpawnPlayerPrefab());
+        
     }
+
+
+    IEnumerator SpawnPlayerPrefab()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            foreach (var playerEntry in PhotonNetwork.CurrentRoom.Players)
+            {
+                Photon.Realtime.Player player = playerEntry.Value;
+
+                while (player.GetPlayerNumber() == -1)
+                {
+                    yield return null;
+                }
+
+                Debug.Log("SpawnPrefabCalled");
+                pv.RPC("SpawnPlayerPrefabRPC", RpcTarget.AllBuffered, player.GetPlayerNumber());
+            }
+        }
+    }
+
+    [PunRPC]
+    void SpawnPlayerPrefabRPC(int playerNumber)
+    {
+        GameObject playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        PlayerManager playerManager = playerObj.GetComponent<PlayerManager>();
+        playerManager.playerNumber = playerNumber;
+    }
+
+
+    public void SetPlayerList()
+    {
+        for(int i = 0; i < PlayerListContainer.transform.childCount; i++)
+        {
+            playerList.Add(PlayerListContainer.transform.GetChild(i).GetComponent<PlayerManager>());
+        }
+    }
+
+
 
     public void UpdateHealthUI()
     {

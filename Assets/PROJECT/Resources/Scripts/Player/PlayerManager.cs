@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -25,34 +27,83 @@ public class PlayerManager : MonoBehaviour
     public PlayerCombat playerCombat;
     public PlayerEffect playerEffect;
     PlayerStats playerStats;
+    PhotonView pv;
 
     public float[] playerHonor = new float[2];
 
     public bool canPlay;
 
+    public int playerNumber;
+
 
     private void Awake()
     {
+        Debug.Log("instantiated");
         gameController = FindObjectOfType<GameController>();
         playerUI = GetComponent<PlayerUI>();
         playerCombat = GetComponent<PlayerCombat>();
         playerEffect = GetComponent<PlayerEffect>();
         playerStats = new PlayerStats(HP, MaxHP, HasCharged, isDefending, isStunned, ATK, DEF, SPD, LUCK, Gold);
+        pv = GetComponent<PhotonView>();
     }
     private void Start()
     {
+        StartCoroutine(WaitFinishLoad());
+    }
+    void InitPlayer()
+    {
+        Debug.Log("loacl player num" + playerNumber);
+        playerUI.playerNumberText.text = "Player" + (playerNumber + 1).ToString();
+        gameObject.name = playerUI.playerNumberText.text;
+        playerUI.playerUsernameText.text = FindObjectOfType<PlayfabManager>().nickname;
+        transform.SetParent(gameController.PlayerListContainer.transform);
+        gameObject.transform.localScale = new Vector2(1.0f, 1.0f);
+        Debug.Log("finish load value set");
+        gameController.didGameFinishLoad = true;
+    }
+
+    IEnumerator WaitFinishLoad()
+    {
+        
+        InitPlayer();
+
+        while (gameController.PlayerListContainer.transform.childCount != 2)
+        {
+            yield return null;
+        }
+
+        while (gameController.didGameFinishLoad == false)
+        {
+            Debug.Log("is Loading");
+            yield return null;
+        }
+        Debug.Log("finish load");
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealth();
         //playerUI.UpdateHealthUI();
         playerUI.UpdateHonorUI();
+        playerUI.SetPlayerPicture();
         //playerUI.UpdateChargeButtons();
+        gameController.SwitchPlayerTurn();
+
+        playerUI.playerAttackButton.gameObject.SetActive(pv.IsMine);
+        playerUI.playerHealButton.gameObject.SetActive(pv.IsMine); 
+        playerUI.playerDefendButton.gameObject.SetActive(pv.IsMine); 
+        playerUI.playerChargeButton.gameObject.SetActive(pv.IsMine);
+
+        gameController.SetPlayerList();
+
+        playerCombat.targetScript.playerUI.playerAttackButton.gameObject.SetActive(false);
+        playerCombat.targetScript.playerUI.playerHealButton.gameObject.SetActive(false);
+        playerCombat.targetScript.playerUI.playerDefendButton.gameObject.SetActive(false);
+        playerCombat.targetScript.playerUI.playerChargeButton.gameObject.SetActive(false);
     }
 
+    
     public PlayerStats GetPlayerStats()
     {
         return playerStats;
     }
-
 
     public void OnSwitchTurnSettings()
     {
@@ -70,8 +121,6 @@ public class PlayerManager : MonoBehaviour
          playerUI.playerDefendButton.interactable = canPlay;
          playerUI.playerChargeButton.interactable = canPlay;
          playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
-
-
     }
 
     public void AddGold(int amount)
@@ -122,6 +171,12 @@ public class PlayerManager : MonoBehaviour
 
     public void ChangeHP(int amount)
     {
+        pv.RPC("ChangeHPRPC", RpcTarget.AllBuffered,amount);
+    }
+
+    [PunRPC]
+    void ChangeHPRPC(int amount)
+    {
         HP += amount;
         if (HP < 0)
         {
@@ -134,6 +189,7 @@ public class PlayerManager : MonoBehaviour
         playerUI.SetHealth(HP);
         GetPlayerStats().HP = HP;
     }
+
 
     public int Attack()
     {

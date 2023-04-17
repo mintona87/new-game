@@ -13,13 +13,12 @@ public class PlayerCombat : MonoBehaviour
     PlayerManager player;
     PlayerEffect playerEffect;
 
-
-    void Start()
+    private void Awake()
     {
         player = GetComponent<PlayerManager>();
         playerEffect = player.playerEffect;
-        
     }
+    
 
     public void SetDefaultTarget()
     {
@@ -34,9 +33,6 @@ public class PlayerCombat : MonoBehaviour
         targetScript = targetObj.GetComponent<PlayerManager>();
     }
 
-    void Update()
-    {
-    }
 
     public void OnPlayerAttackButtonClicked()
     {

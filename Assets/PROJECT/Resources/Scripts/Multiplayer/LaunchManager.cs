@@ -19,16 +19,16 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject startGameButton;
 
     private Dictionary<string, RoomInfo> cachedRoomList;
-    private List<RoomInfo> roomList = new List<RoomInfo>();
 
     public string roomType;// set in ChooseModeHandler.cs
     public bool isConnectedOnMaster;
 
     public GameObject insideRoomUi;
     public GameObject RoomLoadingScreen;
+    public GameObject PlayMultiButton;
     public TextMeshProUGUI LoadingText;
 
-
+    bool isJoinMatchClicked;
 
     void Awake()
     {
@@ -36,6 +36,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         isConnectedOnMaster = false;
         roomType = "";
         playfabManager = FindObjectOfType<PlayfabManager>();
+        cachedRoomList = new Dictionary<string, RoomInfo>();
     }
     void Start()
     {
@@ -87,40 +88,18 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(true);
         }
-        Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
+        //Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
         //Debug.Log("inlobby " + PhotonNetwork.InLobby);
     }
     public void JoinMatchClicked()
     {
-
+        isJoinMatchClicked = true;
         RoomLoadingScreen.SetActive(true);
 
+        UpdateLobby();
         LoadingText.text = "Searching room...";
 
         Debug.Log("join match clicked");
-        if (roomList.Count == 0)
-        {
-            Debug.Log("roomtype2 ");
-            JoinRoomWithSameRankOrCreate("", "", false);//create room
-        }
-        else
-        {
-            for (int i = 0; i < roomList.Count; i++)
-            {
-                if (roomList[i].CustomProperties["RoomRank"] != null) // check it is not custom room or training room
-                {
-                    Debug.Log("listroomcutomprop " + roomList[i].CustomProperties["IsOpenToNonSpectatorPlayer"].ToString());
-                    Debug.Log("roomtype3 " + roomList[i].CustomProperties["RoomRank"].ToString());
-                    JoinRoomWithSameRankOrCreate(roomList[i].Name, roomList[i].CustomProperties["RoomRank"].ToString(), roomList[i].IsOpen);//join room 
-                    break;
-                }
-                else
-                {
-                    JoinRoomWithSameRankOrCreate("", "", true);//create room
-                    break;
-                }
-            }
-        }
     }
 
     public void PlayMultiButtonClicked()
@@ -128,6 +107,20 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         Debug.Log("PlayButtonPressed");
     }
 
+    public void OnPlayButtonClicked()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("LoadBattleScreen", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    void LoadBattleScreen()
+    {
+        // Replace "GameScene" with the name of your actual game scene
+        PhotonNetwork.LoadLevel("BattleScreen");
+    }
 
     public void CreateRoom()
     {
@@ -144,7 +137,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     }
 
-    // Also set to RankedBtn in the inspector
+    
     public void UpdateLobby()
     {
         // used to call OnRoomListUpdate() callback when open rank menu
@@ -152,7 +145,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    void JoinRoomWithSameRankOrCreate(string roomName, string getCustomPropValue, bool isOpen)
+    void JoinRoomWithSameRankOrCreate(string roomName, string getCustomPropValue, bool isOpen, bool isItFirstRoom)
     {
         bool shouldMatch = false;
         Debug.Log("getCustomPropValue " + getCustomPropValue);
@@ -173,9 +166,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             shouldMatch = false;
         }
 
-        if (shouldMatch == true && isOpen == true)
+        if (shouldMatch == true && isOpen == true && isItFirstRoom == false)
         {
-            Debug.Log("inside join room  ");
+            Debug.Log("inside join room");
             PhotonNetwork.JoinRoom(roomName);
         }
         else
@@ -220,7 +213,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("The room is full");
         }
-
     }
 
 
@@ -270,6 +262,16 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
 
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            insideRoomUi.SetActive(true);
+            RoomLoadingScreen.SetActive(false);
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                PlayMultiButton.SetActive(true);
+            }
+        }
+
         //foreach (Transform child in playerListContent)
         //{
         //	Destroy(child.gameObject);
@@ -290,27 +292,36 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("playerentered");
 
-       
-        Debug.Log("IsOpenToNonSpectatorPlayer " + PhotonNetwork.CurrentRoom.CustomProperties["IsOpenToNonSpectatorPlayer"]);
-
         //Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItemHandler>().SetUp(newPlayer);
-
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             insideRoomUi.SetActive(true);
             RoomLoadingScreen.SetActive(false);
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                PlayMultiButton.SetActive(true);
+            }
         }
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Hashtable customProperties = new Hashtable();
+        //Hashtable customProperties = new Hashtable();
 
-        int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
-        NonSpectatorPlayerCount -= 1;
-        customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
-        PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+        //int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
+        //NonSpectatorPlayerCount -= 1;
+        //customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
+        //PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                PlayMultiButton.SetActive(true);
+            }
+        }
+
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -334,42 +345,50 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                //update cachedRoom list
-                if (cachedRoomList.ContainsKey(room.Name))
+                if (cachedRoomList.Count != 0)
                 {
-                    cachedRoomList[room.Name] = room;
-                }
-                //add the new room to the cached room list
-                else
-                {
-                    cachedRoomList.Add(room.Name, room);
+                    //update cachedRoom list
+                    if (cachedRoomList.ContainsKey(room.Name))
+                    {
+                        cachedRoomList[room.Name] = room;
+                    }
+                    //add the new room to the cached room list
+                    else
+                    {
+                        cachedRoomList.Add(room.Name, room);
+                    }
                 }
             }
         }
         //foreach (RoomInfo room in cachedRoomList.Values)
         //{
-        //    //Debug.Log("instantiate called");
-        //    //GameObject roomListEntryGameobject = Instantiate(roomListItemPrefab);
-        //    //Debug.Log("joinroomListSpectatormodeRoomlist " + PhotonNetwork.LocalPlayer.CustomProperties["Spectator"].ToString() + " local " + localIsItInSpectatorMode);
+        //    Debug.Log("instantiate called");
+        //    GameObject roomListEntryGameobject = Instantiate(roomListItemPrefab);
+        //    Debug.Log("joinroomListSpectatormodeRoomlist " + PhotonNetwork.LocalPlayer.CustomProperties["Spectator"].ToString() + " local " + localIsItInSpectatorMode);
 
-        //    //roomListEntryGameobject.transform.SetParent(roomListItemContainer.transform);
-        //    //roomListEntryGameobject.transform.localScale = Vector3.one;
-        //    //roomListEntryGameobject.transform.localPosition = Vector3.one;
+        //    roomListEntryGameobject.transform.SetParent(roomListItemContainer.transform);
+        //    roomListEntryGameobject.transform.localScale = Vector3.one;
+        //    roomListEntryGameobject.transform.localPosition = Vector3.one;
 
-        //    //roomListEntryGameobject.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = room.Name;
-        //    //roomListEntryGameobject.transform.Find("RoomTypeText").GetComponent<TextMeshProUGUI>().text = room.CustomProperties["RoomType"].ToString();
-        //    //roomListEntryGameobject.transform.Find("NumOfPlayerInText").GetComponent<TextMeshProUGUI>().text =
-        //    //	room.CustomProperties["NonSpectatorPlayerCount"].ToString() + " / " + 2;
+        //    roomListEntryGameobject.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = room.Name;
+        //    roomListEntryGameobject.transform.Find("RoomTypeText").GetComponent<TextMeshProUGUI>().text = room.CustomProperties["RoomType"].ToString();
+        //    roomListEntryGameobject.transform.Find("NumOfPlayerInText").GetComponent<TextMeshProUGUI>().text =
+        //        room.CustomProperties["NonSpectatorPlayerCount"].ToString() + " / " + 2;
 
-        //    //roomListEntryGameobject.transform.Find("JoinButton").GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
+        //    roomListEntryGameobject.transform.Find("JoinButton").GetComponent<Button>().onClick.AddListener(() => JoinRoom(room));
 
-        //    //roomListGameobjects.Add(room.Name, roomListEntryGameobject);
+        //    roomListGameobjects.Add(room.Name, roomListEntryGameobject);
         //}
 
         //if (roomType == "Ranked")
         //{
-        //    SearchForSameRankedRoom(roomList);
+
         //}
+        if (isJoinMatchClicked)
+        {
+            SearchForSameRankedRoom(roomList);
+            isJoinMatchClicked = false;
+        }
     }
     public override void OnLeftRoom()
     {
@@ -379,43 +398,43 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     #endregion
 
 
-    //void SearchForSameRankedRoom(List<RoomInfo> roomList)
-    //{
-    //    Debug.Log("roomtype1 ");
-    //    if (roomList.Count == 0)
-    //    {
-    //        Debug.Log("roomtype2 ");
-    //        JoinRoomWithSameRankOrCreate("", "", true);//create room
-    //    }
-    //    else
-    //    {
-    //        for (int i = 0; i < roomList.Count; i++)
-    //        {
-    //            if (roomList[i].CustomProperties["RoomRank"] != null) // check it is not custom room or training room
-    //            {
-    //                Debug.Log("listroomcutomprop " + roomList[i].CustomProperties["IsOpenToNonSpectatorPlayer"].ToString());
-    //                if ((bool)roomList[i].CustomProperties["IsOpenToNonSpectatorPlayer"] == true)
-    //                {
-    //                    Debug.Log("roomtype3 " + roomList[i].CustomProperties["RoomRank"].ToString());
-    //                    JoinRoomWithSameRankOrCreate(roomList[i].Name, roomList[i].CustomProperties["RoomRank"].ToString(), roomList[i].IsOpen);//join room 
-    //                    break;
-    //                }
-    //                else
-    //                {
-    //                    Debug.Log("roomtype4 ");
-    //                    JoinRoomWithSameRankOrCreate("", "", true);//create room
-    //                    break;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                JoinRoomWithSameRankOrCreate("", "", true);//create room
-    //                break;
-    //            }
-    //        }
-    //    }
-    //}
+    void SearchForSameRankedRoom(List<RoomInfo> roomList)
+    {
+        Debug.Log("roomtype1 ");
+        if (roomList.Count == 0)
+        {
+            Debug.Log("roomtype2 ");
+            JoinRoomWithSameRankOrCreate("", "", true,true);//create room
+        }
+        else
+        {
+            for (int i = 0; i < roomList.Count; i++)
+            {
+                if (roomList[i].CustomProperties["RoomRank"] != null) // check it is not custom room or training room
+                {
+                    //Debug.Log("listroomcutomprop " + roomList[i].CustomProperties["IsOpenToNonSpectatorPlayer"].ToString());
+                    //if ((bool)roomList[i].CustomProperties["IsOpenToNonSpectatorPlayer"] == true)
+                    //{
+                        Debug.Log("roomtype3 " + roomList[i].CustomProperties["RoomRank"].ToString());
+                        JoinRoomWithSameRankOrCreate(roomList[i].Name, roomList[i].CustomProperties["RoomRank"].ToString(), roomList[i].IsOpen,false);//join room 
+                        break;
+                    //}
+                    //else
+                    //{
+                    //    Debug.Log("roomtype4 ");
+                    //    JoinRoomWithSameRankOrCreate("", "", true);//create room
+                    //    break;
+                    //}
+                }
+                else
+                {
+                    JoinRoomWithSameRankOrCreate("", "", true,true);//create room
+                    break;
+                }
+            }
+        }
+    }
 
-    
-    
+
+
 }

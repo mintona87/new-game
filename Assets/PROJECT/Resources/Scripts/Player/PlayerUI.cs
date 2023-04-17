@@ -20,12 +20,14 @@ public class PlayerUI : MonoBehaviour
 
     public Slider hpSlider;
     PlayerManager player;
-    
-    void Start()
+
+    public Image PlayerPicture;
+
+    private void Awake()
     {
         player = GetComponent<PlayerManager>();
-        
     }
+
     public void SetMaxHealth()
     {
         float sliderValue = GetNormalizedHP(player.GetPlayerStats().HP, player.GetPlayerStats().MaxHP);
@@ -37,6 +39,18 @@ public class PlayerUI : MonoBehaviour
     {
         float sliderValue = GetNormalizedHP(hp, player.GetPlayerStats().MaxHP);
         hpSlider.value = sliderValue;
+    }
+
+    public void SetPlayerPicture()
+    {
+        if(gameObject.name == "Player1")
+        {
+            PlayerPicture.sprite =  Resources.Load<Sprite>("Sprites/$decimalist");
+        }
+        else
+        {
+            PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
+        }
     }
 
     public float GetNormalizedHP(int hp, int maxHealth)

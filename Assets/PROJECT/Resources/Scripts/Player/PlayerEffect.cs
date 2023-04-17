@@ -18,12 +18,12 @@ public class PlayerEffect : MonoBehaviour
 
     AudioManager audioManager;
 
-    void Start()
+    private void Awake()
     {
         player = GetComponent<PlayerManager>();
         audioManager = player.gameController.audioManager;
     }
-
+    
     public IEnumerator PlaySwordSlashEffect()
     {
         // play attack sound
