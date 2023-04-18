@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerCombat playerCombat;
     public PlayerEffect playerEffect;
     PlayerStats playerStats;
-    PhotonView pv;
+    public PhotonView pv;
 
     public float[] playerHonor = new float[2];
 
@@ -64,7 +64,6 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator WaitFinishLoad()
     {
-        
         InitPlayer();
 
         while (gameController.PlayerListContainer.transform.childCount != 2)
@@ -78,6 +77,17 @@ public class PlayerManager : MonoBehaviour
             yield return null;
         }
         Debug.Log("finish load");
+
+
+        if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
+        {
+            canPlay = true;
+        }
+        else
+        {
+            canPlay = false;
+        }
+
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealth();
         //playerUI.UpdateHealthUI();
@@ -86,20 +96,14 @@ public class PlayerManager : MonoBehaviour
         //playerUI.UpdateChargeButtons();
         gameController.SwitchPlayerTurn();
 
-        playerUI.playerAttackButton.gameObject.SetActive(pv.IsMine);
-        playerUI.playerHealButton.gameObject.SetActive(pv.IsMine); 
-        playerUI.playerDefendButton.gameObject.SetActive(pv.IsMine); 
-        playerUI.playerChargeButton.gameObject.SetActive(pv.IsMine);
+        // change is mine
+        playerUI.SetActiveButtons(PhotonNetwork.LocalPlayer.IsLocal);
 
         gameController.SetPlayerList();
 
-        playerCombat.targetScript.playerUI.playerAttackButton.gameObject.SetActive(false);
-        playerCombat.targetScript.playerUI.playerHealButton.gameObject.SetActive(false);
-        playerCombat.targetScript.playerUI.playerDefendButton.gameObject.SetActive(false);
-        playerCombat.targetScript.playerUI.playerChargeButton.gameObject.SetActive(false);
+        playerUI.SetActiveTargetButtons(false);
     }
 
-    
     public PlayerStats GetPlayerStats()
     {
         return playerStats;

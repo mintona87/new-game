@@ -79,7 +79,9 @@ public class GameController : MonoBehaviour
     public GameObject PlayerListContainer;
     public bool didGameFinishLoad;
 
-    PhotonView pv;
+    public PhotonView pv;
+
+    public GameObject MyPlayerObj;
 
 
     private void Awake()
@@ -116,17 +118,22 @@ public class GameController : MonoBehaviour
                 }
 
                 Debug.Log("SpawnPrefabCalled");
-                pv.RPC("SpawnPlayerPrefabRPC", RpcTarget.AllBuffered, player.GetPlayerNumber());
+                GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/" + playerPrefab.name, Vector3.zero, Quaternion.identity);
+                PlayerManager playerManager = playerObj.GetComponent<PlayerManager>();
+                playerManager.playerNumber = player.GetPlayerNumber();
+                playerList.Add(playerManager);
+                pv.RPC("SynchronizePlayerNumber", RpcTarget.OthersBuffered, player.GetPlayerNumber(), playerObj.GetPhotonView().ViewID);
             }
         }
     }
 
     [PunRPC]
-    void SpawnPlayerPrefabRPC(int playerNumber)
+    void SynchronizePlayerNumber(int playerNumber, int viewID)
     {
-        GameObject playerObj = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        GameObject playerObj = PhotonView.Find(viewID).gameObject;
         PlayerManager playerManager = playerObj.GetComponent<PlayerManager>();
         playerManager.playerNumber = playerNumber;
+        playerList.Add(playerManager);
     }
 
 
@@ -560,8 +567,11 @@ private void UpdateChargeButtons()
         //    }
         //}
 
-        if(Turn % 2 == 0)
+        Debug.Log("playerlistCount" + playerList.Count);
+
+        if (Turn % 2 == 0)
         {
+            
             playerList[0].canPlay = true;
             playerList[1].canPlay = false;
         }

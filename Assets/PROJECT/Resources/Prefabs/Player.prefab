@@ -1929,10 +1929,12 @@ MonoBehaviour:
   playerUI: {fileID: 0}
   playerCombat: {fileID: 0}
   playerEffect: {fileID: 0}
+  pv: {fileID: 0}
   playerHonor:
   - 0
   - 0
   canPlay: 0
+  playerNumber: 0
 --- !u!114 &1199268779151830662
 MonoBehaviour:
   m_ObjectHideFlags: 0

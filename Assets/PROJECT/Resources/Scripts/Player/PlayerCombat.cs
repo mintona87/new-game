@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class PlayerCombat : MonoBehaviour
 {
@@ -22,14 +24,19 @@ public class PlayerCombat : MonoBehaviour
 
     public void SetDefaultTarget()
     {
-        if (gameObject.name == "Player1")
+        if(PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
         {
-            targetObj = GameObject.Find("Player2");
+            player.gameController.MyPlayerObj = player.gameController.playerList[0].gameObject;
+            targetObj = player.gameController.playerList[1].gameObject;
         }
         else
         {
-            targetObj = GameObject.Find("Player1");
+            player.gameController.MyPlayerObj = player.gameController.playerList[1].gameObject;
+            targetObj = player.gameController.playerList[0].gameObject;
         }
+
+        Debug.Log("playernumber " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
+
         targetScript = targetObj.GetComponent<PlayerManager>();
     }
 
