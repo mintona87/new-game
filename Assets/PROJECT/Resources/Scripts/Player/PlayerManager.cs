@@ -113,17 +113,23 @@ public class PlayerManager : MonoBehaviour
         return playerStats;
     }
 
+    private void Update()
+    {
+        Debug.Log("canplay " +canPlay);
+    }
+
     public void OnSwitchTurnSettings()
     {
         if (isStunned)
         {
-            gameController.Turn++;
-            canPlay = false;
+            //gameController.SwitchPlayerTurn();
+            //canPlay = false;
             
-            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText+" is stunned!", playerUI.ActionText));
-            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-            isStunned = false;
+            //StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText+" is stunned!", playerUI.ActionText));
+            //StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+            //isStunned = false;
         }
+
          playerUI.playerAttackButton.interactable = canPlay;
          playerUI.playerHealButton.interactable = canPlay;
          playerUI.playerDefendButton.interactable = canPlay;
@@ -185,7 +191,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        HP += amount;
+        HP += /*amount*/-1000;
         if (HP < 0)
         {
             HP = 0;
@@ -196,6 +202,10 @@ public class PlayerManager : MonoBehaviour
         }
         playerUI.SetHealthSlider(HP);
         GetPlayerStats().HP = HP;
+        if (HasLost())
+        {
+            gameController.gameOverManager.DisplayPlayersGameOverObj();
+        }
     }
 
 

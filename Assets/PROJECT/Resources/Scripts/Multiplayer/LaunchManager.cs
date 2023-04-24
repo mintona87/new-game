@@ -127,21 +127,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("BattleScreen");
     }
 
-    public void CreateRoom()
-    {
-        //if (string.IsNullOrEmpty(roomNameInputField.text))
-        //{
-        //	//roomNameInputField.text = "testRoom2"; //tmp for debug
-        //	return;
-        //}
-        //int maxPlayer = 2;
-        //bool isVisible = true;
-        //object customPropKey = "null key";
-        //object customPropValue = "null value";
-        //PhotonNetwork.CreateRoom(roomNameInputField.text, GetRoomOptions(maxPlayer, isVisible, customPropKey, customPropValue));
-
-    }
-
     
     public void UpdateLobby()
     {
@@ -196,12 +181,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
     }
 
-
     public void ModifyPlayerCustomHonor(int honor)
     {
         PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
     }
-
 
     public void LeaveRoom()
     {

@@ -40,13 +40,12 @@ public class GameController : MonoBehaviour
 
     public GameObject MyPlayerObj;
 
-    
-
-
+    public GameOverManager gameOverManager;
 
     private void Awake()
     {
         audioManager = GetComponent<AudioManager>();
+        gameOverManager = FindObjectOfType<GameOverManager>();
         pv = GetComponent<PhotonView>();
     }
 
@@ -188,11 +187,21 @@ public class GameController : MonoBehaviour
         //    }
         //}
 
+        pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered);
+
+
         Debug.Log("playerlistCount" + playerList.Count);
 
+       
+    }
+
+    [PunRPC]
+    void IncreasePlayerTurn()
+    {
+        Turn++;
         if (Turn % 2 == 0)
         {
-            
+
             playerList[0].canPlay = true;
             playerList[1].canPlay = false;
         }
@@ -202,13 +211,11 @@ public class GameController : MonoBehaviour
             playerList[0].canPlay = false;
         }
 
-        foreach(PlayerManager player in playerList)
+        foreach (PlayerManager player in playerList)
         {
             player.OnSwitchTurnSettings();
         }
-    }
-
-
+    } 
 
 
 

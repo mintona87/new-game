@@ -59,7 +59,6 @@ public class PlayerCombat : MonoBehaviour
             StartCoroutine(ShowActionText("Player 1 missed the attack!", player.playerUI.ActionText));
         }
 
-        player.gameController.Turn++;
         player.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
@@ -99,7 +98,6 @@ public class PlayerCombat : MonoBehaviour
         {
             player.HP = player.MaxHP;
         }
-        player.gameController.Turn++;
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayHealEffect());
 
@@ -136,7 +134,6 @@ public class PlayerCombat : MonoBehaviour
         int damage = player.Charge(targetScript);
         targetScript.ChangeHP(-damage);
 
-        player.gameController.Turn++;
         player.TurnsSinceCharge = 0; // Reset the counter
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
@@ -147,7 +144,4 @@ public class PlayerCombat : MonoBehaviour
 
         StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
     }
-
-  
-
 }
