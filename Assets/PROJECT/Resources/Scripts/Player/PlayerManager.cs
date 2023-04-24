@@ -89,7 +89,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         playerCombat.SetDefaultTarget();
-        playerUI.SetMaxHealth();
+        playerUI.SetMaxHealthSlider();
         //playerUI.UpdateHealthUI();
         playerUI.UpdateHonorUI();
         playerUI.SetPlayerPicture();
@@ -190,7 +190,7 @@ public class PlayerManager : MonoBehaviour
         {
             HP = MaxHP;
         }
-        playerUI.SetHealth(HP);
+        playerUI.SetHealthSlider(HP);
         GetPlayerStats().HP = HP;
     }
 

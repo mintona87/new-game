@@ -30,23 +30,24 @@ public class PlayerUI : MonoBehaviour
         player = GetComponent<PlayerManager>();
     }
 
-    public void SetMaxHealth()
+    public void SetMaxHealthSlider()
     {
         float sliderValue = GetNormalizedHP(player.GetPlayerStats().HP, player.GetPlayerStats().MaxHP);
         hpSlider.maxValue = sliderValue;
         hpSlider.value = sliderValue;
     }
 
-    public void SetHealth(int hp)
+    public void SetHealthSlider(int hp)
     {
         float sliderValue = GetNormalizedHP(hp, player.GetPlayerStats().MaxHP);
-        player.pv.RPC("SetHealthRPC", RpcTarget.AllBuffered, hp, sliderValue);
+        player.pv.RPC("SetHealthSliderRPC", RpcTarget.AllBuffered, hp, sliderValue);
     }
 
     [PunRPC]
-    public void SetHealthRPC(int hp, float sliderValue)
+    public void SetHealthSliderRPC(int hp, float sliderValue)
     {
         hpSlider.value = sliderValue;
+        
     }
     public void SetActiveButtons(bool condition)
     {
