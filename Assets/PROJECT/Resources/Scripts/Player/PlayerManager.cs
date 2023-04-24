@@ -35,6 +35,9 @@ public class PlayerManager : MonoBehaviour
 
     public int playerNumber;
 
+    public string localPlayerNickname;
+
+
 
     private void Awake()
     {
@@ -54,8 +57,9 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("loacl player num" + playerNumber);
         playerUI.playerNumberText.text = "Player" + (playerNumber + 1).ToString();
+
         gameObject.name = playerUI.playerNumberText.text;
-        playerUI.playerUsernameText.text = FindObjectOfType<PlayfabManager>().nickname;
+        playerUI.playerUsernameText.text = localPlayerNickname;
         transform.SetParent(gameController.PlayerListContainer.transform);
         gameObject.transform.localScale = new Vector2(1.0f, 1.0f);
         Debug.Log("finish load value set");

@@ -16,7 +16,8 @@ public class PlayfabManager : MonoBehaviour
     public string nickname;
     public string accountID;
 
-    //public CharacterBox characterBoxes;//set in the inspector
+
+    public static PlayfabManager Instance;
 
     public bool IsitOnPlayerDebugMode;
 
@@ -34,7 +35,7 @@ public class PlayfabManager : MonoBehaviour
     //LocalSaveSystemManager localSaveSystemManager;
 
     //DebugUI debugUI;
-
+    PlayerSavedData playerSavedData;
 
     private void Awake()
     {
@@ -42,16 +43,9 @@ public class PlayfabManager : MonoBehaviour
         RegisterPasswordInput.inputType = TMP_InputField.InputType.Password;
         //debugUI = FindObjectOfType<DebugUI>();
         //localSaveSystemManager = FindObjectOfType<LocalSaveSystemManager>();
-
-
     }
     private void Start()
     {
-        if (IsitOnPlayerDebugMode)
-        {
-            LoginUserNameInput.text = "25@x.com";
-            LoginPasswordInput.text = "123456";
-        }
         DontDestroyOnLoad(gameObject);
     }
 
@@ -64,22 +58,22 @@ public class PlayfabManager : MonoBehaviour
             Password = RegisterPasswordInput.text,
             RequireBothUsernameAndEmail = false
         };
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnError);
+        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, RegisterButtonPressedError);
     }
 
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
         // SHOW NICKNAME FORM
         Debug.Log("SHOW NICKNAME FORM");
-        
-        GetLoadedCharacterDatas();//load and create data if no data
+
+        GetLoadedPlayerDatas();//load and create data if no data
 
         nickname = RegisterUsernameInput.text;
         //debugUI.NickNameText.text = nickname;
 
         SubmitNameButton();
 
-        SendLeaderboard(1200);
+        SendLeaderboard(100);
 
         LoginSettings();
     }
@@ -100,7 +94,7 @@ public class PlayfabManager : MonoBehaviour
                 }
             }
         };
-        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError);
+        PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, SendLeaderboardError);
     }
     void OnLeaderboardUpdate(UpdatePlayerStatisticsResult result)
     {
@@ -127,12 +121,9 @@ public class PlayfabManager : MonoBehaviour
                 //Launcher.Instance.rankELOFromPlayfab = eachStat.Value;
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
                 localPlayerHonor = eachStat.Value;
-                //debugUI.playfabLocalPlayerELOText.text = "ELO: " + localPlayerELOScore;
             }
         }
     }
-
-   
 
     #endregion
 
@@ -169,7 +160,7 @@ public class PlayfabManager : MonoBehaviour
         nickname = result.InfoResultPayload.PlayerProfile.DisplayName;
         //debugUI.NickNameText.text = nickname;
 
-        GetLoadedCharacterDatas();
+        GetLoadedPlayerDatas();
         
         if (name == null)
         {
@@ -200,7 +191,7 @@ public class PlayfabManager : MonoBehaviour
         {
             DisplayName = nickname
         };
-        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, OnError);
+        PlayFabClientAPI.UpdateUserTitleDisplayName(request, OnDisplayNameUpdate, SubmitNameButtonError);
         PlayerPrefs.SetString("username", name);
     }
 
@@ -219,111 +210,97 @@ public class PlayfabManager : MonoBehaviour
             Email = emailInput,
             TitleId = PlayFabSettings.staticSettings.TitleId
         };
-        PlayFabClientAPI.SendAccountRecoveryEmail(request, OnForgotPasswordSuccess, OnError);
+        PlayFabClientAPI.SendAccountRecoveryEmail(request, OnForgotPasswordSuccess, OnResetPasswordError);
     }
     void OnForgotPasswordSuccess(SendAccountRecoveryEmailResult result)
     {
         Debug.Log("Sent password recovery link!");
     }
-
+    #region Error
     void OnError(PlayFabError error)
     {
         Debug.Log("Error: " + error.ErrorMessage);
     }
+    void OnResetPasswordError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+    void OnSavePlayerDataError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+
+    void GetLoadedPlayerDatasError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+    void SubmitNameButtonError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+    void SendLeaderboardError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+    void RegisterButtonPressedError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+
+    #endregion
 
     // SENDING JSON DATA
-    public void SaveCharacters()
+    public void SavePlayerSavedData(PlayerSavedData data)
     {
         //Debug.Log("losses box saved " + characterBoxes.GetStats().losses +"  "+ characterBoxes.GetStats().wins);
         var request = new UpdateUserDataRequest
         {
-            //Data = new Dictionary<string, string> {
-            //    {"Characters", JsonConvert.SerializeObject(characterBoxes.GetStats()) },
-            //}
+            Data = new Dictionary<string, string> {
+                {"PlayerSavedData", JsonConvert.SerializeObject(data) },
+            }
         };
-        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnSavePlayerDataError);
     }
 
-    public void SaveAll()
+    public void SaveAll(PlayerSavedData data)
     {
-        SaveCharacters();
-        SaveCharacterGraphicStats();
+        SavePlayerSavedData(data);
     }
-    public void SaveCharacterGraphicStats()
-    {
-        var request = new UpdateUserDataRequest
-        {
-            //Data = new Dictionary<string, string> {
-            //    {"CharacterGraphicStats", JsonConvert.SerializeObject(FindObjectOfType<CharacterGraphicBox>().GetGraphicStats())}
-            //}
-        };
-        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnError);
-    }
-
-
 
     void OnDataSend(UpdateUserDataResult result)
     {
         Debug.Log("Successful JSON data send!");
     }
 
-
-
     // RECEIVING JSON DATA
-    public void GetLoadedCharacterDatas()
+    public void GetLoadedPlayerDatas()
     {
-        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnCharacterDataReceived, OnError);
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnCharacterDataReceived, GetLoadedPlayerDatasError);
     }
     void OnCharacterDataReceived(GetUserDataResult result)
     {
         Debug.Log("Received data");
-        if(result.Data != null && result.Data.ContainsKey("Characters"))
+        if(result.Data != null && result.Data.ContainsKey("PlayerSavedData"))
         {
-            //CharacterStats loadedStats = JsonConvert.DeserializeObject<CharacterStats>(result.Data["Characters"].Value);
-            //Debug.Log("countrtystat" +loadedStats.country);
+            PlayerSavedData loadedStats = JsonConvert.DeserializeObject<PlayerSavedData>(result.Data["PlayerSavedData"].Value);
+            //Debug.Log("countrtystat" + loadedStats.country);
             //characterBoxes.SetStats(loadedStats);
             //characterBoxes.SetUi(loadedStats);
         }
         else
         {
             Debug.Log("inside no chara key");
-            //characterStats = new CharacterStats(
-            //    "TestCreateDataName",
-            //    "SphericalHat",
-            //    0.0f,//level
-            //    100,//health
-            //    0,//losses
-            //    0,//wins
-            //    FindObjectOfType<ChooseCountryHandler>().selectedCountry);
-            //characterBoxes.SetStats(characterStats);
-            //SaveCharacters();
+            playerSavedData = new PlayerSavedData(
+                1,//ATT
+                1,//DEF
+                1,//SPD
+                1,//LUCK
+                0,//Gold
+                0//Honor
+                  );
+            //characterBoxes.SetStats(playerSavedData);
+            SavePlayerSavedData(playerSavedData);
             //localSaveSystemManager.SetAndSaveCharacterStats();
         }
     }
-
-    #region Graphic Datas
-    public void GetLoadedCharacterGraphicDatas()
-    {
-        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnCharacterGraphicDataReceived, OnError);
-    }
-    void OnCharacterGraphicDataReceived(GetUserDataResult result)
-    {
-       
-        if (result.Data != null && result.Data.ContainsKey("CharacterGraphicStats"))
-        {
-            Debug.Log("Received graphic data");
-            //CharacterGraphicStats loadedGraphicStats = JsonConvert.DeserializeObject<CharacterGraphicStats>(result.Data["CharacterGraphicStats"].Value);
-
-            //FindObjectOfType<CharacterGraphicBox>().SetGraphicStats(loadedGraphicStats);
-        }
-        else
-        {
-            Debug.Log("inside no graphic key");
-
-            //FindObjectOfType<CharacterGraphicBox>().SetGraphicStats(characterGraphicStats);
-            SaveCharacterGraphicStats();
-            //localSaveSystemManager.SetAndSaveCharacterGraphicStats();
-        }
-    }
-    #endregion
 }

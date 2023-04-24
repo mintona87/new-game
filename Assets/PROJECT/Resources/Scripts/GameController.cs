@@ -11,12 +11,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI player1ActionText;
     [SerializeField] private TextMeshProUGUI player2ActionText;
-
-    
     
     public AudioSource backgroundMusic;
-
-    
 
     public int player1Honor = 0;
     public int player2Honor = 0;
@@ -44,13 +40,15 @@ public class GameController : MonoBehaviour
 
     public GameObject MyPlayerObj;
 
+    
+
+
 
     private void Awake()
     {
         audioManager = GetComponent<AudioManager>();
         pv = GetComponent<PhotonView>();
     }
-
 
     void Start()
     {
@@ -75,6 +73,7 @@ public class GameController : MonoBehaviour
                 GameObject playerObj = PhotonNetwork.Instantiate("Prefabs/" + playerPrefab.name, Vector3.zero, Quaternion.identity);
                 PlayerManager playerManager = playerObj.GetComponent<PlayerManager>();
                 playerManager.playerNumber = player.GetPlayerNumber();
+                playerManager.localPlayerNickname = player.CustomProperties["Nickname"].ToString();
                 playerList.Add(playerManager);
                 pv.RPC("SynchronizePlayerNumber", RpcTarget.OthersBuffered, player.GetPlayerNumber(), playerObj.GetPhotonView().ViewID);
             }
@@ -100,30 +99,25 @@ public class GameController : MonoBehaviour
     }
 
 
-
-  
-   
-
-
 // Coroutine to show action text and fade it away
-public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)
-{
-    float duration = 1.5f; // How long the text should stay visible
-    float fadeDuration = 0.5f; // How long the fade in/out should take
+    public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)
+    {
+        float duration = 1.5f; // How long the text should stay visible
+        float fadeDuration = 0.5f; // How long the fade in/out should take
 
-    // Set the text and alpha value to 0
-    textComponent.text = text;
-    textComponent.canvasRenderer.SetAlpha(0f);
+        // Set the text and alpha value to 0
+        textComponent.text = text;
+        textComponent.canvasRenderer.SetAlpha(0f);
 
-    // Fade in
-    textComponent.CrossFadeAlpha(1f, fadeDuration, false);
+        // Fade in
+        textComponent.CrossFadeAlpha(1f, fadeDuration, false);
 
-    // Wait for the duration
-    yield return new WaitForSeconds(duration);
+        // Wait for the duration
+        yield return new WaitForSeconds(duration);
 
-    // Fade out
-    textComponent.CrossFadeAlpha(0f, fadeDuration, false);
-}
+        // Fade out
+        textComponent.CrossFadeAlpha(0f, fadeDuration, false);
+    }
 
 
 

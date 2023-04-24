@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
 using Unity.VisualScripting.Antlr3.Runtime;
+using Photon.Pun.UtilityScripts;
 
 public class LaunchManager : MonoBehaviourPunCallbacks
 {
@@ -23,9 +24,13 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public string roomType;// set in ChooseModeHandler.cs
     public bool isConnectedOnMaster;
 
-    public GameObject insideRoomUi;
+    public GameObject insideRoomUiObj;
     public GameObject RoomLoadingScreen;
-    public GameObject PlayMultiButton;
+    public GameObject PlayMultiButtonObj;
+    public GameObject PlayerRoomObjContainerObj;
+    public GameObject PlayerRoomObjPrefab;
+    public TextMeshProUGUI PlayerCountText;
+
     public TextMeshProUGUI LoadingText;
 
     bool isJoinMatchClicked;
@@ -64,7 +69,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         PhotonNetwork.AutomaticallySyncScene = true;
         isConnectedOnMaster = true;
-        if (PhotonNetwork.LocalPlayer.CustomProperties["Rank"] == null)
+        if (PhotonNetwork.LocalPlayer.CustomProperties["Honor"] == null)
         {
             SetPlayerCustomProperties();
         }
@@ -94,7 +99,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public void JoinMatchClicked()
     {
         isJoinMatchClicked = true;
-        RoomLoadingScreen.SetActive(true);
+        //RoomLoadingScreen.SetActive(true);
 
         UpdateLobby();
         LoadingText.text = "Searching room...";
@@ -155,9 +160,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             getCustomPropValue = "0";// to avoid int.Parse error
         }
 
-        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Rank"].ToString());
+        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString());
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Rank"].ToString())) <= 5)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 5)
         {
             shouldMatch = true;
         }
@@ -179,7 +184,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             int maxPlayer = 2;
             bool isVisible = true;
             object customPropKey = "RoomRank";
-            object customPropValue = PhotonNetwork.LocalPlayer.CustomProperties["Rank"].ToString();
+            object customPropValue = PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString();
 
             PhotonNetwork.CreateRoom(rndRoomName.ToString(), GetRoomOptions(maxPlayer, isVisible, customPropKey, customPropValue));
         }
@@ -187,13 +192,14 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     void SetPlayerCustomProperties()
     {
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("Rank", playfabManager.localPlayerHonor);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
     }
 
 
-    public void ModifyPlayerCustomRank(int rank)
+    public void ModifyPlayerCustomHonor(int honor)
     {
-        PhotonNetwork.LocalPlayer.CustomProperties["Rank"] = rank;
+        PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
     }
 
 
@@ -226,7 +232,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOption = new RoomOptions();
 
-        roomOption.MaxPlayers = 7;
+        roomOption.MaxPlayers = 2;
         roomOption.CustomRoomProperties = new Hashtable();
         roomOption.IsVisible = isVisible;
         roomOption.CustomRoomProperties.Add(customPropKey, customPropValue);
@@ -249,42 +255,70 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     }
 
 
+    IEnumerator WaitToFinishLoadPlayerInfo(Player player, bool isItJoining)
+    {
+        while(player.GetPlayerNumber() == -1)
+        {
+            Debug.Log("Called2"+ player.GetPlayerNumber());
+        yield return null;
+        }
+        if (isItJoining)
+        {
+            // Create a sorted list of players by player number
+            List<Player> sortedPlayers = PhotonNetwork.CurrentRoom.Players.Values.OrderBy(p => p.GetPlayerNumber()).ToList();
+
+            foreach (Player getPlayer in sortedPlayers)
+            {
+                Debug.Log("Called1" + getPlayer.CustomProperties["Nickname"].ToString());
+
+                GameObject playerRoomObj = Instantiate(PlayerRoomObjPrefab, Vector3.zero, Quaternion.identity);
+
+                playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
+
+                playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
+                (
+                    getPlayer.GetPlayerNumber() + 1,
+                    getPlayer.CustomProperties["Nickname"].ToString(),
+                    getPlayer.CustomProperties["Honor"].ToString()
+                );
+            }
+        }
+        else
+        {
+            GameObject playerRoomObj = Instantiate(PlayerRoomObjPrefab, Vector3.zero, Quaternion.identity);
+
+            playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
+
+            playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
+                (player.GetPlayerNumber() + 1,
+                player.CustomProperties["Nickname"].ToString(),
+                player.CustomProperties["Honor"].ToString()
+                );
+        }
+    }
+
     public override void OnJoinedRoom()
     {
+        StartCoroutine(WaitToFinishLoadPlayerInfo(PhotonNetwork.LocalPlayer, true));
+
+        PlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
         Debug.Log("joinedroom");
-        
-
-        //Player[] players = PhotonNetwork.PlayerList;
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers)
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
-
+        
+        insideRoomUiObj.SetActive(true);
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            insideRoomUi.SetActive(true);
-            RoomLoadingScreen.SetActive(false);
+            
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                PlayMultiButton.SetActive(true);
+                PlayMultiButtonObj.SetActive(true);
             }
         }
-
-        //foreach (Transform child in playerListContent)
-        //{
-        //	Destroy(child.gameObject);
-        //}
-
-        //Debug.Log("player count" + players.Count());
-
-        //for (int i = 0; i < players.Count(); i++)
-        //{
-        //	GameObject playerListItemObj = Instantiate(PlayerListItemPrefab, playerListContent);
-        //	playerListItemObj.GetComponent<PlayerListItemHandler>().SetUp(players[i]);
-        //}
-        //startGameButton.SetActive(PhotonNetwork.IsMasterClient);
         LoadingText.text = "Searching for other players...";
     }
 
@@ -292,15 +326,20 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("playerentered");
 
-        //Instantiate(PlayerListItemPrefab, playerListContent).GetComponent<PlayerListItemHandler>().SetUp(newPlayer);
+        StartCoroutine(WaitToFinishLoadPlayerInfo(newPlayer, false));
+
+        PlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/"+ PhotonNetwork.CurrentRoom.MaxPlayers;
+
 
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            insideRoomUi.SetActive(true);
+            insideRoomUiObj.SetActive(true);
+        
             RoomLoadingScreen.SetActive(false);
+
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                PlayMultiButton.SetActive(true);
+                PlayMultiButtonObj.SetActive(true);
             }
         }
     }
@@ -318,7 +357,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                PlayMultiButton.SetActive(true);
+                PlayMultiButtonObj.SetActive(true);
             }
         }
 

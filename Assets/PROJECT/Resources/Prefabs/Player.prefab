@@ -1935,6 +1935,7 @@ MonoBehaviour:
   - 0
   canPlay: 0
   playerNumber: 0
+  localPlayerNickname: 
 --- !u!114 &1199268779151830662
 MonoBehaviour:
   m_ObjectHideFlags: 0
