@@ -8,35 +8,68 @@ using Photon.Pun.UtilityScripts;
 
 public class PlayerRoomObjHandler : MonoBehaviour
 {
-
-
     public Image PlayerImage;
     public TextMeshProUGUI PlayerNameText;
     public TextMeshProUGUI PlayerNumberText;
     public TextMeshProUGUI PlayerHonorText;
     public TextMeshProUGUI WonLostText;
 
-    bool isItGameOverObj;
 
-    void Start()
+    public void SetUpPlayerInfo(int playerNumber, string nickName, string playerHonor,string type )
     {
-        if (gameObject.name.Contains("GameOver"))
+        if (type != "leaderboard")
         {
-            WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
-            isItGameOverObj = true;
+            PlayerNumberText.text = "Player " + playerNumber.ToString();
         }
 
-    }
-
-    public void SetUpPlayerInfo(int playerNumber, string nickName, string playerHonor)
-    {
-        PlayerNumberText.text = "Player " + playerNumber.ToString();
         PlayerNameText.text = nickName;
         PlayerHonorText.text = playerHonor;
-        if (isItGameOverObj)
+
+        if (type == "gameover")
         {
+            WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
+
+            StartCoroutine(WaitLostPropertyTobeSet(nickName));
         }
         //to do set the image
+    }
 
+    IEnumerator WaitLostPropertyTobeSet(string nickName)
+    {
+        while (PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString() == "null")
+        {
+            yield return null;
+        }
+
+        if (nickName == PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString())
+        {
+            WonLostText.text = PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString();
+        }
+        else
+        {
+            // Find the remote player with the given nickname
+            Photon.Realtime.Player remotePlayer = null;
+            foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (player.CustomProperties["Nickname"].ToString() == nickName && player != PhotonNetwork.LocalPlayer)
+                {
+                    remotePlayer = player;
+                    break;
+                }
+            }
+
+            if (remotePlayer != null)
+            {
+                while (remotePlayer.CustomProperties["WonLost"].ToString() == "null")
+                {
+                    yield return null;
+                }
+                WonLostText.text = remotePlayer.CustomProperties["WonLost"].ToString();
+            }
+            else
+            {
+                Debug.LogError("Remote player not found: " + nickName);
+            }
+        }
     }
 }

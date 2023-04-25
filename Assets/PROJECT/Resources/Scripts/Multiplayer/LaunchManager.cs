@@ -179,6 +179,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
     }
 
     public void ModifyPlayerCustomHonor(int honor)
@@ -262,7 +263,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 (
                     getPlayer.GetPlayerNumber() + 1,
                     getPlayer.CustomProperties["Nickname"].ToString(),
-                    getPlayer.CustomProperties["Honor"].ToString()
+                    getPlayer.CustomProperties["Honor"].ToString(),
+                    "matchmaking"
                 );
             }
         }
@@ -275,8 +277,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (player.GetPlayerNumber() + 1,
                 player.CustomProperties["Nickname"].ToString(),
-                player.CustomProperties["Honor"].ToString()
-                );
+                player.CustomProperties["Honor"].ToString(),
+                "matchmaking"
+                ) ;
         }
     }
 

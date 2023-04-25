@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
 
     public string localPlayerNickname;
 
-
+    bool isItMyPlayer;
 
     private void Awake()
     {
@@ -92,6 +92,13 @@ public class PlayerManager : MonoBehaviour
             canPlay = false;
         }
 
+        Debug.Log("getnum " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "playernum "+ playerNumber);
+        if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == playerNumber)
+        {
+            isItMyPlayer = true;
+        }
+        Debug.Log("isitMyPlayer " +gameObject.name+" cond "+ isItMyPlayer);
+
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
         //playerUI.UpdateHealthUI();
@@ -113,10 +120,6 @@ public class PlayerManager : MonoBehaviour
         return playerStats;
     }
 
-    private void Update()
-    {
-        Debug.Log("canplay " +canPlay);
-    }
 
     public void OnSwitchTurnSettings()
     {
@@ -185,7 +188,7 @@ public class PlayerManager : MonoBehaviour
 
     public void ChangeHP(int amount)
     {
-        pv.RPC("ChangeHPRPC", RpcTarget.AllBuffered,amount);
+        pv.RPC("ChangeHPRPC", RpcTarget.AllBuffered, amount);
     }
 
     [PunRPC]
@@ -202,9 +205,28 @@ public class PlayerManager : MonoBehaviour
         }
         playerUI.SetHealthSlider(HP);
         GetPlayerStats().HP = HP;
+
         if (HasLost())
         {
             gameController.gameOverManager.DisplayPlayersGameOverObj();
+
+            // Set "Win" for a player different than the local player
+            foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
+            {
+                if (player != PhotonNetwork.LocalPlayer)
+                {
+                    if (!playerCombat.targetScript.HasLost())
+                    {
+                        player.CustomProperties["WonLost"] = "Won";
+                        PhotonNetwork.LocalPlayer.CustomProperties["WonLost"] = "Lost";
+                    }
+                    else
+                    {
+                        player.CustomProperties["WonLost"] = "Lost";
+                        PhotonNetwork.LocalPlayer.CustomProperties["WonLost"] = "Won";
+                    }
+                }
+            }
         }
     }
 

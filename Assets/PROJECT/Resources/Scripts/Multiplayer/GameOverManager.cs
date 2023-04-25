@@ -28,7 +28,6 @@ public class GameOverManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     [PunRPC]
     void DisplayPlayersGameOverObjRPC()
     {
@@ -48,14 +47,14 @@ public class GameOverManager : MonoBehaviourPunCallbacks
             (
                 getPlayer.GetPlayerNumber() + 1,
                 getPlayer.CustomProperties["Nickname"].ToString(),
-                getPlayer.CustomProperties["Honor"].ToString()
+                getPlayer.CustomProperties["Honor"].ToString(),
+                "gameover"
             );
         }
     }
 
-
     public void ReturnToHomeButtonClicked()
     {
-
+        PhotonNetwork.LoadLevel("MainMenu");
     }
 }
