@@ -96,7 +96,16 @@ public class GameController : MonoBehaviour
             playerList.Add(PlayerListContainer.transform.GetChild(i).GetComponent<PlayerManager>());
         }
     }
-
+    
+    //Added this method to check if both players have selected their actions and then execute them
+    public void CheckForActionExecution()
+    {
+    if (player1.actionSelected && player2.actionSelected)
+    {
+        StartCoroutine(player1.ExecuteActions(player2));
+    }
+    }
+    // ...
 
 // Coroutine to show action text and fade it away
     public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)
