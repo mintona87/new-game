@@ -6,6 +6,74 @@ using Photon.Pun.UtilityScripts;
 
 public class PlayerManager : MonoBehaviour
 {
+    // Added this enum to represent player actions
+     public enum PlayerAction
+    {
+        None,
+        Attack,
+        Defend,
+        Heal,
+        Charge
+    }
+
+    // Added variables to store each player's selected action
+    private PlayerAction selectedAction = PlayerAction.None;
+    private bool actionSelected = false;
+    // ...
+    
+    // Add this method for players to select their actions
+    public void SelectAction(PlayerAction action)
+    {
+        if (canPlay && !actionSelected)
+        {
+            selectedAction = action;
+            actionSelected = true;
+            gameController.CheckForActionExecution();
+        }
+    }
+    // ...
+    
+    // Added this method to execute the actions in the correct order
+    public IEnumerator ExecuteActions(PlayerManager otherPlayer)
+    {
+        canPlay = false;
+
+        List<PlayerManager> players = new List<PlayerManager> { this, otherPlayer };
+        players.Sort((x, y) => y.SPD.CompareTo(x.SPD));
+
+        if (players[0].SPD == players[1].SPD)
+        {
+            players.Shuffle(); // You can use an extension method to shuffle the list
+        }
+
+        foreach (PlayerManager player in players)
+        {
+            switch (player.selectedAction)
+            {
+                case PlayerAction.Attack:
+                    player.playerCombat.Attack();
+                    break;
+                case PlayerAction.Defend:
+                    player.isDefending = true;
+                    break;
+                case PlayerAction.Heal:
+                    player.playerCombat.Heal();
+                    break;
+                case PlayerAction.Charge:
+                    player.playerCombat.Charge();
+                    break;
+                default:
+                    break;
+            }
+            player.selectedAction = PlayerAction.None;
+            player.actionSelected = false;
+            yield return new WaitForSeconds(1f); // Add a delay between actions if needed
+        }
+
+        gameController.SwitchPlayerTurn();
+    }
+    // ...
+    
     public int HP = 100;
     public int MaxHP = 100;
     public bool HasCharged = false;
@@ -20,7 +88,6 @@ public class PlayerManager : MonoBehaviour
    public int Gold { get; private set; } = 0;
 
     public int TurnsSinceCharge = 6;
-
 
     public GameController gameController;
     public PlayerUI playerUI;
@@ -121,24 +188,21 @@ public class PlayerManager : MonoBehaviour
     }
 
 
+    // Modified the existing methods to work with the new action selection and execution system
     public void OnSwitchTurnSettings()
     {
         if (isStunned)
         {
-            //gameController.SwitchPlayerTurn();
-            //canPlay = false;
-            
-            //StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText+" is stunned!", playerUI.ActionText));
-            //StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-            //isStunned = false;
+            isStunned = false;
         }
 
-         playerUI.playerAttackButton.interactable = canPlay;
-         playerUI.playerHealButton.interactable = canPlay;
-         playerUI.playerDefendButton.interactable = canPlay;
-         playerUI.playerChargeButton.interactable = canPlay;
-         playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
+        playerUI.playerAttackButton.interactable = canPlay;
+        playerUI.playerHealButton.interactable = canPlay;
+        playerUI.playerDefendButton.interactable = canPlay;
+        playerUI.playerChargeButton.interactable = canPlay;
+        playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
     }
+    // ...
 
     public void AddGold(int amount)
     {
