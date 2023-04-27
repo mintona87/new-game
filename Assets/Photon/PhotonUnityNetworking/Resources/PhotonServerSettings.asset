@@ -54,6 +54,7 @@ MonoBehaviour:
   - PlayDefendEffectRPC
   - PlayHealEffectRPC
   - PlaySwordSlashEffectAttackerRPC
+  - SetIsStunRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

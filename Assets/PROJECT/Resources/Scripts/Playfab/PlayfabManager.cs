@@ -303,7 +303,7 @@ public class PlayfabManager : MonoBehaviour
                 1,//SPD
                 1,//LUCK
                 0,//Gold
-                100//Honor
+                1//Honor
                   );
             SavePlayerSavedData(playerSavedData);
         }

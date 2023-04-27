@@ -316,8 +316,9 @@ public class PlayerManager : MonoBehaviour
         playfabManager.SavePlayerSavedData(playfabManager.GetPlayerSavedData());
         Debug.Log("OnWin" + honor);
         playfabManager.SendLeaderboard(honor);
-        PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
-        
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "Honor", honor } });
+
+
     }
 
     public bool Dodge()

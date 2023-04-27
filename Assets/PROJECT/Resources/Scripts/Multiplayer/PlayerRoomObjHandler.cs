@@ -6,8 +6,9 @@ using TMPro;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System;
+using Photon.Realtime;
 
-public class PlayerRoomObjHandler : MonoBehaviour
+public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 {
     public Image PlayerImage;
     public TextMeshProUGUI PlayerNameText;
@@ -33,14 +34,12 @@ public class PlayerRoomObjHandler : MonoBehaviour
         {
             WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
 
-            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor, updatedHonor => {
-                PlayerHonorText.text = updatedHonor.ToString();
-            }));
+            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor));
         }
         //to do set the image
     }
 
-    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, Action<int> onHonorUpdated)
+    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor)
     {
         while (PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString() == "null")
         {
@@ -50,14 +49,8 @@ public class PlayerRoomObjHandler : MonoBehaviour
         if (nickName == PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString())
         {
             WonLostText.text = PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString();
-            if (WonLostText.text == "Won")
-            {
-                onHonorUpdated(playerHonor + 10);
-            }
-            else
-            {
-                onHonorUpdated(playerHonor);
-            }
+                
+            PlayerHonorText.text = playerHonor.ToString();
         }
         else
         {
@@ -79,14 +72,7 @@ public class PlayerRoomObjHandler : MonoBehaviour
                     yield return null;
                 }
                 WonLostText.text = remotePlayer.CustomProperties["WonLost"].ToString();
-                if(WonLostText.text == "Won")
-                {
-                    onHonorUpdated(playerHonor + 10);
-                }
-                else
-                {
-                    onHonorUpdated(playerHonor);
-                }
+                    PlayerHonorText.text = playerHonor.ToString();
             }
             else
             {
@@ -96,4 +82,25 @@ public class PlayerRoomObjHandler : MonoBehaviour
 
         
     }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        Debug.Log("callback called" );
+        // Check if the "Honor" property has been updated
+        if (changedProps.ContainsKey("Honor"))
+        {
+            // Get the updated honor value
+            int updatedHonor = Convert.ToInt32(changedProps["Honor"]);
+
+            // Do something with the updated honor value, e.g., update the UI
+            UpdateHonorUI(updatedHonor);
+        }
+    }
+
+    private void UpdateHonorUI(int updatedHonor)
+    {
+        // Update your UI elements here, e.g., the honor text
+        PlayerHonorText.text = updatedHonor.ToString();
+    }
+
 }
