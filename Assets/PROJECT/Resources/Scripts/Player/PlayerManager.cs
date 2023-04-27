@@ -125,12 +125,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (isStunned)
         {
-            //gameController.SwitchPlayerTurn();
-            //canPlay = false;
-            
-            //StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText+" is stunned!", playerUI.ActionText));
-            //StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-            //isStunned = false;
+            gameController.SwitchPlayerTurn();
+            canPlay = false;
+
+            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
+            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+            isStunned = false;
         }
 
          playerUI.playerAttackButton.interactable = canPlay;
@@ -194,7 +194,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        HP += /*amount*/-1000;
+        HP +=/* amount*/-1000;
         if (HP < 0)
         {
             HP = 0;
@@ -208,8 +208,6 @@ public class PlayerManager : MonoBehaviour
 
         if (HasLost())
         {
-            gameController.gameOverManager.DisplayPlayersGameOverObj();
-
             // Set "Win" for a player different than the local player
             foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
             {
@@ -224,9 +222,12 @@ public class PlayerManager : MonoBehaviour
                     {
                         player.CustomProperties["WonLost"] = "Lost";
                         PhotonNetwork.LocalPlayer.CustomProperties["WonLost"] = "Won";
+                        OnPlayerWin();
+
                     }
                 }
             }
+            gameController.gameOverManager.DisplayPlayersGameOverObj();
         }
     }
 
@@ -268,6 +269,17 @@ public class PlayerManager : MonoBehaviour
         isDefending = condition;
     }
 
+    public void SetIsStun(bool condition)
+    {
+        pv.RPC("SetIsStunRPC", RpcTarget.AllBuffered,condition);
+    }
+    [PunRPC]
+    void SetIsStunRPC(bool condition)
+    {
+        isStunned = condition;
+    }
+
+
     public int Charge(PlayerManager opponent)
     {
         int damage = 0;
@@ -279,7 +291,7 @@ public class PlayerManager : MonoBehaviour
             // 70% chance of stun
             if (random <= 0.7f)
             {
-                opponent.isStunned = true;
+                opponent.SetIsStun(true);
             }
 
             damage = Random.Range(20, 30);
@@ -294,6 +306,18 @@ public class PlayerManager : MonoBehaviour
             HasCharged = true;
         }
         return damage;
+    }
+    public void OnPlayerWin()
+    {
+        Debug.Log("OnWin");
+        PlayfabManager playfabManager = FindObjectOfType<PlayfabManager>();
+        playfabManager.GetPlayerSavedData().Honor += 10;
+        int honor = playfabManager.GetPlayerSavedData().Honor;
+        playfabManager.SavePlayerSavedData(playfabManager.GetPlayerSavedData());
+        Debug.Log("OnWin" + honor);
+        playfabManager.SendLeaderboard(honor);
+        PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
+        
     }
 
     public bool Dodge()

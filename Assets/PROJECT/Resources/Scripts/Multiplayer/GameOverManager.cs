@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 using System.Linq;
+using System;
 
 public class GameOverManager : MonoBehaviourPunCallbacks
 {
@@ -42,12 +43,12 @@ public class GameOverManager : MonoBehaviourPunCallbacks
             GameObject playerRoomObj = Instantiate(PlayerGameOverObjPrefab, Vector3.zero, Quaternion.identity);
 
             playerRoomObj.transform.SetParent(PlayerGameOverObjContainer.transform);
-
+            int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
             playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
             (
                 getPlayer.GetPlayerNumber() + 1,
                 getPlayer.CustomProperties["Nickname"].ToString(),
-                getPlayer.CustomProperties["Honor"].ToString(),
+                playerHonor,
                 "gameover"
             );
         }
@@ -55,6 +56,11 @@ public class GameOverManager : MonoBehaviourPunCallbacks
 
     public void ReturnToHomeButtonClicked()
     {
+        PhotonNetwork.LeaveRoom();
+    }
+    public override void OnLeftRoom()
+    {
+        Debug.Log("onleftroom");
         PhotonNetwork.LoadLevel("MainMenu");
     }
 }

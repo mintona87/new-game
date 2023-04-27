@@ -237,6 +237,8 @@ GameObject:
   - component: {fileID: 1460959652368993963}
   - component: {fileID: 5550924582161526485}
   - component: {fileID: 8079675216983001588}
+  - component: {fileID: 4779093772233093133}
+  - component: {fileID: 4584851659797934336}
   m_Layer: 0
   m_Name: SwordSlashEffect
   m_TagString: Untagged
@@ -323,6 +325,57 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4779093772233093133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859519053964148325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Idle
+  - Type: 9
+    SynchronizeType: 1
+    Name: AnimationDone
+  - Type: 1
+    SynchronizeType: 1
+    Name: speed
+  - Type: 9
+    SynchronizeType: 1
+    Name: PlayHeal
+  - Type: 9
+    SynchronizeType: 1
+    Name: PlaySwordSlash
+  - Type: 9
+    SynchronizeType: 1
+    Name: PlayCharge
+  - Type: 9
+    SynchronizeType: 1
+    Name: PlayDefend
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+--- !u!114 &4584851659797934336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859519053964148325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a74f9579d04b94f966b02c37a135f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1812668728804183988
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,6 +1151,7 @@ GameObject:
   - component: {fileID: 2807400703668558470}
   - component: {fileID: 6302382724849472542}
   - component: {fileID: 7524012275535352429}
+  - component: {fileID: 3247515774118870762}
   m_Layer: 0
   m_Name: ChargeEffect
   m_TagString: Untagged
@@ -1184,6 +1238,45 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3247515774118870762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5414635249591405933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Idle
+  - Type: 9
+    SynchronizeType: 0
+    Name: AnimationDone
+  - Type: 1
+    SynchronizeType: 0
+    Name: speed
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayHeal
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlaySwordSlash
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayCharge
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayDefend
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &6001663888449742415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1831,7 @@ GameObject:
   - component: {fileID: 7756963554729804449}
   - component: {fileID: 7756963554729804448}
   - component: {fileID: 7756963554729804455}
+  - component: {fileID: 1765948337653596897}
   m_Layer: 0
   m_Name: HealEffect
   m_TagString: Untagged
@@ -1824,6 +1918,45 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1765948337653596897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756963554729804453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Idle
+  - Type: 9
+    SynchronizeType: 0
+    Name: AnimationDone
+  - Type: 1
+    SynchronizeType: 0
+    Name: speed
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayHeal
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlaySwordSlash
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayCharge
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayDefend
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &7756963554832582893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,7 +2032,11 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4779093772233093133}
+  - {fileID: 1765948337653596897}
+  - {fileID: 5264119035162924331}
+  - {fileID: 3247515774118870762}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -2043,6 +2180,7 @@ GameObject:
   - component: {fileID: 7756963555046724206}
   - component: {fileID: 7756963555046724205}
   - component: {fileID: 7756963555046724204}
+  - component: {fileID: 5264119035162924331}
   m_Layer: 1
   m_Name: DefendEffect
   m_TagString: Untagged
@@ -2129,6 +2267,45 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5264119035162924331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7756963555046724194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 0
+    Name: Idle
+  - Type: 9
+    SynchronizeType: 0
+    Name: AnimationDone
+  - Type: 1
+    SynchronizeType: 0
+    Name: speed
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayHeal
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlaySwordSlash
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayCharge
+  - Type: 9
+    SynchronizeType: 0
+    Name: PlayDefend
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!1 &7931386393627179610
 GameObject:
   m_ObjectHideFlags: 0

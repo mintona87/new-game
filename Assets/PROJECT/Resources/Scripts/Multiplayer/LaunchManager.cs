@@ -147,7 +147,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString());
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 5)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 500000)
         {
             shouldMatch = true;
         }
@@ -259,11 +259,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
                 playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
 
+                int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
                 playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (
                     getPlayer.GetPlayerNumber() + 1,
                     getPlayer.CustomProperties["Nickname"].ToString(),
-                    getPlayer.CustomProperties["Honor"].ToString(),
+                    playerHonor,
                     "matchmaking"
                 );
             }
@@ -273,11 +274,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             GameObject playerRoomObj = Instantiate(PlayerRoomObjPrefab, Vector3.zero, Quaternion.identity);
 
             playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
+            int playerHonor = Convert.ToInt32(player.CustomProperties["Honor"]);
 
             playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (player.GetPlayerNumber() + 1,
                 player.CustomProperties["Nickname"].ToString(),
-                player.CustomProperties["Honor"].ToString(),
+                playerHonor,
                 "matchmaking"
                 ) ;
         }

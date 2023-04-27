@@ -49,6 +49,12 @@ public class PlayfabManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public PlayerSavedData GetPlayerSavedData()
+    {
+        return playerSavedData;
+    }
+
+
     // Registering
     public void RegisterButtonPressed()
     {
@@ -73,7 +79,7 @@ public class PlayfabManager : MonoBehaviour
 
         SubmitNameButton();
 
-        SendLeaderboard(100);
+        SendLeaderboard(1);
 
         LoginSettings();
     }
@@ -124,6 +130,8 @@ public class PlayfabManager : MonoBehaviour
             }
         }
     }
+
+   
 
     #endregion
 
@@ -283,9 +291,8 @@ public class PlayfabManager : MonoBehaviour
         if(result.Data != null && result.Data.ContainsKey("PlayerSavedData"))
         {
             PlayerSavedData loadedStats = JsonConvert.DeserializeObject<PlayerSavedData>(result.Data["PlayerSavedData"].Value);
-            //Debug.Log("countrtystat" + loadedStats.country);
-            //characterBoxes.SetStats(loadedStats);
-            //characterBoxes.SetUi(loadedStats);
+            playerSavedData = loadedStats;
+            Debug.Log("honor " + playerSavedData.Honor);
         }
         else
         {
@@ -296,11 +303,9 @@ public class PlayfabManager : MonoBehaviour
                 1,//SPD
                 1,//LUCK
                 0,//Gold
-                0//Honor
+                100//Honor
                   );
-            //characterBoxes.SetStats(playerSavedData);
             SavePlayerSavedData(playerSavedData);
-            //localSaveSystemManager.SetAndSaveCharacterStats();
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using System;
 
 public class PlayerRoomObjHandler : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class PlayerRoomObjHandler : MonoBehaviour
     public TextMeshProUGUI WonLostText;
 
 
-    public void SetUpPlayerInfo(int playerNumber, string nickName, string playerHonor,string type )
+    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string type)
     {
         if (type != "leaderboard")
         {
@@ -23,18 +24,23 @@ public class PlayerRoomObjHandler : MonoBehaviour
         }
 
         PlayerNameText.text = nickName;
-        PlayerHonorText.text = playerHonor;
+        if (type != "gameover")
+        {
+            PlayerHonorText.text = playerHonor.ToString();
+        }
 
         if (type == "gameover")
         {
             WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
 
-            StartCoroutine(WaitLostPropertyTobeSet(nickName));
+            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor, updatedHonor => {
+                PlayerHonorText.text = updatedHonor.ToString();
+            }));
         }
         //to do set the image
     }
 
-    IEnumerator WaitLostPropertyTobeSet(string nickName)
+    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, Action<int> onHonorUpdated)
     {
         while (PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString() == "null")
         {
@@ -44,6 +50,14 @@ public class PlayerRoomObjHandler : MonoBehaviour
         if (nickName == PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString())
         {
             WonLostText.text = PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString();
+            if (WonLostText.text == "Won")
+            {
+                onHonorUpdated(playerHonor + 10);
+            }
+            else
+            {
+                onHonorUpdated(playerHonor);
+            }
         }
         else
         {
@@ -65,11 +79,21 @@ public class PlayerRoomObjHandler : MonoBehaviour
                     yield return null;
                 }
                 WonLostText.text = remotePlayer.CustomProperties["WonLost"].ToString();
+                if(WonLostText.text == "Won")
+                {
+                    onHonorUpdated(playerHonor + 10);
+                }
+                else
+                {
+                    onHonorUpdated(playerHonor);
+                }
             }
             else
             {
                 Debug.LogError("Remote player not found: " + nickName);
             }
         }
+
+        
     }
 }

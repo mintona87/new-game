@@ -43,19 +43,22 @@ public class PlayerEffect : MonoBehaviour
     {
         PlayerManager targetScript = player.playerCombat.targetScript;
 
-        // Get the length of the sword slash animation clip
         float swordSlashClipLength = GetAnimationClipLength(targetScript.playerEffect.swordSlashAnimator, "SwordSlashAnimationClip");
 
         Debug.Log("clip length " + swordSlashClipLength);
 
-        // Call the RPC method to play the sword slash effect and animation on every client
-        player.pv.RPC("PlaySwordSlashEffectRPC", RpcTarget.All, targetScript.pv.ViewID, swordSlashClipLength);
+        double startTime = PhotonNetwork.Time + 0.1; // Add a small buffer of 0.1 seconds
+
+        // Play animation on the local player (attacker) as well
+        player.pv.RPC("PlaySwordSlashEffectAttackerRPC", RpcTarget.All, player.pv.ViewID, startTime);
+
+        player.pv.RPC("PlaySwordSlashEffectRPC", RpcTarget.All, targetScript.pv.ViewID, swordSlashClipLength, startTime);
 
         yield return null;
     }
 
     [PunRPC]
-    void PlaySwordSlashEffectRPC(int targetViewID, float delay)
+    void PlaySwordSlashEffectRPC(int targetViewID, float delay, double startTime)
     {
         // Play attack sound
         audioManager.Play("attackSound");
@@ -64,52 +67,101 @@ public class PlayerEffect : MonoBehaviour
         GameObject targetObj = PhotonView.Find(targetViewID).gameObject;
         PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
 
-        // Enable sword slash effect and play animation
+        // Enable sword slash effect
         targetScript.playerEffect.swordSlashEffect.enabled = true;
+
+        // Wait for the synchronized start time before playing the animation
+        StartCoroutine(PlaySwordSlashAnimationWithStartTime(targetScript, startTime));
+    }
+    [PunRPC]
+    void PlaySwordSlashEffectAttackerRPC(int attackerViewID, double startTime)
+    {
+        // Find the attacker player using the PhotonView ID and get its PlayerManager script
+        GameObject attackerObj = PhotonView.Find(attackerViewID).gameObject;
+        PlayerManager attackerScript = attackerObj.GetComponent<PlayerManager>();
+
+        // Wait for the synchronized start time before playing the animation on the attacker
+        StartCoroutine(PlaySwordSlashAnimationWithStartTime(attackerScript, startTime));
+    }
+
+    IEnumerator PlaySwordSlashAnimationWithStartTime(PlayerManager targetScript, double startTime)
+    {
+        double currentTime = PhotonNetwork.Time;
+        float timeToWait = Mathf.Max(0f, (float)(startTime - currentTime));
+
+        yield return new WaitForSeconds(timeToWait);
+
+        // Play animation
         targetScript.playerEffect.swordSlashAnimator.ResetTrigger("AnimationDone");
         targetScript.playerEffect.swordSlashAnimator.SetTrigger("PlaySwordSlash");
-
-        // StartCoroutine to disable the effect after the duration of the animation
-        StartCoroutine(DisableSwordSlashEffect(delay, targetScript));
     }
-
-
-    IEnumerator DisableSwordSlashEffect(float delay, PlayerManager targetScript)
-    {
-        yield return new WaitForSeconds(delay);
-        targetScript.playerEffect.swordSlashEffect.enabled = false;
-    }
-
     public IEnumerator PlayHealEffect()
     {
-        // play heal sound
+        float healClipLength = GetAnimationClipLength(healAnimator, "HealEffectAnimationClip");
+
+        player.pv.RPC("PlayHealEffectRPC", RpcTarget.All, player.pv.ViewID, healClipLength);
+
+        yield return null;
+    }
+
+    [PunRPC]
+    void PlayHealEffectRPC(int targetViewID, float delay)
+    {
         audioManager.Play("healSound");
 
-        healEffect.enabled = true;
-        healAnimator.ResetTrigger("AnimationDone");
-        healAnimator.SetTrigger("PlayHeal");
+        GameObject targetObj = PhotonView.Find(targetViewID).gameObject;
+        PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
 
-        yield return new WaitForSeconds(2/*swordSlashAnimationClip.length*/);
+        targetScript.playerEffect.healEffect.enabled = true;
+        targetScript.playerEffect.healAnimator.ResetTrigger("AnimationDone");
+        targetScript.playerEffect.healAnimator.SetTrigger("PlayHeal");
 
-        healEffect.enabled = false;
+        StartCoroutine(DisableHealEffect(delay, targetScript));
+    }
+
+    IEnumerator DisableHealEffect(float delay, PlayerManager targetScript)
+    {
+        yield return new WaitForSeconds(delay);
+        targetScript.playerEffect.healEffect.enabled = false;
     }
 
     public IEnumerator PlayDefendEffect()
     {
-        // play defend sound
-        player.gameController.audioManager.Play("defendSound");
+        // Get the length of the defend animation clip
+        float defendClipLength = GetAnimationClipLength(defendAnimator, "DefendAnimationClip");
 
-        defendEffect.enabled = true;
-        defendAnimator.ResetTrigger("AnimationDone");
-        defendAnimator.SetTrigger("PlayDefend");
+        // Call the RPC method to play the defend effect and animation on every client
+        player.pv.RPC("PlayDefendEffectRPC", RpcTarget.All, player.pv.ViewID, defendClipLength);
 
-        yield return new WaitForSeconds(2/*swordSlashAnimationClip.length*/);
-        //yield return new WaitForSeconds(defendAnimationClip.length);
-
-        defendEffect.enabled = false;
-        player.SetIsDefending(false);
+        yield return null;
     }
 
+    [PunRPC]
+    void PlayDefendEffectRPC(int targetViewID, float delay)
+    {
+        // Play defend sound
+        audioManager.Play("defendSound");
+
+        // Find the target player using the PhotonView ID and get its PlayerManager script
+        GameObject targetObj = PhotonView.Find(targetViewID).gameObject;
+        PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
+
+        // Enable defend effect and play animation
+        targetScript.playerEffect.defendEffect.enabled = true;
+        targetScript.playerEffect.defendAnimator.ResetTrigger("AnimationDone");
+        targetScript.playerEffect.defendAnimator.SetTrigger("PlayDefend");
+
+        // StartCoroutine to disable the effect after the duration of the animation
+        StartCoroutine(DisableDefendEffect(delay, targetScript));
+    }
+    IEnumerator DisableDefendEffect(float delay, PlayerManager targetScript)
+    {
+        yield return new WaitForSeconds(delay);
+        targetScript.playerEffect.defendEffect.enabled = false;
+        targetScript.SetIsDefending(false);
+    }
+
+    // The rest of the code remains the same
 
     public IEnumerator PlayPlayer1ChargeEffect()
     {
