@@ -105,8 +105,7 @@ public class PlayerManager : MonoBehaviour
         playerUI.UpdateHonorUI();
         playerUI.SetPlayerPicture();
         //playerUI.UpdateChargeButtons();
-        gameController.SwitchPlayerTurn();
-
+        OnSwitchTurnSettings();
         // change is mine
         playerUI.SetActiveButtons(PhotonNetwork.LocalPlayer.IsLocal);
 
@@ -121,24 +120,54 @@ public class PlayerManager : MonoBehaviour
     }
 
 
+    public void HandleChargeStun()
+    {
+        if (isStunned)
+        {
+            canPlay = true;
+        }
+        else
+        {
+            canPlay = false;
+        }
+
+        OnSwitchTurnSettings();
+    }
+
+    //public void OnSwitchTurnSettings()
+    //{
+    //    if (isStunned)
+    //    {
+    //        canPlay = false;
+
+    //        StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
+    //        StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+    //        Debug.Log("shoudlbestun3");
+    //        isStunned = false;
+    //    }
+
+    //     playerUI.playerAttackButton.interactable = canPlay;
+    //     playerUI.playerHealButton.interactable = canPlay;
+    //     playerUI.playerDefendButton.interactable = canPlay;
+    //     playerUI.playerChargeButton.interactable = canPlay;
+    //     playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
+    //}
+
     public void OnSwitchTurnSettings()
     {
         if (isStunned)
         {
-            gameController.SwitchPlayerTurn();
-            canPlay = false;
-
-            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
-            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-            isStunned = false;
+            HandleChargeStun();
+            return;
         }
 
-         playerUI.playerAttackButton.interactable = canPlay;
-         playerUI.playerHealButton.interactable = canPlay;
-         playerUI.playerDefendButton.interactable = canPlay;
-         playerUI.playerChargeButton.interactable = canPlay;
-         playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
+        playerUI.playerAttackButton.interactable = canPlay;
+        playerUI.playerHealButton.interactable = canPlay;
+        playerUI.playerDefendButton.interactable = canPlay;
+        playerUI.playerChargeButton.interactable = canPlay;
+        playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
     }
+
 
     public void AddGold(int amount)
     {
@@ -194,7 +223,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        HP +=/* amount*/-1000;
+        HP += amount;
         if (HP < 0)
         {
             HP = 0;
@@ -276,6 +305,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void SetIsStunRPC(bool condition)
     {
+        Debug.Log("shoudlbestun2");
         isStunned = condition;
     }
 
@@ -289,8 +319,9 @@ public class PlayerManager : MonoBehaviour
             float random = UnityEngine.Random.Range(0f, 1f);
 
             // 70% chance of stun
-            if (random <= 0.7f)
+            if (random <= /*0.7f*/2)
             {
+                Debug.Log("shoudlbestun1");
                 opponent.SetIsStun(true);
             }
 

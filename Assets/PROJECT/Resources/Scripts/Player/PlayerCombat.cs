@@ -64,7 +64,7 @@ public class PlayerCombat : MonoBehaviour
 
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-        player.gameController.SwitchPlayerTurn();
+        player.gameController.HandlePlayerTurn();
     }
 
     // Coroutine to show action text and fade it away
@@ -103,7 +103,7 @@ public class PlayerCombat : MonoBehaviour
 
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-        player.gameController.SwitchPlayerTurn();
+        player.gameController.HandlePlayerTurn();
 
         StartCoroutine(ShowActionText($"Player 1 healed for {healAmount}!", player.playerUI.ActionText));
 
@@ -119,7 +119,7 @@ public class PlayerCombat : MonoBehaviour
 
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-        player.gameController.SwitchPlayerTurn();
+        player.gameController.HandlePlayerTurn();
     }
     public void OnPlayerChargeButtonClicked()
     {
@@ -137,9 +137,11 @@ public class PlayerCombat : MonoBehaviour
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
+
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-        player.gameController.SwitchPlayerTurn();
+        targetScript.isStunned = true;
+        player.gameController.HandlePlayerTurn();
 
         StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
     }

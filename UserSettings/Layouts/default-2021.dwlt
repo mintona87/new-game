@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1536
     height: 780.8
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Scene
   m_RootView: {fileID: 6}
   m_MinSize: {x: 875, y: 350}
   m_MaxSize: {x: 10000, y: 10000}
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 34
+  controlID: 21
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,8 +120,8 @@ MonoBehaviour:
     y: 441.6
     width: 1224.8
     height: 289.19998
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 101, y: 121}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 15}
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 18
+  controlID: 22
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 19
+  controlID: 23
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -269,8 +269,8 @@ MonoBehaviour:
     y: 0
     width: 922.4
     height: 441.6
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -452,7 +452,7 @@ MonoBehaviour:
     m_SaveData: []
     m_OverlaysVisible: 1
   m_SearchFilter:
-    m_NameFilter: 
+    m_NameFilter: playermana
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -464,22 +464,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/PROJECT/Resources/Scripts
+    - Assets/PROJECT/Resources/Scripts/Multiplayer
     m_Globs: []
-    m_OriginalText: 
+    m_OriginalText: playermana
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/PROJECT/Resources/Scripts
+  - Assets/PROJECT/Resources/Scripts/Multiplayer
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\yohan\Desktop\dcimalistProject
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 1223.8}
-    m_SelectedIDs: 14730000
-    m_LastClickedID: 29460
-    m_ExpandedIDs: 000000000c7300000e73000010730000127300001473000016730000187300001a7300001c7300001e730000207300004073000000ca9a3b
+    m_SelectedIDs: 0a850000
+    m_LastClickedID: 34058
+    m_ExpandedIDs: 000000000e73000010730000127300001473000016730000187300001a7300001c7300001e73000020730000227300004073000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -507,7 +507,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000c7300000e73000010730000127300001473000016730000187300001a7300001c7300001e73000020730000
+    m_ExpandedIDs: 000000000e73000010730000127300001473000016730000187300001a7300001c7300001e7300002073000022730000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -639,21 +639,21 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 0819feff4e19feff8819feff9219feff4c1dfeffa636feffec36feff2637feff3037feffea3afeffa651feffec51feff2652feff3052feffea55feff4c9ffeff2cd8feff020bffff540bffff8e0bffff980bffff520fffffe029ffff1a2cffff602cffff9a2cffffa42cffff5e30ffff7e37ffff6038ffff7438fffffc64ffff0c65ffff4267ffff8867ffffc267ffffcc67ffff866bffff987cffffe27cffff1c7dffff267dffffe080ffffac92fffff892ffff3293ffff3c93fffff696ffffc8b7ffff12b8ffff4cb8ffff56b8ffff10bcfffff8d7ffff3ed8ffff78d8ffff82d8ffff3cdcffffb6e5fffffce5fffffce8ffff14e9ffffceecffff18fbfffff4ffffff68df010076df01004a270200ac310200ba310200e4440200f2440200280603005e060300820603008c060300
+      m_ExpandedIDs: 22fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: HealthText
-        m_OriginalName: HealthText
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 104098
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -944,9 +944,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 721.9039, y: 273.9547, z: -59.598743}
+    m_Target: {x: 587.4715, y: 252.87094, z: -58.949364}
     speed: 2
-    m_Value: {x: 721.9039, y: 273.9547, z: -59.598743}
+    m_Value: {x: 587.4715, y: 252.87094, z: -58.949364}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -997,9 +997,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 394.50473
+    m_Target: 626.1057
     speed: 2
-    m_Value: 394.50473
+    m_Value: 626.1057
   m_Ortho:
     m_Target: 1
     speed: 2

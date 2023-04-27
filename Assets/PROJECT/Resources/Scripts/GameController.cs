@@ -195,13 +195,61 @@ public class GameController : MonoBehaviour
        
     }
 
+
+    public void HandlePlayerTurn()
+    {
+        PlayerManager currentPlayer = playerList[Turn % 2];
+        PlayerManager otherPlayer = playerList[(Turn + 1) % 2];
+
+        if (currentPlayer.isStunned)
+        {
+            currentPlayer.isStunned = false;
+            currentPlayer.canPlay = false;
+            currentPlayer.OnSwitchTurnSettings();
+            IncreasePlayerTurn();
+        }
+        else
+        {
+            SwitchPlayerTurn();
+        }
+    }
+
+    void UpdatePlayerTurns()
+    {
+        bool allPlayersStunned = true;
+
+        foreach (PlayerManager player in playerList)
+        {
+            if (player.isStunned)
+            {
+                // Handle the stunned player logic here
+                player.isStunned = false;
+                player.canPlay = false;
+            }
+            else
+            {
+                player.canPlay = !player.canPlay; // Toggle canPlay
+                allPlayersStunned = false;
+            }
+
+            player.OnSwitchTurnSettings();
+        }
+
+        if (allPlayersStunned)
+        {
+            // In case all players are stunned, let the first player play
+            playerList[0].canPlay = true;
+            playerList[0].OnSwitchTurnSettings();
+        }
+    }
+
+
     [PunRPC]
     void IncreasePlayerTurn()
     {
         Turn++;
         if (Turn % 2 == 0)
         {
-
             playerList[0].canPlay = true;
             playerList[1].canPlay = false;
         }
@@ -211,11 +259,8 @@ public class GameController : MonoBehaviour
             playerList[0].canPlay = false;
         }
 
-        foreach (PlayerManager player in playerList)
-        {
-            player.OnSwitchTurnSettings();
-        }
-    } 
+        UpdatePlayerTurns();
+    }
 
 
 
