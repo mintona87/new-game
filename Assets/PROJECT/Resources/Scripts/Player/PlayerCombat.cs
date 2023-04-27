@@ -113,8 +113,7 @@ public class PlayerCombat : MonoBehaviour
     public void OnPlayerDefendButtonClicked()
     {
         if (player.HasLost()) return;
-        player.isDefending = true;
-        player.gameController.Turn++;
+        player.SetIsDefending(true);
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayDefendEffect());
 

@@ -107,7 +107,7 @@ public class PlayerEffect : MonoBehaviour
         //yield return new WaitForSeconds(defendAnimationClip.length);
 
         defendEffect.enabled = false;
-        player.isDefending = false;
+        player.SetIsDefending(false);
     }
 
 

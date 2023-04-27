@@ -248,11 +248,6 @@ public class PlayerManager : MonoBehaviour
         return damage;
     }
 
-    public int Defend(int damage)
-    {
-        return damage / (2 + DEF);
-    }
-
     public int Heal()
     {
         int healing = Random.Range(10, 15);
@@ -261,6 +256,16 @@ public class PlayerManager : MonoBehaviour
             healing *= 2; // 2x healing for critical heals
         }
         return healing;
+    }
+
+    public void SetIsDefending(bool condition)
+    {
+        pv.RPC("SetIsDefendingRPC", RpcTarget.AllBuffered,condition);
+    }
+    [PunRPC]
+    void SetIsDefendingRPC(bool condition)
+    {
+        isDefending = condition;
     }
 
     public int Charge(PlayerManager opponent)
