@@ -120,19 +120,19 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    public void HandleChargeStun()
-    {
-        if (isStunned)
-        {
-            canPlay = true;
-        }
-        else
-        {
-            canPlay = false;
-        }
+    //public void HandleChargeStun()
+    //{
+    //    if (isStunned)
+    //    {
+    //        canPlay = true;
+    //    }
+    //    else
+    //    {
+    //        canPlay = false;
+    //    }
 
-        OnSwitchTurnSettings();
-    }
+    //    OnSwitchTurnSettings();
+    //}
 
     //public void OnSwitchTurnSettings()
     //{
@@ -155,17 +155,12 @@ public class PlayerManager : MonoBehaviour
 
     public void OnSwitchTurnSettings()
     {
-        if (isStunned)
-        {
-            HandleChargeStun();
-            return;
-        }
-
+        
         playerUI.playerAttackButton.interactable = canPlay;
         playerUI.playerHealButton.interactable = canPlay;
         playerUI.playerDefendButton.interactable = canPlay;
         playerUI.playerChargeButton.interactable = canPlay;
-        playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
+        playerUI.playerChargeButton.interactable = canPlay && TurnsSinceCharge >= 6;
     }
 
 

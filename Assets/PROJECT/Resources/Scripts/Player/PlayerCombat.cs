@@ -137,11 +137,15 @@ public class PlayerCombat : MonoBehaviour
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
-
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-        targetScript.isStunned = true;
+
+        // Call HandlePlayerTurn before setting the target player as stunned
         player.gameController.HandlePlayerTurn();
+
+        // Set the target player as stunned
+        targetScript.isStunned = true;
+        Debug.Log("Player stunned: " + targetScript.gameObject.name);
 
         StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
     }

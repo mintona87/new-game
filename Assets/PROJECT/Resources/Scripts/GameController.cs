@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 
 public class GameController : MonoBehaviour
 {
@@ -122,167 +123,146 @@ public class GameController : MonoBehaviour
 
 
 
-    public void SwitchPlayerTurn()
-    {
-        //if (Turn % 2 == 0)
-        //{
-        //    player1AttackButton.interactable = false;
-        //    player1HealButton.interactable = false;
-        //    player1DefendButton.interactable = false;
-        //    player1ChargeButton.interactable = false;
+    //public void SwitchPlayerTurn()
+    //{
+    //    //if (Turn % 2 == 0)
+    //    //{
+    //    //    player1AttackButton.interactable = false;
+    //    //    player1HealButton.interactable = false;
+    //    //    player1DefendButton.interactable = false;
+    //    //    player1ChargeButton.interactable = false;
 
-        //    player2AttackButton.interactable = true;
-        //    player2HealButton.interactable = true;
-        //    player2DefendButton.interactable = true;
-        //    player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
+    //    //    player2AttackButton.interactable = true;
+    //    //    player2HealButton.interactable = true;
+    //    //    player2DefendButton.interactable = true;
+    //    //    player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
 
-        //     if (player2Script.isStunned)
-        //      {
-        //        Turn++;
-        //        // Skip opponent's turn and allow player 1 to take another action
-        //        player2Script.isStunned = false;
-        //        player1AttackButton.interactable = true;
-        //        player1HealButton.interactable = true;
-        //        player1DefendButton.interactable = true;
-        //        player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
+    //    //     if (player2Script.isStunned)
+    //    //      {
+    //    //        Turn++;
+    //    //        // Skip opponent's turn and allow player 1 to take another action
+    //    //        player2Script.isStunned = false;
+    //    //        player1AttackButton.interactable = true;
+    //    //        player1HealButton.interactable = true;
+    //    //        player1DefendButton.interactable = true;
+    //    //        player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
 
-        //        player2AttackButton.interactable = false;
-        //        player2HealButton.interactable = false;
-        //        player2DefendButton.interactable = false;
-        //        player2ChargeButton.interactable = false;
+    //    //        player2AttackButton.interactable = false;
+    //    //        player2HealButton.interactable = false;
+    //    //        player2DefendButton.interactable = false;
+    //    //        player2ChargeButton.interactable = false;
 
-        //        StartCoroutine(ShowActionText("Player 2 is stunned!", player2ActionText));
-        //        StartCoroutine(ShowActionText(" ", player1ActionText));
-        //    }
-        //}
-        //else
-        //{
-        //    player1AttackButton.interactable = true;
-        //    player1HealButton.interactable = true;
-        //    player1DefendButton.interactable = true;
-        //    player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
+    //    //        StartCoroutine(ShowActionText("Player 2 is stunned!", player2ActionText));
+    //    //        StartCoroutine(ShowActionText(" ", player1ActionText));
+    //    //    }
+    //    //}
+    //    //else
+    //    //{
+    //    //    player1AttackButton.interactable = true;
+    //    //    player1HealButton.interactable = true;
+    //    //    player1DefendButton.interactable = true;
+    //    //    player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
 
-        //    player2AttackButton.interactable = false;
-        //    player2HealButton.interactable = false;
-        //    player2DefendButton.interactable = false;
-        //    player2ChargeButton.interactable = false;
+    //    //    player2AttackButton.interactable = false;
+    //    //    player2HealButton.interactable = false;
+    //    //    player2DefendButton.interactable = false;
+    //    //    player2ChargeButton.interactable = false;
 
-        //    if (player1Script.isStunned)
-        //    {
-        //        Turn++;
-        //        // Skip opponent's turn and allow player 2 to take another action
-        //        player1Script.isStunned = false;
-        //        player1AttackButton.interactable = false;
-        //        player1HealButton.interactable = false;
-        //        player1DefendButton.interactable = false;
-        //        player1ChargeButton.interactable = false;
+    //    //    if (player1Script.isStunned)
+    //    //    {
+    //    //        Turn++;
+    //    //        // Skip opponent's turn and allow player 2 to take another action
+    //    //        player1Script.isStunned = false;
+    //    //        player1AttackButton.interactable = false;
+    //    //        player1HealButton.interactable = false;
+    //    //        player1DefendButton.interactable = false;
+    //    //        player1ChargeButton.interactable = false;
 
-        //        player2AttackButton.interactable = true;
-        //        player2HealButton.interactable = true;
-        //        player2DefendButton.interactable = true;
-        //        player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
+    //    //        player2AttackButton.interactable = true;
+    //    //        player2HealButton.interactable = true;
+    //    //        player2DefendButton.interactable = true;
+    //    //        player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
 
-        //        StartCoroutine(ShowActionText("Player 1 is stunned!", player1ActionText));
-        //        StartCoroutine(ShowActionText(" ", player2ActionText));
-        //    }
-        //}
+    //    //        StartCoroutine(ShowActionText("Player 1 is stunned!", player1ActionText));
+    //    //        StartCoroutine(ShowActionText(" ", player2ActionText));
+    //    //    }
+    //    //}
 
-        pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered);
+    //    pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered);
 
 
-        Debug.Log("playerlistCount" + playerList.Count);
+    //    Debug.Log("playerlistCount" + playerList.Count);
 
-       
-    }
 
+    //}
 
     public void HandlePlayerTurn()
     {
         PlayerManager currentPlayer = playerList[Turn % 2];
         PlayerManager otherPlayer = playerList[(Turn + 1) % 2];
-
-        if (currentPlayer.isStunned)
+        Debug.Log("" +);
+        if (otherPlayer.isStunned)
         {
-            currentPlayer.isStunned = false;
-            currentPlayer.canPlay = false;
+            otherPlayer.isStunned = false;
+            otherPlayer.canPlay = false;
+            otherPlayer.OnSwitchTurnSettings();
+            currentPlayer.canPlay = true;
             currentPlayer.OnSwitchTurnSettings();
-            IncreasePlayerTurn();
         }
         else
         {
             SwitchPlayerTurn();
         }
+
+        // Handle charge stun logic here
+        //currentPlayer.HandleChargeStun();
     }
 
-    void UpdatePlayerTurns()
+    public void SwitchPlayerTurn()
     {
-        bool allPlayersStunned = true;
-
-        foreach (PlayerManager player in playerList)
-        {
-            if (player.isStunned)
-            {
-                // Handle the stunned player logic here
-                player.isStunned = false;
-                player.canPlay = false;
-            }
-            else
-            {
-                player.canPlay = !player.canPlay; // Toggle canPlay
-                allPlayersStunned = false;
-            }
-
-            player.OnSwitchTurnSettings();
-        }
-
-        if (allPlayersStunned)
-        {
-            // In case all players are stunned, let the first player play
-            playerList[0].canPlay = true;
-            playerList[0].OnSwitchTurnSettings();
-        }
+        int currentPlayerPhotonViewID = playerList[Turn % 2].GetComponent<PhotonView>().ViewID;
+        int otherPlayerPhotonViewID = playerList[(Turn + 1) % 2].GetComponent<PhotonView>().ViewID;
+        pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered, currentPlayerPhotonViewID, otherPlayerPhotonViewID);
+        Debug.Log("playerlistCount" + playerList.Count);
     }
-
 
     [PunRPC]
-    void IncreasePlayerTurn()
+    void IncreasePlayerTurn(int currentPlayerPhotonViewID, int otherPlayerPhotonViewID)
     {
         Turn++;
+        PhotonView currentPlayerPV = PhotonView.Find(currentPlayerPhotonViewID);
+        PhotonView otherPlayerPV = PhotonView.Find(otherPlayerPhotonViewID);
+        PlayerManager currentPlayer = currentPlayerPV.GetComponent<PlayerManager>();
+        PlayerManager otherPlayer = otherPlayerPV.GetComponent<PlayerManager>();
+
+
         if (Turn % 2 == 0)
         {
-            playerList[0].canPlay = true;
-            playerList[1].canPlay = false;
+            //if (playerList[0].isStunned)
+            //{
+            //    playerList[0].canPlay = false;
+            //    playerList[1].canPlay = true;
+            //}
+            //else
+            //{
+                playerList[0].canPlay = true;
+                playerList[1].canPlay = false;
+            //}
         }
         else
         {
-            playerList[1].canPlay = true;
-            playerList[0].canPlay = false;
+            //if (playerList[1].isStunned)
+            //{
+            //    playerList[1].canPlay = false;
+            //    playerList[0].canPlay = true;
+            //}
+            //else
+            //{
+                playerList[1].canPlay = true;
+                playerList[0].canPlay = false;
+            //}
         }
-
-        UpdatePlayerTurns();
     }
-
-
-
-    void Update()
-    {
-        //if (!isGameOver)
-        //{
-        //    if (player1Script.HasLost())
-        //    {
-        //        UpdateHonorAfterBattle(winner: 2, loser: 1);
-        //        ShowGameOverMessage(2);
-        //        isGameOver = true;
-        //    }
-        //    else if (player2Script.HasLost())
-        //    {
-        //        UpdateHonorAfterBattle(winner: 1, loser: 2);
-        //        ShowGameOverMessage(1);
-        //        isGameOver = true;
-        //    }
-        //}
-    }
-
 
     private void ShowGameOverMessage(int winnerPlayerNumber)
     {
