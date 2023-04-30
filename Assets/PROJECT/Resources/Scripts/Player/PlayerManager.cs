@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -51,6 +52,8 @@ public class PlayerManager : MonoBehaviour
     }
     private void Start()
     {
+        OnLoadingGameScreen.Instance.SetLoadingScreenActive(true);
+
         StartCoroutine(WaitFinishLoad());
     }
     void InitPlayer()
@@ -101,17 +104,18 @@ public class PlayerManager : MonoBehaviour
 
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
-        //playerUI.UpdateHealthUI();
         playerUI.UpdateHonorUI();
         playerUI.SetPlayerPicture();
-        //playerUI.UpdateChargeButtons();
         OnSwitchTurnSettings();
+
         // change is mine
         playerUI.SetActiveButtons(PhotonNetwork.LocalPlayer.IsLocal);
 
         gameController.SetPlayerList();
 
         playerUI.SetActiveTargetButtons(false);
+
+        OnLoadingGameScreen.Instance.SetLoadingScreenActive(false);
     }
 
     public PlayerStats GetPlayerStats()
@@ -120,46 +124,18 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    //public void HandleChargeStun()
-    //{
-    //    if (isStunned)
-    //    {
-    //        canPlay = true;
-    //    }
-    //    else
-    //    {
-    //        canPlay = false;
-    //    }
-
-    //    OnSwitchTurnSettings();
-    //}
-
-    //public void OnSwitchTurnSettings()
-    //{
-    //    if (isStunned)
-    //    {
-    //        canPlay = false;
-
-    //        StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
-    //        StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-    //        Debug.Log("shoudlbestun3");
-    //        isStunned = false;
-    //    }
-
-    //     playerUI.playerAttackButton.interactable = canPlay;
-    //     playerUI.playerHealButton.interactable = canPlay;
-    //     playerUI.playerDefendButton.interactable = canPlay;
-    //     playerUI.playerChargeButton.interactable = canPlay;
-    //     playerUI.playerChargeButton.interactable = TurnsSinceCharge >= 6;
-    //}
-
     public void OnSwitchTurnSettings()
     {
-        
+        if (isStunned)
+        {
+            canPlay = false;
+            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
+            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+        }
+
         playerUI.playerAttackButton.interactable = canPlay;
         playerUI.playerHealButton.interactable = canPlay;
         playerUI.playerDefendButton.interactable = canPlay;
-        playerUI.playerChargeButton.interactable = canPlay;
         playerUI.playerChargeButton.interactable = canPlay && TurnsSinceCharge >= 6;
     }
 
@@ -297,13 +273,19 @@ public class PlayerManager : MonoBehaviour
     {
         pv.RPC("SetIsStunRPC", RpcTarget.AllBuffered,condition);
     }
+
     [PunRPC]
     void SetIsStunRPC(bool condition)
     {
-        Debug.Log("shoudlbestun2");
+        Debug.Log("CalledsetisStun " + condition);
         isStunned = condition;
+        if (isStunned)
+        {
+            
+            gameController.HandlePlayerTurn(false); // Pass false to indicate not to clear the stun status
+        }
+        OnSwitchTurnSettings();
     }
-
 
     public int Charge(PlayerManager opponent)
     {
@@ -316,7 +298,6 @@ public class PlayerManager : MonoBehaviour
             // 70% chance of stun
             if (random <= /*0.7f*/2)
             {
-                Debug.Log("shoudlbestun1");
                 opponent.SetIsStun(true);
             }
 

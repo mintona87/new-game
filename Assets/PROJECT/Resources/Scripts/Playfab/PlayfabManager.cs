@@ -41,12 +41,15 @@ public class PlayfabManager : MonoBehaviour
     {
         LoginPasswordInput.inputType = TMP_InputField.InputType.Password;
         RegisterPasswordInput.inputType = TMP_InputField.InputType.Password;
+
+        
         //debugUI = FindObjectOfType<DebugUI>();
         //localSaveSystemManager = FindObjectOfType<LocalSaveSystemManager>();
     }
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
+        OnLoadingGameScreen.Instance.SetLoadingScreenActive(false);
     }
 
     public PlayerSavedData GetPlayerSavedData()

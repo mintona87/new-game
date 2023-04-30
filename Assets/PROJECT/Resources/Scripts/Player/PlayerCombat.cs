@@ -8,7 +8,6 @@ using Photon.Pun.UtilityScripts;
 
 public class PlayerCombat : MonoBehaviour
 {
-
     public GameObject targetObj;
     public PlayerManager targetScript;
 
@@ -20,19 +19,23 @@ public class PlayerCombat : MonoBehaviour
         player = GetComponent<PlayerManager>();
         playerEffect = player.playerEffect;
     }
-    
 
     public void SetDefaultTarget()
     {
+        // To do : does not make sens 
         if(PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
         {
             player.gameController.MyPlayerObj = player.gameController.playerList[0].gameObject;
             targetObj = player.gameController.playerList[1].gameObject;
+
+            player.gameController.MyPlayerManager = player.gameController.MyPlayerObj.GetComponent<PlayerManager>();
         }
         else
         {
             player.gameController.MyPlayerObj = player.gameController.playerList[1].gameObject;
             targetObj = player.gameController.playerList[0].gameObject;
+
+            player.gameController.MyPlayerManager = player.gameController.MyPlayerObj.GetComponent<PlayerManager>();
         }
 
         Debug.Log("playernumber " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
@@ -40,6 +43,22 @@ public class PlayerCombat : MonoBehaviour
         targetScript = targetObj.GetComponent<PlayerManager>();
     }
 
+
+    void UpdateTurnAndUI()
+    {
+        player.playerUI.UpdateHealthUI();
+        player.playerUI.UpdateChargeButtons();
+
+        Debug.Log("istargetstuned " + player.playerCombat.targetScript.isStunned);
+        if (player.playerCombat.targetScript.isStunned)
+        {
+            player.playerCombat.targetScript.gameController.HandlePlayerTurn(true);
+        }
+        else
+        {
+            player.gameController.HandlePlayerTurn(false);
+        }
+    }
 
     public void OnPlayerAttackButtonClicked()
     {
@@ -62,9 +81,7 @@ public class PlayerCombat : MonoBehaviour
         player.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
-        player.playerUI.UpdateHealthUI();
-        player.playerUI.UpdateChargeButtons();
-        player.gameController.HandlePlayerTurn();
+        UpdateTurnAndUI();
     }
 
     // Coroutine to show action text and fade it away
@@ -87,7 +104,6 @@ public class PlayerCombat : MonoBehaviour
         textComponent.CrossFadeAlpha(0f, fadeDuration, false);
     }
 
-
     public void OnPlayerHealButtonClicked()
     {
         if (player.HasLost()) return;
@@ -101,13 +117,9 @@ public class PlayerCombat : MonoBehaviour
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayHealEffect());
 
-        player.playerUI.UpdateHealthUI();
-        player.playerUI.UpdateChargeButtons();
-        player.gameController.HandlePlayerTurn();
+        UpdateTurnAndUI();
 
         StartCoroutine(ShowActionText($"Player 1 healed for {healAmount}!", player.playerUI.ActionText));
-
-
     }
 
     public void OnPlayerDefendButtonClicked()
@@ -117,9 +129,7 @@ public class PlayerCombat : MonoBehaviour
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayDefendEffect());
 
-        player.playerUI.UpdateHealthUI();
-        player.playerUI.UpdateChargeButtons();
-        player.gameController.HandlePlayerTurn();
+        UpdateTurnAndUI();
     }
     public void OnPlayerChargeButtonClicked()
     {
@@ -139,13 +149,6 @@ public class PlayerCombat : MonoBehaviour
 
         player.playerUI.UpdateHealthUI();
         player.playerUI.UpdateChargeButtons();
-
-        // Call HandlePlayerTurn before setting the target player as stunned
-        player.gameController.HandlePlayerTurn();
-
-        // Set the target player as stunned
-        targetScript.isStunned = true;
-        Debug.Log("Player stunned: " + targetScript.gameObject.name);
 
         StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
     }

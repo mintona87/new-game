@@ -100,10 +100,10 @@ public class PlayerUI : MonoBehaviour
     {
         if (player.gameController.Turn % 2 == 1)
         {
-            playerChargeButton.interactable = player.TurnsSinceCharge >= 6;
+            playerChargeButton.interactable = player.canPlay && player.TurnsSinceCharge >= 6;
             player.playerCombat.targetScript.playerUI.playerChargeButton.interactable = false;
 
-            if (player.TurnsSinceCharge >= 6)
+            if (player.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay)
             {
                 player.ResetCharge();
             }
@@ -111,9 +111,9 @@ public class PlayerUI : MonoBehaviour
         else
         {
             playerChargeButton.interactable = false;
-            player.playerCombat.targetScript.playerUI.playerChargeButton.interactable = player.playerCombat.targetScript.TurnsSinceCharge >= 6;
+            player.playerCombat.targetScript.playerUI.playerChargeButton.interactable = player.playerCombat.targetScript.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay;
 
-            if (player.playerCombat.targetScript.TurnsSinceCharge >= 6)
+            if (player.playerCombat.targetScript.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay)
             {
                 player.playerCombat.targetScript.ResetCharge();
             }

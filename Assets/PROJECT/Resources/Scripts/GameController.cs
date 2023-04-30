@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private TextMeshProUGUI player1ActionText;
@@ -40,6 +40,7 @@ public class GameController : MonoBehaviour
     public PhotonView pv;
 
     public GameObject MyPlayerObj;
+    public PlayerManager MyPlayerManager;
 
     public GameOverManager gameOverManager;
 
@@ -119,149 +120,47 @@ public class GameController : MonoBehaviour
         textComponent.CrossFadeAlpha(0f, fadeDuration, false);
     }
 
-
-
-
-
-    //public void SwitchPlayerTurn()
-    //{
-    //    //if (Turn % 2 == 0)
-    //    //{
-    //    //    player1AttackButton.interactable = false;
-    //    //    player1HealButton.interactable = false;
-    //    //    player1DefendButton.interactable = false;
-    //    //    player1ChargeButton.interactable = false;
-
-    //    //    player2AttackButton.interactable = true;
-    //    //    player2HealButton.interactable = true;
-    //    //    player2DefendButton.interactable = true;
-    //    //    player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
-
-    //    //     if (player2Script.isStunned)
-    //    //      {
-    //    //        Turn++;
-    //    //        // Skip opponent's turn and allow player 1 to take another action
-    //    //        player2Script.isStunned = false;
-    //    //        player1AttackButton.interactable = true;
-    //    //        player1HealButton.interactable = true;
-    //    //        player1DefendButton.interactable = true;
-    //    //        player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
-
-    //    //        player2AttackButton.interactable = false;
-    //    //        player2HealButton.interactable = false;
-    //    //        player2DefendButton.interactable = false;
-    //    //        player2ChargeButton.interactable = false;
-
-    //    //        StartCoroutine(ShowActionText("Player 2 is stunned!", player2ActionText));
-    //    //        StartCoroutine(ShowActionText(" ", player1ActionText));
-    //    //    }
-    //    //}
-    //    //else
-    //    //{
-    //    //    player1AttackButton.interactable = true;
-    //    //    player1HealButton.interactable = true;
-    //    //    player1DefendButton.interactable = true;
-    //    //    player1ChargeButton.interactable = player1TurnsSinceCharge >= 6;
-
-    //    //    player2AttackButton.interactable = false;
-    //    //    player2HealButton.interactable = false;
-    //    //    player2DefendButton.interactable = false;
-    //    //    player2ChargeButton.interactable = false;
-
-    //    //    if (player1Script.isStunned)
-    //    //    {
-    //    //        Turn++;
-    //    //        // Skip opponent's turn and allow player 2 to take another action
-    //    //        player1Script.isStunned = false;
-    //    //        player1AttackButton.interactable = false;
-    //    //        player1HealButton.interactable = false;
-    //    //        player1DefendButton.interactable = false;
-    //    //        player1ChargeButton.interactable = false;
-
-    //    //        player2AttackButton.interactable = true;
-    //    //        player2HealButton.interactable = true;
-    //    //        player2DefendButton.interactable = true;
-    //    //        player2ChargeButton.interactable = player2TurnsSinceCharge >= 6;
-
-    //    //        StartCoroutine(ShowActionText("Player 1 is stunned!", player1ActionText));
-    //    //        StartCoroutine(ShowActionText(" ", player2ActionText));
-    //    //    }
-    //    //}
-
-    //    pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered);
-
-
-    //    Debug.Log("playerlistCount" + playerList.Count);
-
-
-    //}
-
-    public void HandlePlayerTurn()
+    public void HandlePlayerTurn(bool disableStun)
     {
-        PlayerManager currentPlayer = playerList[Turn % 2];
-        PlayerManager otherPlayer = playerList[(Turn + 1) % 2];
-        Debug.Log("" +);
-        if (otherPlayer.isStunned)
+        if (disableStun)
         {
-            otherPlayer.isStunned = false;
-            otherPlayer.canPlay = false;
-            otherPlayer.OnSwitchTurnSettings();
-            currentPlayer.canPlay = true;
-            currentPlayer.OnSwitchTurnSettings();
+            MyPlayerManager.playerCombat.targetScript.SetIsStun(false);
         }
-        else
-        {
-            SwitchPlayerTurn();
-        }
-
-        // Handle charge stun logic here
-        //currentPlayer.HandleChargeStun();
+        SwitchPlayerTurn();
     }
 
     public void SwitchPlayerTurn()
     {
-        int currentPlayerPhotonViewID = playerList[Turn % 2].GetComponent<PhotonView>().ViewID;
-        int otherPlayerPhotonViewID = playerList[(Turn + 1) % 2].GetComponent<PhotonView>().ViewID;
-        pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered, currentPlayerPhotonViewID, otherPlayerPhotonViewID);
-        Debug.Log("playerlistCount" + playerList.Count);
+        pv.RPC("IncreasePlayerTurn", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    void IncreasePlayerTurn(int currentPlayerPhotonViewID, int otherPlayerPhotonViewID)
+    void IncreasePlayerTurn()
     {
         Turn++;
-        PhotonView currentPlayerPV = PhotonView.Find(currentPlayerPhotonViewID);
-        PhotonView otherPlayerPV = PhotonView.Find(otherPlayerPhotonViewID);
-        PlayerManager currentPlayer = currentPlayerPV.GetComponent<PlayerManager>();
-        PlayerManager otherPlayer = otherPlayerPV.GetComponent<PlayerManager>();
+        //PhotonView currentPlayerPV = PhotonView.Find(currentPlayerPhotonViewID);
+        //PhotonView otherPlayerPV = PhotonView.Find(otherPlayerPhotonViewID);
+        //PlayerManager currentPlayer = currentPlayerPV.GetComponent<PlayerManager>();
+        //PlayerManager otherPlayer = otherPlayerPV.GetComponent<PlayerManager>();
 
-
+        Debug.Log("playerturn " + Turn + "calc " + Turn % 2 + " local player  " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
         if (Turn % 2 == 0)
         {
-            //if (playerList[0].isStunned)
-            //{
-            //    playerList[0].canPlay = false;
-            //    playerList[1].canPlay = true;
-            //}
-            //else
-            //{
-                playerList[0].canPlay = true;
-                playerList[1].canPlay = false;
-            //}
+            playerList[1].canPlay = true;
+            playerList[0].canPlay = false;
         }
         else
         {
-            //if (playerList[1].isStunned)
-            //{
-            //    playerList[1].canPlay = false;
-            //    playerList[0].canPlay = true;
-            //}
-            //else
-            //{
-                playerList[1].canPlay = true;
-                playerList[0].canPlay = false;
-            //}
+            playerList[0].canPlay = true;
+            playerList[1].canPlay = false;
         }
+
+
+        foreach (PlayerManager playerManager in playerList)
+        {
+            playerManager.OnSwitchTurnSettings();
+        }
+
     }
 
     private void ShowGameOverMessage(int winnerPlayerNumber)
@@ -276,6 +175,16 @@ public class GameController : MonoBehaviour
         playerHonor[loser - 1] -= 0.25f;
     }
 
+    public void QuitButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        Debug.Log("onleftroom");
+        PhotonNetwork.LoadLevel("MainMenu");
+    }
 }
 
 
