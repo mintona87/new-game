@@ -17,7 +17,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public static LaunchManager Instance;
     PlayfabManager playfabManager;
 
-    [SerializeField] GameObject startGameButton;
+    [SerializeField] GameObject PlayMultiButton;
 
     private Dictionary<string, RoomInfo> cachedRoomList;
 
@@ -105,17 +105,20 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         Debug.Log("join match clicked");
     }
 
-    public void PlayMultiButtonClicked()
-    {
-        Debug.Log("PlayButtonPressed");
-    }
-
     public void OnPlayButtonClicked()
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("LoadBattleScreen", RpcTarget.All);
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                photonView.RPC("LoadBattleScreen", RpcTarget.All);
+            }
         }
+    }
+
+    public void LeaveRoomButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 
     [PunRPC]
@@ -185,10 +188,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
     }
 
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
+   
 
     public void JoinRoom(RoomInfo info)// for customize and training room 
     {
@@ -339,6 +339,17 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         //customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
         //PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
 
+        // Remove the playerRoomObj when the player leaves the room
+        int otherPlayerNumber = otherPlayer.GetPlayerNumber();
+
+        foreach (Transform child in PlayerRoomObjContainerObj.transform)
+        {
+                Destroy(PlayerRoomObjContainerObj.transform.GetChild(otherPlayerNumber).gameObject);
+                break;
+        }
+        // Update player count text
+        PlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -349,9 +360,18 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     }
 
+    IEnumerator WaitForMasterSwitch()
+    {
+        while (PhotonNetwork.IsMasterClient == false)
+        {
+            yield return null;
+        }
+        PlayMultiButton.SetActive(PhotonNetwork.IsMasterClient);
+    }
+
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        startGameButton.SetActive(PhotonNetwork.IsMasterClient);
+        StartCoroutine(WaitForMasterSwitch());
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -418,6 +438,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("onleftroom");
+        foreach (Transform PlayerRoomObj in PlayerRoomObjContainerObj.transform)
+        {
+            Destroy(PlayerRoomObj.gameObject);
+        }
+        insideRoomUiObj.SetActive(false);
+
         roomType = "";
     }
     #endregion

@@ -16,17 +16,29 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerHonorText;
     public TextMeshProUGUI WonLostText;
 
+
     public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string type)
     {
         if (type != "leaderboard")
         {
             PlayerNumberText.text = "Player " + playerNumber.ToString();
+            PlayerImage.gameObject.SetActive(true);
+        }
+        else
+        {
+            PlayerImage.gameObject.SetActive(false);
         }
 
         PlayerNameText.text = nickName;
+
         if (type != "gameover")
         {
             PlayerHonorText.text = playerHonor.ToString();
+        }
+
+        if(type == "gameover" || type == "matchmaking")
+        {
+            SetPlayerPicture();
         }
 
         if (type == "gameover")
@@ -99,5 +111,15 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         // Update your UI elements here, e.g., the honor text
         PlayerHonorText.text = updatedHonor.ToString();
     }
-
+    public void SetPlayerPicture()
+    {
+        if (PlayerNumberText.text == "Player 1")
+        {
+            PlayerImage.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
+        }
+        else
+        {
+            PlayerImage.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
+        }
+    }
 }
