@@ -32,8 +32,6 @@ public class PlayfabManager : MonoBehaviour
     public TMP_InputField RegisterUsernameInput;
     public TMP_InputField RegisterPasswordInput;
 
-    //LocalSaveSystemManager localSaveSystemManager;
-
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;
 
@@ -41,10 +39,8 @@ public class PlayfabManager : MonoBehaviour
     {
         LoginPasswordInput.inputType = TMP_InputField.InputType.Password;
         RegisterPasswordInput.inputType = TMP_InputField.InputType.Password;
-
         
         //debugUI = FindObjectOfType<DebugUI>();
-        //localSaveSystemManager = FindObjectOfType<LocalSaveSystemManager>();
     }
     private void Start()
     {
@@ -127,7 +123,6 @@ public class PlayfabManager : MonoBehaviour
         {
             if(eachStat.StatisticName == "Honor_Leaderboard")
             {
-                //Launcher.Instance.rankELOFromPlayfab = eachStat.Value;
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
                 localPlayerHonor = eachStat.Value;
             }
@@ -151,10 +146,6 @@ public class PlayfabManager : MonoBehaviour
             }
         };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginError);
-    }
-    void OnLoginError(PlayFabError error)
-    {
-        Debug.Log("onloginError " +error.ErrorMessage);
     }
 
     void OnLoginSuccess(LoginResult result)
@@ -210,7 +201,6 @@ public class PlayfabManager : MonoBehaviour
     {
         Debug.Log("Updated display name!");
         SceneManager.LoadScene("MainMenu");
-        // leaderboardWindow.SetActive(true);
     }
 
     // Forgot password
@@ -228,6 +218,10 @@ public class PlayfabManager : MonoBehaviour
         Debug.Log("Sent password recovery link!");
     }
     #region Error
+    void OnLoginError(PlayFabError error)
+    {
+        Debug.Log("onloginError " + error.ErrorMessage);
+    }
     void OnError(PlayFabError error)
     {
         Debug.Log("Error: " + error.ErrorMessage);
@@ -263,7 +257,6 @@ public class PlayfabManager : MonoBehaviour
     // SENDING JSON DATA
     public void SavePlayerSavedData(PlayerSavedData data)
     {
-        //Debug.Log("losses box saved " + characterBoxes.GetStats().losses +"  "+ characterBoxes.GetStats().wins);
         var request = new UpdateUserDataRequest
         {
             Data = new Dictionary<string, string> {

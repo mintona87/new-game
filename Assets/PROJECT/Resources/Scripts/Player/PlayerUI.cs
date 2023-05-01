@@ -32,14 +32,14 @@ public class PlayerUI : MonoBehaviour
 
     public void SetMaxHealthSlider()
     {
-        float sliderValue = GetNormalizedHP(player.GetPlayerStats().HP, player.GetPlayerStats().MaxHP);
+        float sliderValue = GetNormalizedHP(player.HP, player.MaxHP);
         hpSlider.maxValue = sliderValue;
         hpSlider.value = sliderValue;
     }
 
     public void SetHealthSlider(int hp)
     {
-        float sliderValue = GetNormalizedHP(hp, player.GetPlayerStats().MaxHP);
+        float sliderValue = GetNormalizedHP(hp, player.MaxHP);
         player.pv.RPC("SetHealthSliderRPC", RpcTarget.AllBuffered, hp, sliderValue);
     }
 

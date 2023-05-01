@@ -27,7 +27,6 @@ public class PlayerManager : MonoBehaviour
     public PlayerUI playerUI;
     public PlayerCombat playerCombat;
     public PlayerEffect playerEffect;
-    PlayerStats playerStats;
     public PhotonView pv;
 
     public float[] playerHonor = new float[2];
@@ -42,12 +41,10 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("instantiated");
         gameController = FindObjectOfType<GameController>();
         playerUI = GetComponent<PlayerUI>();
         playerCombat = GetComponent<PlayerCombat>();
         playerEffect = GetComponent<PlayerEffect>();
-        playerStats = new PlayerStats(HP, MaxHP, HasCharged, isDefending, isStunned, ATK, DEF, SPD, LUCK, Gold);
         pv = GetComponent<PhotonView>();
     }
     private void Start()
@@ -118,12 +115,6 @@ public class PlayerManager : MonoBehaviour
         OnLoadingGameScreen.Instance.SetLoadingScreenActive(false);
     }
 
-    public PlayerStats GetPlayerStats()
-    {
-        return playerStats;
-    }
-
-
     public void OnSwitchTurnSettings()
     {
         if (isStunned)
@@ -143,7 +134,6 @@ public class PlayerManager : MonoBehaviour
     public void AddGold(int amount)
     {
         Gold += amount;
-        GetPlayerStats().Gold = Gold;
     }
 
     public bool UpgradeStat(ref int stat, int tier)
@@ -154,7 +144,6 @@ public class PlayerManager : MonoBehaviour
         {
             Gold -= cost;
             stat += 1;
-            GetPlayerStats().Gold = Gold;
             return true;
         }
 
@@ -204,7 +193,6 @@ public class PlayerManager : MonoBehaviour
             HP = MaxHP;
         }
         playerUI.SetHealthSlider(HP);
-        GetPlayerStats().HP = HP;
 
         if (HasLost())
         {
@@ -296,7 +284,7 @@ public class PlayerManager : MonoBehaviour
             float random = UnityEngine.Random.Range(0f, 1f);
 
             // 70% chance of stun
-            if (random <= /*0.7f*/2)
+            if (random <= 0.7)
             {
                 opponent.SetIsStun(true);
             }

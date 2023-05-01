@@ -16,7 +16,6 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerHonorText;
     public TextMeshProUGUI WonLostText;
 
-
     public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string type)
     {
         if (type != "leaderboard")
@@ -79,8 +78,6 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
                 Debug.LogError("Remote player not found: " + nickName);
             }
         }
-
-        
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)

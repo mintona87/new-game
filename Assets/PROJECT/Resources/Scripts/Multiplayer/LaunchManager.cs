@@ -84,7 +84,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     private void FixedUpdate()
     {
-        //Debug.Log("country " +PhotonNetwork.CloudRegion);
         if (PhotonNetwork.IsConnectedAndReady)
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(false);
@@ -99,7 +98,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public void JoinMatchClicked()
     {
         isJoinMatchClicked = true;
-        //RoomLoadingScreen.SetActive(true);
 
         UpdateLobby();
         LoadingText.text = "Searching room...";
@@ -147,7 +145,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString());
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 500000)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 2)
         {
             shouldMatch = true;
         }
