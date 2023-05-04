@@ -87,6 +87,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnectedAndReady)
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(false);
+            Debug.Log("devregion " +PhotonNetwork.CloudRegion);
         }
         else
         {
@@ -146,9 +147,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             getCustomPropValue = "0";// to avoid int.Parse error
         }
 
-        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString());
+        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())));
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 2)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 50000)
         {
             shouldMatch = true;
         }
