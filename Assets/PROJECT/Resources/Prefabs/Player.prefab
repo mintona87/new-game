@@ -2110,6 +2110,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObj: {fileID: 0}
   targetScript: {fileID: 0}
+  isPlayingAction: 0
+  choosenAction: 0
 --- !u!114 &29583517720731190
 MonoBehaviour:
   m_ObjectHideFlags: 0

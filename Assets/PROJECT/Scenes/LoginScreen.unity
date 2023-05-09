@@ -3223,6 +3223,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebugCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 9125311163583770628, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 191956185598764783, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}

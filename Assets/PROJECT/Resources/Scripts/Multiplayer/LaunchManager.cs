@@ -182,6 +182,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("DidFinishChoosingAction",false );
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("SPD",0 );
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("SharedRandomNumber", 0 );
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayerStun", false );
     }
 
     public void ModifyPlayerCustomHonor(int honor)

@@ -64,6 +64,8 @@ public class PlayerManager : MonoBehaviour
         gameObject.transform.localScale = new Vector2(1.0f, 1.0f);
         Debug.Log("finish load value set");
         gameController.didGameFinishLoad = true;
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", SPD } });
     }
 
     IEnumerator WaitFinishLoad()
@@ -284,7 +286,7 @@ public class PlayerManager : MonoBehaviour
             float random = UnityEngine.Random.Range(0f, 1f);
 
             // 70% chance of stun
-            if (random <= 0.7)
+            if (random <= /*0.7*/2)
             {
                 opponent.SetIsStun(true);
             }
