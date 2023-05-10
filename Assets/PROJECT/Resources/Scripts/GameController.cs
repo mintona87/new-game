@@ -120,12 +120,8 @@ public class GameController : MonoBehaviourPunCallbacks
         textComponent.CrossFadeAlpha(0f, fadeDuration, false);
     }
 
-    public void HandlePlayerTurn(bool disableStun)
+    public void HandlePlayerTurn()
     {
-        if (disableStun)
-        {
-            MyPlayerManager.playerCombat.targetScript.SetIsStun(false);
-        }
         SwitchPlayerTurn();
     }
 
@@ -184,6 +180,9 @@ public class GameController : MonoBehaviourPunCallbacks
     {
         Debug.Log("onleftroom");
         PhotonNetwork.LoadLevel("MainMenu");
+        PhotonNetwork.LocalPlayer.CustomProperties["DidFinishChoosingAction"] = false;
+        PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"] = "notStun";
+        PhotonNetwork.LocalPlayer.CustomProperties["isPlayingAction"] = false;
     }
 }
 

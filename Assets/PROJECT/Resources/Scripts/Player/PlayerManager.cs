@@ -119,12 +119,12 @@ public class PlayerManager : MonoBehaviour
 
     public void OnSwitchTurnSettings()
     {
-        if (isStunned)
-        {
-            canPlay = false;
-            StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
-            StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-        }
+        //if (isStunned)
+        //{
+        //    canPlay = false;
+        //    StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
+        //    StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
+        //}
 
         playerUI.playerAttackButton.interactable = canPlay;
         playerUI.playerHealButton.interactable = canPlay;
@@ -258,24 +258,7 @@ public class PlayerManager : MonoBehaviour
     {
         isDefending = condition;
     }
-
-    public void SetIsStun(bool condition)
-    {
-        pv.RPC("SetIsStunRPC", RpcTarget.AllBuffered,condition);
-    }
-
-    [PunRPC]
-    void SetIsStunRPC(bool condition)
-    {
-        Debug.Log("CalledsetisStun " + condition);
-        isStunned = condition;
-        if (isStunned)
-        {
-            
-            gameController.HandlePlayerTurn(false); // Pass false to indicate not to clear the stun status
-        }
-        OnSwitchTurnSettings();
-    }
+    
 
     public int Charge(PlayerManager opponent)
     {
@@ -288,7 +271,13 @@ public class PlayerManager : MonoBehaviour
             // 70% chance of stun
             if (random <= /*0.7*/2)
             {
-                opponent.SetIsStun(true);
+                Debug.Log("shouldSetOtherPlayerStun"+ playerCombat.GetOtherPlayer().GetPlayerNumber());
+                Debug.Log("onchangestun2");
+                playerCombat.GetOtherPlayer().SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "stun" } });
+            }
+            else
+            {
+                playerCombat.GetOtherPlayer().SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
             }
 
             damage = Random.Range(20, 30);
@@ -314,8 +303,6 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("OnWin" + honor);
         playfabManager.SendLeaderboard(honor);
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "Honor", honor } });
-
-
     }
 
     public bool Dodge()

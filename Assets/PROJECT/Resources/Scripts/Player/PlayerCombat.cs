@@ -15,15 +15,15 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     public GameObject targetObj;
     public PlayerManager targetScript;
 
-    PlayerManager player;
+    PlayerManager playerManager;
     PlayerEffect playerEffect;
 
     public bool isPlayingAction;
     
     private void Awake()
     {
-        player = GetComponent<PlayerManager>();
-        playerEffect = player.playerEffect;
+        playerManager = GetComponent<PlayerManager>();
+        playerEffect = playerManager.playerEffect;
     }
 
     public void SetDefaultTarget()
@@ -31,17 +31,17 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         // To do : does not make sens 
         if(PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
         {
-            player.gameController.MyPlayerObj = player.gameController.playerList[0].gameObject;
-            targetObj = player.gameController.playerList[1].gameObject;
+            playerManager.gameController.MyPlayerObj = playerManager.gameController.playerList[0].gameObject;
+            targetObj = playerManager.gameController.playerList[1].gameObject;
 
-            player.gameController.MyPlayerManager = player.gameController.MyPlayerObj.GetComponent<PlayerManager>();
+            playerManager.gameController.MyPlayerManager = playerManager.gameController.MyPlayerObj.GetComponent<PlayerManager>();
         }
         else
         {
-            player.gameController.MyPlayerObj = player.gameController.playerList[1].gameObject;
-            targetObj = player.gameController.playerList[0].gameObject;
+            playerManager.gameController.MyPlayerObj = playerManager.gameController.playerList[1].gameObject;
+            targetObj = playerManager.gameController.playerList[0].gameObject;
 
-            player.gameController.MyPlayerManager = player.gameController.MyPlayerObj.GetComponent<PlayerManager>();
+            playerManager.gameController.MyPlayerManager = playerManager.gameController.MyPlayerObj.GetComponent<PlayerManager>();
         }
 
         Debug.Log("playernumber " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
@@ -62,17 +62,17 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     
     void UpdateTurnAndUI()
     {
-        player.playerUI.UpdateHealthUI();
-        player.playerUI.UpdateChargeButtons();
+        playerManager.playerUI.UpdateHealthUI();
+        playerManager.playerUI.UpdateChargeButtons();
 
-        Debug.Log("istargetstuned " + player.playerCombat.targetScript.isStunned);
-        if (player.playerCombat.targetScript.isStunned)
+        Debug.Log("istargetstuned " + playerManager.playerCombat.targetScript.isStunned);
+        if (playerManager.playerCombat.targetScript.isStunned)
         {
-            player.playerCombat.targetScript.gameController.HandlePlayerTurn(true);
+            playerManager.playerCombat.targetScript.gameController.HandlePlayerTurn();
         }
         else
         {
-            player.gameController.HandlePlayerTurn(false);
+            playerManager.gameController.HandlePlayerTurn();
         }
     }
 
@@ -93,7 +93,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("isplayingaction " + isPlayingAction + " choosenAction "+ choosenAction);
+        Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
         if (isPlayingAction)
         {
             DisableButtonUI();
@@ -131,42 +131,51 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int sharedRandomNumber = (int)PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"];
         Debug.Log("SharedRandomNumber: " + sharedRandomNumber);
 
-        //tmp
-        if (player.isStunned)
-        {
-            Debug.Log("StunedBfrAction");
-        }
-
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", true } });
 
         Debug.Log("localspd " + Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) + "other "+ Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]));
+
+
         if (Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) > Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]))
         {
             if (PhotonNetwork.LocalPlayer.IsLocal)
             {
-                if (!player.isStunned)
+                if (!playerManager.isStunned)
                 {
                     ChooseAction();
+                }
+                else
+                {
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
                 }
             }
         }
         else if(Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) == Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]))
         {
-
             if (sharedRandomNumber > 50)
             {
                 if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
                 {
-                    if (!player.isStunned)
+                    if (!playerManager.isStunned)
                     {
                         ChooseAction();
+                    }
+                    else
+                    {
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
                     }
                 }
                 else
                 {
                     yield return new WaitForSeconds(3.0f);
-                    if (!player.isStunned)
+
+                    if (!playerManager.isStunned)
                     {
                         ChooseAction();
+                    }
+                    else
+                    {
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
                     }
                 }
             }
@@ -174,17 +183,25 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             {
                 if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 1)
                 {
-                    if (!player.isStunned)
+                    if (!playerManager.isStunned)
                     {
                         ChooseAction();
+                    }
+                    else
+                    {
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
                     }
                 }
                 else
                 {
                     yield return new WaitForSeconds(3.0f);
-                    if (!player.isStunned)
+                    if (!playerManager.isStunned)
                     {
                         ChooseAction();
+                    }
+                    else
+                    {
+                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
                     }
                 }
             }
@@ -194,16 +211,22 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             yield return new WaitForSeconds(3.0f);
             if (PhotonNetwork.LocalPlayer.IsLocal)
             {
-                if (!player.isStunned)
+                if (!playerManager.isStunned)
                 {
                     ChooseAction();
                 }
+                else
+                {
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
+                }
             }
         }
-        Debug.Log("CameAtTheEnd");
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", false } });
         isPlayingAction = false;
         targetScript.playerCombat.isPlayingAction = false;
         PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
+        
+        
         SetButtonUIAccordingToCanPlay();
 
         //player.OnSwitchTurnSettings();
@@ -229,7 +252,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             playerManager.playerUI.playerAttackButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerHealButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerDefendButton.interactable = playerManager.canPlay;
-            playerManager.playerUI.playerChargeButton.interactable = playerManager.canPlay;
+            playerManager.playerUI.playerChargeButton.interactable = playerManager.canPlay && playerManager.TurnsSinceCharge >= 6;
         }
     }
     void ChooseAction()
@@ -278,7 +301,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                         countTrue++;
                         Debug.Log("countrue " + countTrue);
                     }
-                   
                 }
             }
             if (countTrue == 2)
@@ -289,6 +311,66 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             if (countTrue == 1)
             {
                 UpdateTurnAndUI();
+            }
+        }
+        else if (changedProps.ContainsKey("isPlayingAction"))
+        {
+            int countPlayerPlayingAction = 0;
+
+            // Iterate through all players in the room
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                // Check if the player has the custom property "DidFinishChoosingAction"
+                if (player.CustomProperties.ContainsKey("isPlayingAction"))
+                {
+                    // Get the updated value
+                    bool isPlayingAction = (bool)player.CustomProperties["isPlayingAction"];
+
+                    // Perform any required action based on the value
+                    Debug.Log($"callbackPlayingaction {player.NickName} has DidFinishChoosingAction set to: {isPlayingAction}" + " actioncount " + countPlayerPlayingAction);
+                    if (!isPlayingAction)
+                    {
+                        countPlayerPlayingAction++;
+                        Debug.Log("countPlayerPlayingAction " + countPlayerPlayingAction);
+                    }
+                }
+            }
+
+            if (countPlayerPlayingAction == 2)
+            {
+                foreach (Player player in PhotonNetwork.PlayerList)
+                {
+                    // do something when both player finish to play action
+                }
+            }
+
+        }
+        else if (changedProps.ContainsKey("isPlayerStun"))
+        {
+            // Iterate through all players in the room
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                // Check if the player has the custom property "isPlayerStun"
+                if (player.CustomProperties.ContainsKey("isPlayerStun"))
+                {
+                    bool isPlayerStun;
+
+                    // Get the updated value
+                    if (player.CustomProperties["isPlayerStun"].ToString() == "stun") 
+                    {
+                        isPlayerStun = true;
+                    }
+                    else
+                    {
+                        isPlayerStun = false;
+                    }
+                 
+                    Debug.Log("stunplayerid " + player.GetPlayerNumber() + " stun " + isPlayerStun);
+                    if (player.GetPlayerNumber() == PhotonNetwork.LocalPlayer.GetPlayerNumber())
+                    {
+                        playerManager.isStunned = isPlayerStun;
+                    }
+                }
             }
         }
     }
@@ -309,7 +391,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     #region Attack
     public void OnPlayerAttackButtonClicked()
     {
-        if (player.HasLost()) return;
+        if (playerManager.HasLost()) return;
         choosenAction = Actions.Attack;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DidFinishChoosingAction", true } });
         UpdateTurnAndUI();
@@ -317,23 +399,23 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     void Attack()
     {
-        if (player.HasLost()) return;
+        if (playerManager.HasLost()) return;
 
-        int damage = player.Attack();
+        int damage = playerManager.Attack();
 
         PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
         // to do set target
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
-            StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
+            StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", playerManager.playerUI.ActionText));
         }
         else
         {
-            StartCoroutine(ShowActionText("Player 1 missed the attack!", player.playerUI.ActionText));
+            StartCoroutine(ShowActionText("Player 1 missed the attack!", playerManager.playerUI.ActionText));
         }
 
-        player.TurnsSinceCharge++;
+        playerManager.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
         //UpdateTurnAndUI();
@@ -344,7 +426,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     #region Heal
     public void OnPlayerHealButtonClicked()
     {
-        if (player.HasLost()) return;
+        if (playerManager.HasLost()) return;
         choosenAction = Actions.Heal;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DidFinishChoosingAction", true } });
         UpdateTurnAndUI();
@@ -353,18 +435,18 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     void Heal()
     {
-        int healAmount = player.Heal();
-        player.ChangeHP(healAmount);
-        if (player.HP > player.MaxHP)
+        int healAmount = playerManager.Heal();
+        playerManager.ChangeHP(healAmount);
+        if (playerManager.HP > playerManager.MaxHP)
         {
-            player.HP = player.MaxHP;
+            playerManager.HP = playerManager.MaxHP;
         }
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayHealEffect());
 
         //UpdateTurnAndUI();
 
-        StartCoroutine(ShowActionText($"Player 1 healed for {healAmount}!", player.playerUI.ActionText));
+        StartCoroutine(ShowActionText($"Player 1 healed for {healAmount}!", playerManager.playerUI.ActionText));
     }
 
     #endregion
@@ -372,7 +454,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     #region Defend
     public void OnPlayerDefendButtonClicked()
     {
-        if (player.HasLost()) return;
+        if (playerManager.HasLost()) return;
         choosenAction = Actions.Defend;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DidFinishChoosingAction", true } });
         UpdateTurnAndUI();
@@ -380,7 +462,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     void Defend()
     {
-        player.SetIsDefending(true);
+        playerManager.SetIsDefending(true);
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayDefendEffect());
 
@@ -391,7 +473,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     #region Charge
     public void OnPlayerChargeButtonClicked()
     {
-        if (player.HasLost()) return;
+        if (playerManager.HasLost()) return;
         choosenAction = Actions.Charge;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DidFinishChoosingAction", true } });
         UpdateTurnAndUI();
@@ -401,23 +483,23 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     void Charge()
     {
-        if (player.HasCharged)
+        if (playerManager.HasCharged)
         {
             // Show error message that Charge is on cooldown
             return;
         }
 
-        int damage = player.Charge(targetScript);
+        int damage = playerManager.Charge(targetScript);
         targetScript.ChangeHP(-damage);
 
-        player.TurnsSinceCharge = 0; // Reset the counter
+        playerManager.TurnsSinceCharge = 0; // Reset the counter
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
         //player.playerUI.UpdateHealthUI();
-        //player.playerUI.UpdateChargeButtons();
+        playerManager.playerUI.UpdateChargeButtons();
 
-        StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", player.playerUI.ActionText));
+        StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", playerManager.playerUI.ActionText));
     }
     #endregion
 

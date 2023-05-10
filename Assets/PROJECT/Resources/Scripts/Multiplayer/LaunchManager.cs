@@ -55,7 +55,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         //	//Debug.Log("inside");
         //	yield return null;
         //}
-        //PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = characterBox.GetStats().country;
+        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();
         yield return null;
@@ -185,7 +185,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add("DidFinishChoosingAction",false );
         PhotonNetwork.LocalPlayer.CustomProperties.Add("SPD",0 );
         PhotonNetwork.LocalPlayer.CustomProperties.Add("SharedRandomNumber", 0 );
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayerStun", false );
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayerStun", "notStun");
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayingAction", false);
     }
 
     public void ModifyPlayerCustomHonor(int honor)
