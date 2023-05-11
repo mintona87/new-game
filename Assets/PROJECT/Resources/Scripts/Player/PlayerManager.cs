@@ -13,10 +13,10 @@ public class PlayerManager : MonoBehaviour
     public bool isDefending = false;
     public bool isStunned = false;
 
-    public int ATK = 1;
-    public int DEF = 1;
+    int ATK;
+    int DEF;
     int SPD;
-    public int LUCK = 1;
+    int LUCK;
 
    public int Gold { get; private set; } = 0;
 
@@ -95,9 +95,19 @@ public class PlayerManager : MonoBehaviour
         //        SPD = 1;
         //    }
         //}
-
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", SPD } });
+        InitPlayerStatOnline();
     }
+
+    void InitPlayerStatOnline()
+    {
+        PlayfabManager playfabManager = LaunchManager.Instance.playfabManager;
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "ATK", playfabManager.GetPlayerSavedData().ATK } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DEF", playfabManager.GetPlayerSavedData().DEF } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "LUCK", playfabManager.GetPlayerSavedData().LUCK } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", playfabManager.GetPlayerSavedData().SPD } });
+    }
+
 
     IEnumerator WaitFinishLoad()
     {
@@ -134,7 +144,6 @@ public class PlayerManager : MonoBehaviour
 
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
-        playerUI.UpdateHonorUI();
         playerUI.SetPlayerPicture();
         OnSwitchTurnSettings();
 

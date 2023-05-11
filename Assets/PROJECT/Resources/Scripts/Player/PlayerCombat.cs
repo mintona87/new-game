@@ -62,7 +62,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     
     void UpdateTurnAndUI()
     {
-        playerManager.playerUI.UpdateHealthUI();
         playerManager.playerUI.UpdateChargeButtons();
 
         Debug.Log("istargetstuned " + playerManager.playerCombat.targetScript.isStunned);
@@ -397,11 +396,11 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
-            StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", playerManager.playerUI.ActionText));
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, $"Player 1 dealt {damage} damage!");
         }
         else
         {
-            StartCoroutine(ShowActionText("Player 1 missed the attack!", playerManager.playerUI.ActionText));
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, "Player 1 missed the attack!");
         }
 
         playerManager.TurnsSinceCharge++;
@@ -491,6 +490,13 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", playerManager.playerUI.ActionText));
     }
     #endregion
+
+    [PunRPC]
+    void ShowActionRPC(string text)
+    {
+        StartCoroutine(ShowActionText(text, playerManager.playerUI.ActionText));
+    }
+
 
     // Coroutine to show action text and fade it away
     public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)

@@ -15,7 +15,7 @@ using Photon.Pun.UtilityScripts;
 public class LaunchManager : MonoBehaviourPunCallbacks
 {
     public static LaunchManager Instance;
-    PlayfabManager playfabManager;
+    public PlayfabManager playfabManager;
 
     [SerializeField] GameObject PlayMultiButton;
 
@@ -55,7 +55,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         //	//Debug.Log("inside");
         //	yield return null;
         //}
-        //PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
+        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();
         yield return null;
@@ -149,7 +149,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())));
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 1)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= /*1*/5000)
         {
             shouldMatch = true;
         }
@@ -183,7 +183,11 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("DidFinishChoosingAction",false );
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("SPD",0 );
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("SPD", 0);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("ATK", 0);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("DEF", 0);
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("LUCK", 0);
+
         PhotonNetwork.LocalPlayer.CustomProperties.Add("SharedRandomNumber", 0 );
         PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayerStun", "notStun");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayingAction", false);

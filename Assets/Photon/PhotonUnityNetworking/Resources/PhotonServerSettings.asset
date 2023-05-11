@@ -19,7 +19,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: jp
     Server: 
     Port: 0
     ProxyServer: 
@@ -34,29 +34,23 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - ChangeHPRPC
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
-  - LoadGameScene
-  - LoadBattleScreen
-  - ChangeHPRPC
-  - SpawnPlayerPrefabRPC
-  - SetHealthRPC
-  - PlaySwordSlashEffectRPC
-  - SynchronizePlayerNumber
-  - EnableSwordSlashEffectRPC
-  - SetHealthSliderRPC
-  - IncreasePlayerTurn
   - DisplayPlayersGameOverObjRPC
-  - SetIsDefendingRPC
+  - Fire
+  - IncreasePlayerTurn
+  - LoadBattleScreen
   - PlayDefendEffectRPC
   - PlayHealEffectRPC
   - PlaySwordSlashEffectAttackerRPC
-  - SetIsStunRPC
-  - SetIsStunFalseRPC
-  - CountPlayerPressActionRPC
+  - PlaySwordSlashEffectRPC
+  - RespawnSpaceship
+  - SetHealthSliderRPC
+  - SetIsDefendingRPC
+  - ShowActionRPC
+  - SynchronizePlayerNumber
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

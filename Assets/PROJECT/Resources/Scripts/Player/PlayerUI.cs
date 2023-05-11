@@ -9,8 +9,6 @@ using Photon.Realtime;
 public class PlayerUI : MonoBehaviour
 {
 
-    [SerializeField] public TextMeshProUGUI HealthText;
-    [SerializeField] public TextMeshProUGUI HonorText;
     [SerializeField] public TextMeshProUGUI ActionText;
     public TextMeshProUGUI playerNumberText;
     public TextMeshProUGUI playerUsernameText;
@@ -83,18 +81,7 @@ public class PlayerUI : MonoBehaviour
         return (float)hp / (float)maxHealth;
     }
 
-    public void UpdateHealthUI()
-    {
-        Debug.Log("target" + player.playerCombat.targetScript.HP);
-
-        HealthText.text = $"P1 HP: {player.HP}     |     P2 HP: {player.playerCombat.targetScript.HP}";
-    }
-
-    public void UpdateHonorUI()
-    {
-        HonorText.text = $"P1 Honor: {player.playerHonor[0]} | P2 Honor: {player.playerHonor[1]}";
-    }
-
+   
    
     public void UpdateChargeButtons()
     {

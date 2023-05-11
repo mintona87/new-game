@@ -10,8 +10,6 @@ using Photon.Realtime;
 public class GameController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TextMeshProUGUI gameOverText;
-    [SerializeField] private TextMeshProUGUI player1ActionText;
-    [SerializeField] private TextMeshProUGUI player2ActionText;
     
     public AudioSource backgroundMusic;
 
