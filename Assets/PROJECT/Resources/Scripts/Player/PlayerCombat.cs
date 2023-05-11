@@ -76,6 +76,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
     }
 
+
+    //gets a player different than local player
     public Player GetOtherPlayer()
     {
         Player otherPlayer = null;
@@ -93,6 +95,9 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+
+        
+
         Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
         if (isPlayingAction)
         {
@@ -100,6 +105,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
     }
 
+    //Set a random number only on the master, so both players share the same number
     private void SetSharedRandomNumber()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -109,12 +115,15 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
     }
 
+
+    // called when both players finish to selecte an action. This part handle the order in which players are playing the actions.
     IEnumerator CheckIfShouldPlayAction()
     {
-
+        const float waitTime = 3.0f;
         isPlayingAction = true;
         targetScript.playerCombat.isPlayingAction = true;
-
+        
+        // wait if no actions are selected (Unless there is a buf it should never be called)
         if (PhotonNetwork.LocalPlayer.IsLocal)
         {
             while (choosenAction == Actions.NoAction)
@@ -123,6 +132,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             }
         }
 
+        //Reset DidFinishChoosingAction for all players
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             player.CustomProperties["DidFinishChoosingAction"] =  false;
@@ -131,108 +141,83 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int sharedRandomNumber = (int)PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"];
         Debug.Log("SharedRandomNumber: " + sharedRandomNumber);
 
+        // set the variable that indicates that the player is not choosing action anymore but he is playing the action that he choose
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", true } });
 
-        Debug.Log("localspd " + Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) + "other "+ Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]));
+       
+        
+        int localSpd = Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]);
+        int otherSpd = Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]);
 
+        Debug.Log("localspd " + localSpd + "other " + otherSpd);
 
-        if (Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) > Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]))
+        if (localSpd > otherSpd)
         {
             if (PhotonNetwork.LocalPlayer.IsLocal)
             {
-                if (!playerManager.isStunned)
-                {
-                    ChooseAction();
-                }
-                else
-                {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                }
+                CheckStunAndChooseAction();
             }
         }
-        else if(Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]) == Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]))
+        else if(localSpd == otherSpd)
         {
+            //choose who plays first randomely
             if (sharedRandomNumber > 50)
             {
                 if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
                 {
-                    if (!playerManager.isStunned)
-                    {
-                        ChooseAction();
-                    }
-                    else
-                    {
-                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                    }
+                    CheckStunAndChooseAction();
                 }
                 else
                 {
-                    yield return new WaitForSeconds(3.0f);
-
-                    if (!playerManager.isStunned)
-                    {
-                        ChooseAction();
-                    }
-                    else
-                    {
-                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                    }
+                    yield return new WaitForSeconds(waitTime);
+                    CheckStunAndChooseAction();
                 }
             }
             else
             {
                 if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 1)
                 {
-                    if (!playerManager.isStunned)
-                    {
-                        ChooseAction();
-                    }
-                    else
-                    {
-                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                    }
+                    CheckStunAndChooseAction();
                 }
                 else
                 {
-                    yield return new WaitForSeconds(3.0f);
-                    if (!playerManager.isStunned)
-                    {
-                        ChooseAction();
-                    }
-                    else
-                    {
-                        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                    }
+                    yield return new WaitForSeconds(waitTime);
+                    CheckStunAndChooseAction();
                 }
             }
         }
         else
         {
-            yield return new WaitForSeconds(3.0f);
+            yield return new WaitForSeconds(waitTime);
             if (PhotonNetwork.LocalPlayer.IsLocal)
             {
-                if (!playerManager.isStunned)
-                {
-                    ChooseAction();
-                }
-                else
-                {
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
-                }
+                CheckStunAndChooseAction();
             }
         }
+
+        // reset variables for the next turn
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", false } });
         isPlayingAction = false;
         targetScript.playerCombat.isPlayingAction = false;
         PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
         
-        
         SetButtonUIAccordingToCanPlay();
 
         //player.OnSwitchTurnSettings();
         choosenAction = Actions.NoAction;
-        
         yield return null;
+    }
+
+    void CheckStunAndChooseAction()
+    {
+        if (!playerManager.isStunned)
+        {
+            ChooseAction();
+        }
+        else
+        {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
+        }
     }
 
     public void DisableButtonUI()
@@ -277,6 +262,10 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
     }
 
+
+    #region custom prop updated callback
+
+    // called after "PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { .... "is called
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         Debug.Log("Callback called");
@@ -386,7 +375,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         Debug.Log("ShouldStartCheck");
         StartCoroutine(CheckIfShouldPlayAction());
     }
-
+    #endregion
 
     #region Attack
     public void OnPlayerAttackButtonClicked()

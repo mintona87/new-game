@@ -55,7 +55,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         //	//Debug.Log("inside");
         //	yield return null;
         //}
-        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
+        //PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();
         yield return null;
@@ -149,7 +149,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())));
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 50000)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= 1)
         {
             shouldMatch = true;
         }
@@ -305,7 +305,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         insideRoomUiObj.SetActive(true);
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 PlayMultiButtonObj.SetActive(true);

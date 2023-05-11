@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviour
 
     public int ATK = 1;
     public int DEF = 1;
-    public int SPD = 1;
+    int SPD;
     public int LUCK = 1;
 
    public int Gold { get; private set; } = 0;
@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
 
     public string localPlayerNickname;
 
-    bool isItMyPlayer;
+    public bool isItMyPlayer;
 
     private void Awake()
     {
@@ -53,6 +53,13 @@ public class PlayerManager : MonoBehaviour
 
         StartCoroutine(WaitFinishLoad());
     }
+
+    ////tmp
+    //private void Update()
+    //{
+    //    Debug.Log("spd " + SPD + " ismine " + isItMyPlayer);
+    //}
+
     void InitPlayer()
     {
         Debug.Log("loacl player num" + playerNumber);
@@ -64,6 +71,30 @@ public class PlayerManager : MonoBehaviour
         gameObject.transform.localScale = new Vector2(1.0f, 1.0f);
         Debug.Log("finish load value set");
         gameController.didGameFinishLoad = true;
+
+        ////tmp
+        //if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
+        //{
+        //    if (isItMyPlayer)
+        //    {
+        //        SPD = 1;
+        //    }
+        //    else
+        //    {
+        //        SPD = 5;
+        //    }
+        //}
+        //else
+        //{
+        //    if (isItMyPlayer)
+        //    {
+        //        SPD = 5;
+        //    }
+        //    else
+        //    {
+        //        SPD = 1;
+        //    }
+        //}
 
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", SPD } });
     }
@@ -213,7 +244,6 @@ public class PlayerManager : MonoBehaviour
                         player.CustomProperties["WonLost"] = "Lost";
                         PhotonNetwork.LocalPlayer.CustomProperties["WonLost"] = "Won";
                         OnPlayerWin();
-
                     }
                 }
             }
@@ -269,7 +299,7 @@ public class PlayerManager : MonoBehaviour
             float random = UnityEngine.Random.Range(0f, 1f);
 
             // 70% chance of stun
-            if (random <= /*0.7*/2)
+            if (random <= 0.7)
             {
                 Debug.Log("shouldSetOtherPlayerStun"+ playerCombat.GetOtherPlayer().GetPlayerNumber());
                 Debug.Log("onchangestun2");
