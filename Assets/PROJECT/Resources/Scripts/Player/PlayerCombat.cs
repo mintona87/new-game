@@ -9,6 +9,7 @@ using System.Drawing;
 using Photon.Realtime;
 using System;
 using System.Runtime.InteropServices;
+using static UnityEngine.GraphicsBuffer;
 
 public class PlayerCombat : MonoBehaviourPunCallbacks
 {
@@ -94,9 +95,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-
-        
-
         Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
         if (isPlayingAction)
         {
@@ -215,6 +213,12 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
         else
         {
+            int localPlayerViewID = playerManager.pv.ViewID;
+            int targetPlayerViewID = targetScript.pv.ViewID;
+            string targetName = "localPlayer";
+
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text+" is stunned!", localPlayerViewID, targetPlayerViewID, targetName);
+
             PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
         }
     }
@@ -391,22 +395,24 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
         int damage = playerManager.Attack();
 
-        PlayerManager targetScript = targetObj.GetComponent<PlayerManager>();
         // to do set target
+
+        int localPlayerViewID = playerManager.pv.ViewID;
+        int targetPlayerViewID = targetScript.pv.ViewID;
+        string targetName = "target";
+
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, $"Player 1 dealt {damage} damage!");
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID,targetPlayerViewID, targetName);
         }
         else
         {
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, "Player 1 missed the attack!");
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + " missed the attack!", localPlayerViewID, targetPlayerViewID, targetName);
         }
 
         playerManager.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
-
-        //UpdateTurnAndUI();
     }
     #endregion
 
@@ -432,9 +438,12 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayHealEffect());
 
-        //UpdateTurnAndUI();
+        int localPlayerViewID = playerManager.pv.ViewID;
+        int targetPlayerViewID = targetScript.pv.ViewID;
+        string targetName = "localPlayer";
 
-        StartCoroutine(ShowActionText($"Player 1 healed for {healAmount}!", playerManager.playerUI.ActionText));
+        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + $" healed for {healAmount}!", localPlayerViewID, targetPlayerViewID,targetName);
+
     }
 
     #endregion
@@ -453,8 +462,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         playerManager.SetIsDefending(true);
         targetScript.TurnsSinceCharge++;
         StartCoroutine(playerEffect.PlayDefendEffect());
-
-        //UpdateTurnAndUI();
     }
     #endregion
 
@@ -465,8 +472,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         choosenAction = Actions.Charge;
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DidFinishChoosingAction", true } });
         UpdateTurnAndUI();
-        //player.playerUI.UpdateHealthUI();
-        //player.playerUI.UpdateChargeButtons();
     }
 
     void Charge()
@@ -484,23 +489,43 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
-        //player.playerUI.UpdateHealthUI();
         playerManager.playerUI.UpdateChargeButtons();
 
-        StartCoroutine(ShowActionText($"Player 1 dealt {damage} damage!", playerManager.playerUI.ActionText));
+        int localPlayerViewID = playerManager.pv.ViewID;
+        int targetPlayerViewID = targetScript.pv.ViewID;
+        string targetName ="target";
+
+        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
     }
     #endregion
 
     [PunRPC]
-    void ShowActionRPC(string text)
+    void ShowActionRPC(string text, int localPlayerViewID, int targetPlayerViewID, string targetName)
     {
-        StartCoroutine(ShowActionText(text, playerManager.playerUI.ActionText));
+
+        PhotonView localPlayerPV = PhotonView.Find(localPlayerViewID);
+        PhotonView targetPlayerPV = PhotonView.Find(targetPlayerViewID);
+        PlayerManager localPlayerManager = localPlayerPV.GetComponent<PlayerManager>();
+        PlayerManager targetPlayerManager = targetPlayerPV.GetComponent<PlayerManager>();
+
+        switch (targetName) 
+        { 
+            case "target":
+                StartCoroutine(ShowActionText(text, targetPlayerManager.playerUI.ActionText));
+            break;
+            case "localPlayer":
+                StartCoroutine(ShowActionText(text, localPlayerManager.playerUI.ActionText));
+            break;
+        }
     }
 
 
     // Coroutine to show action text and fade it away
     public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)
     {
+
+        textComponent.gameObject.SetActive(true);
+
         float duration = 1.5f; // How long the text should stay visible
         float fadeDuration = 0.5f; // How long the fade in/out should take
 
@@ -516,5 +541,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
         // Fade out
         textComponent.CrossFadeAlpha(0f, fadeDuration, false);
+        textComponent.gameObject.SetActive(false);
     }
 }

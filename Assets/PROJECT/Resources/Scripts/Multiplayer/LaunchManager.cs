@@ -50,11 +50,11 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitForPlayfabDataToLoad()
     {
-        //while (characterBox.GetStats().country == null)
-        //{
-        //	//Debug.Log("inside");
-        //	yield return null;
-        //}
+        while (playfabManager.localPlayerHonor == 0)
+        {
+            Debug.Log("inside honor did not load");
+            yield return null;
+        }
         PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();

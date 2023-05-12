@@ -18,10 +18,7 @@ public class GameController : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI honorText;
     private float[] playerHonor = new float[2];
 
-
-
     public int Turn = 0;
-
     
     private int player1TurnsSinceCharge = 6;
     private int player2TurnsSinceCharge = 6;
@@ -97,27 +94,6 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
-
-// Coroutine to show action text and fade it away
-    public IEnumerator ShowActionText(string text, TextMeshProUGUI textComponent)
-    {
-        float duration = 1.5f; // How long the text should stay visible
-        float fadeDuration = 0.5f; // How long the fade in/out should take
-
-        // Set the text and alpha value to 0
-        textComponent.text = text;
-        textComponent.canvasRenderer.SetAlpha(0f);
-
-        // Fade in
-        textComponent.CrossFadeAlpha(1f, fadeDuration, false);
-
-        // Wait for the duration
-        yield return new WaitForSeconds(duration);
-
-        // Fade out
-        textComponent.CrossFadeAlpha(0f, fadeDuration, false);
-    }
-
     public void HandlePlayerTurn()
     {
         SwitchPlayerTurn();
@@ -132,10 +108,6 @@ public class GameController : MonoBehaviourPunCallbacks
     void IncreasePlayerTurn()
     {
         Turn++;
-        //PhotonView currentPlayerPV = PhotonView.Find(currentPlayerPhotonViewID);
-        //PhotonView otherPlayerPV = PhotonView.Find(otherPlayerPhotonViewID);
-        //PlayerManager currentPlayer = currentPlayerPV.GetComponent<PlayerManager>();
-        //PlayerManager otherPlayer = otherPlayerPV.GetComponent<PlayerManager>();
 
         Debug.Log("playerturn " + Turn + "calc " + Turn % 2 + " local player  " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
         if (Turn % 2 == 0)

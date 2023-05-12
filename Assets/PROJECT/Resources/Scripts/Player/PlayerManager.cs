@@ -142,6 +142,8 @@ public class PlayerManager : MonoBehaviour
         }
         Debug.Log("isitMyPlayer " +gameObject.name+" cond "+ isItMyPlayer);
 
+        FindObjectOfType<ActionTextHandler>().SetActionPosition();
+
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
         playerUI.SetPlayerPicture();
@@ -159,13 +161,6 @@ public class PlayerManager : MonoBehaviour
 
     public void OnSwitchTurnSettings()
     {
-        //if (isStunned)
-        //{
-        //    canPlay = false;
-        //    StartCoroutine(gameController.ShowActionText(playerUI.playerNumberText + " is stunned!", playerUI.ActionText));
-        //    StartCoroutine(gameController.ShowActionText(" ", playerCombat.targetScript.playerUI.ActionText));
-        //}
-
         playerUI.playerAttackButton.interactable = canPlay;
         playerUI.playerHealButton.interactable = canPlay;
         playerUI.playerDefendButton.interactable = canPlay;
