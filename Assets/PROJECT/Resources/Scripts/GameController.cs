@@ -119,12 +119,10 @@ public class GameController : MonoBehaviourPunCallbacks
             playerList[1].canPlay = false;
         }
 
-
         foreach (PlayerManager playerManager in playerList)
         {
-            playerManager.OnSwitchTurnSettings();
+            StartCoroutine(playerManager.OnSwitchTurnSettings());
         }
-
     }
 
     private void ShowGameOverMessage(int winnerPlayerNumber)

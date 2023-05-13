@@ -20,12 +20,26 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     PlayerEffect playerEffect;
 
     public bool isPlayingAction;
-    
+
+
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
         playerEffect = playerManager.playerEffect;
     }
+
+    private void Start()
+    {
+        ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+        {
+            { "countPlayerPlayingAction", 0 }
+        };
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
+    }
+
 
     public void SetDefaultTarget()
     {
@@ -64,6 +78,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     void UpdateTurnAndUI()
     {
         Debug.Log("istargetstuned " + playerManager.playerCombat.targetScript.isStunned);
+        
         if (playerManager.playerCombat.targetScript.isStunned)
         {
             playerManager.playerCombat.targetScript.gameController.HandlePlayerTurn();
@@ -93,9 +108,9 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log(" num " + PhotonNetwork.LocalPlayer.GetPlayerNumber()+"turncharge " + playerManager.TurnsSinceCharge +" hascharged "+playerManager.HasCharged);
-        //Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
-        if (isPlayingAction)
+        //Debug.Log(" num " + PhotonNetwork.LocalPlayer.GetPlayerNumber()+"turncharge " + playerManager.TurnsSinceCharge +" hascharged "+playerManager.HasCharged);
+        Debug.Log("isplayingaction" + isPlayingAction + " num " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "manastun " + playerManager.canPlay);
+        if (isPlayingAction == true || (bool)PhotonNetwork.LocalPlayer.CustomProperties["DidFinishChoosingAction"] == true)
         {
             DisableButtonUI();
         }
@@ -119,6 +134,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         isPlayingAction = true;
         targetScript.playerCombat.isPlayingAction = true;
         
+
         // wait if no actions are selected (Unless there is a buf it should never be called)
         if (PhotonNetwork.LocalPlayer.IsLocal)
         {
@@ -192,14 +208,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
 
         // reset variables for the next turn
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", false } });
+        if (playerManager.isItMyPlayer)
+        {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", false } });
+            Debug.Log("playingactionfalsecalled");
+        }
         isPlayingAction = false;
         targetScript.playerCombat.isPlayingAction = false;
         PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
-        
-        //SetButtonUIAccordingToCanPlay();
-
-        //player.OnSwitchTurnSettings();
         choosenAction = Actions.NoAction;
         yield return null;
     }
@@ -224,8 +240,10 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     public void DisableButtonUI()
     {
+        
         foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>())
         {
+            Debug.Log("shouldbedisabled"+ playerManager.gameObject.name);
             playerManager.playerUI.playerAttackButton.interactable = false;
             playerManager.playerUI.playerHealButton.interactable = false;
             playerManager.playerUI.playerDefendButton.interactable = false;
@@ -312,36 +330,42 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
         else if (changedProps.ContainsKey("isPlayingAction"))
         {
-            int countPlayerPlayingAction = 0;
+            
 
             // Iterate through all players in the room
-            foreach (Player player in PhotonNetwork.PlayerList)
+            
+            // Check if the player has the custom property "DidFinishChoosingAction"
+            if (targetPlayer.CustomProperties.ContainsKey("isPlayingAction"))
             {
-                // Check if the player has the custom property "DidFinishChoosingAction"
-                if (player.CustomProperties.ContainsKey("isPlayingAction"))
+                // Get the updated value
+                if (playerManager.isItMyPlayer)
                 {
-                    // Get the updated value
-                    bool isPlayingAction = (bool)player.CustomProperties["isPlayingAction"];
+                    bool isPlayingAction = (bool)targetPlayer.CustomProperties["isPlayingAction"];
 
+                    Debug.Log("customprop isPlayingAction " + isPlayingAction + " objname "+gameObject.name);
+                    
                     // Perform any required action based on the value
-                    Debug.Log($"callbackPlayingaction {player.NickName} has DidFinishChoosingAction set to: {isPlayingAction}" + " actioncount " + countPlayerPlayingAction);
-                    if (!isPlayingAction)
+                    
+                    Debug.Log($"callbackPlayingaction {targetPlayer.NickName} has isPlayingAction set to: {isPlayingAction}" );
+                    if (isPlayingAction == false)
                     {
-                        countPlayerPlayingAction++;
-                        Debug.Log("countPlayerPlayingAction " + countPlayerPlayingAction);
+                        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("countPlayerPlayingAction", out object value))
+                        {
+                            int countPlayerPlayingAction = (int)value;
+                            countPlayerPlayingAction ++;
+                            Debug.Log("wtfincrease " + countPlayerPlayingAction + "value "+(int)value);
+
+                            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+                            {
+                                { "countPlayerPlayingAction", countPlayerPlayingAction }
+                            };
+                            Debug.Log("countPlayerPlayingAction " + countPlayerPlayingAction + " num " + targetPlayer.GetPlayerNumber());
+                                
+                            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                        }
                     }
                 }
             }
-
-            if (countPlayerPlayingAction == 2)
-            {
-                //foreach (Player player in PhotonNetwork.PlayerList)
-                //{
-                //    // do something when both player finish to play action
-                //}
-                SetButtonUIAccordingToCanPlay();
-            }
-
         }
         else if (changedProps.ContainsKey("isPlayerStun"))
         {
@@ -384,6 +408,33 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         Debug.Log("ShouldStartCheck");
         StartCoroutine(CheckIfShouldPlayAction());
     }
+
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        base.OnRoomPropertiesUpdate(propertiesThatChanged);
+
+        // Handle the changed properties
+        if (propertiesThatChanged.TryGetValue("countPlayerPlayingAction", out object value))
+        {
+            int getCountPlayerPlayingAction = (int)value;
+            Debug.Log("roomvalue update " + getCountPlayerPlayingAction);
+            if (getCountPlayerPlayingAction == 2) 
+            {
+                isPlayingAction = false;
+                targetScript.playerCombat.isPlayingAction = false;
+                Debug.Log("finish playing action ");
+                SetButtonUIAccordingToCanPlay();
+
+                ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+                {
+                    { "countPlayerPlayingAction", 0 }
+                };
+                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+            }
+        }
+    }
+
+
     #endregion
 
     #region Attack

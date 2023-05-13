@@ -39,6 +39,8 @@ public class PlayerManager : MonoBehaviour
 
     public bool isItMyPlayer;
 
+    
+    
     private void Awake()
     {
         gameController = FindObjectOfType<GameController>();
@@ -96,6 +98,8 @@ public class PlayerManager : MonoBehaviour
         //    }
         //}
         InitPlayerStatOnline();
+
+        
     }
 
     void InitPlayerStatOnline()
@@ -147,7 +151,7 @@ public class PlayerManager : MonoBehaviour
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
         playerUI.SetPlayerPicture();
-        OnSwitchTurnSettings();
+        StartCoroutine(OnSwitchTurnSettings());
 
         // change is mine
         playerUI.SetActiveButtons(PhotonNetwork.LocalPlayer.IsLocal);
@@ -159,20 +163,25 @@ public class PlayerManager : MonoBehaviour
         OnLoadingGameScreen.Instance.SetLoadingScreenActive(false);
     }
 
-    public void OnSwitchTurnSettings()
+    public IEnumerator OnSwitchTurnSettings()
     {
-        playerUI.playerAttackButton.interactable = canPlay;
-        playerUI.playerHealButton.interactable = canPlay;
-        playerUI.playerDefendButton.interactable = canPlay;
-        playerUI.playerChargeButton.interactable = canPlay && TurnsSinceCharge >= 6;
-    }
+        if (isItMyPlayer)
+        {
+            Debug.Log("buttonactivated" + canPlay + " didchoose " + PhotonNetwork.LocalPlayer.CustomProperties["DidFinishChoosingAction"]);
 
+
+            playerUI.playerAttackButton.interactable = canPlay;
+            playerUI.playerHealButton.interactable = canPlay;
+            playerUI.playerDefendButton.interactable = canPlay;
+            playerUI.playerChargeButton.interactable = canPlay && TurnsSinceCharge >= 6;
+        }
+        yield return null;
+    }
 
     public void AddGold(int amount)
     {
         Gold += amount;
     }
-
     public bool UpgradeStat(ref int stat, int tier)
     {
         int cost = tier * 100;
@@ -292,7 +301,6 @@ public class PlayerManager : MonoBehaviour
     {
         isDefending = condition;
     }
-    
 
     public int Charge(PlayerManager opponent)
     {
