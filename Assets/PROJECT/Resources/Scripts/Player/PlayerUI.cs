@@ -81,30 +81,5 @@ public class PlayerUI : MonoBehaviour
         return (float)hp / (float)maxHealth;
     }
 
-   
-   
-    public void UpdateChargeButtons()
-    {
-        if (player.gameController.Turn % 2 == 1)
-        {
-            playerChargeButton.interactable = player.canPlay && player.TurnsSinceCharge >= 6;
-            player.playerCombat.targetScript.playerUI.playerChargeButton.interactable = false;
-
-            if (player.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay)
-            {
-                player.ResetCharge();
-            }
-        }
-        else
-        {
-            playerChargeButton.interactable = false;
-            player.playerCombat.targetScript.playerUI.playerChargeButton.interactable = player.playerCombat.targetScript.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay;
-
-            if (player.playerCombat.targetScript.TurnsSinceCharge >= 6 && player.playerCombat.targetScript.canPlay)
-            {
-                player.playerCombat.targetScript.ResetCharge();
-            }
-        }
-    }
 
 }

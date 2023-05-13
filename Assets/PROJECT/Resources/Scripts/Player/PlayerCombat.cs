@@ -63,8 +63,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     
     void UpdateTurnAndUI()
     {
-        playerManager.playerUI.UpdateChargeButtons();
-
         Debug.Log("istargetstuned " + playerManager.playerCombat.targetScript.isStunned);
         if (playerManager.playerCombat.targetScript.isStunned)
         {
@@ -95,7 +93,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
+        Debug.Log(" num " + PhotonNetwork.LocalPlayer.GetPlayerNumber()+"turncharge " + playerManager.TurnsSinceCharge +" hascharged "+playerManager.HasCharged);
+        //Debug.Log("stuncustomprop1" + PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"]+" num "+ PhotonNetwork.LocalPlayer.GetPlayerNumber() +"manastun "+playerManager.isStunned);
         if (isPlayingAction)
         {
             DisableButtonUI();
@@ -198,7 +197,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         targetScript.playerCombat.isPlayingAction = false;
         PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
         
-        SetButtonUIAccordingToCanPlay();
+        //SetButtonUIAccordingToCanPlay();
 
         //player.OnSwitchTurnSettings();
         choosenAction = Actions.NoAction;
@@ -241,6 +240,12 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             playerManager.playerUI.playerHealButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerDefendButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerChargeButton.interactable = playerManager.canPlay && playerManager.TurnsSinceCharge >= 6;
+
+            if (playerManager.TurnsSinceCharge >= 6)
+            {
+                playerManager.ResetCharge();
+            }
+
         }
     }
     void ChooseAction()
@@ -330,10 +335,11 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
             if (countPlayerPlayingAction == 2)
             {
-                foreach (Player player in PhotonNetwork.PlayerList)
-                {
-                    // do something when both player finish to play action
-                }
+                //foreach (Player player in PhotonNetwork.PlayerList)
+                //{
+                //    // do something when both player finish to play action
+                //}
+                SetButtonUIAccordingToCanPlay();
             }
 
         }
@@ -489,7 +495,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
-        playerManager.playerUI.UpdateChargeButtons();
 
         int localPlayerViewID = playerManager.pv.ViewID;
         int targetPlayerViewID = targetScript.pv.ViewID;

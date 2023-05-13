@@ -20,8 +20,6 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public int Turn = 0;
     
-    private int player1TurnsSinceCharge = 6;
-    private int player2TurnsSinceCharge = 6;
 
     private bool isGameOver = false;
 
