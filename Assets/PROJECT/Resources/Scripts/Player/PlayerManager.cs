@@ -68,7 +68,7 @@ public class PlayerManager : MonoBehaviour
         playerUI.playerNumberText.text = "Player" + (playerNumber + 1).ToString();
 
         gameObject.name = playerUI.playerNumberText.text;
-        playerUI.playerUsernameText.text = localPlayerNickname;
+        //playerUI.playerUsernameText.text = localPlayerNickname;
         transform.SetParent(gameController.PlayerListContainer.transform);
         gameObject.transform.localScale = new Vector2(1.0f, 1.0f);
         Debug.Log("finish load value set");
@@ -145,6 +145,18 @@ public class PlayerManager : MonoBehaviour
             isItMyPlayer = true;
         }
         Debug.Log("isitMyPlayer " +gameObject.name+" cond "+ isItMyPlayer);
+
+        if (isItMyPlayer)
+        {
+            localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
+            playerUI.playerUsernameText.text = localPlayerNickname;
+
+        }
+        else
+        {
+            playerUI.playerUsernameText.text = playerCombat.GetOtherPlayer().CustomProperties["Nickname"].ToString();
+        }
+
 
         FindObjectOfType<ActionTextHandler>().SetActionPosition();
 
