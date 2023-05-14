@@ -276,7 +276,7 @@ public class PlayerManager : MonoBehaviour
 
         if (isDefending)
         {
-            damage /= 2;
+            damage = 0;
         }
 
         return damage;
@@ -329,7 +329,7 @@ public class PlayerManager : MonoBehaviour
             }
             if (isDefending)
             {
-                damage /= 2;
+                damage = 0;
             }
             HasCharged = true;
         }
