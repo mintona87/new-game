@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using System.Threading.Tasks;
 
 public class PlayfabManager : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class PlayfabManager : MonoBehaviour
     public TMP_InputField RegisterUsernameInput;
     public TMP_InputField RegisterPasswordInput;
 
+    public GameObject UsernameErrorTextObj;
+    public GameObject EmailErrorTextObj;
+    public GameObject PasswordErrorTextObj;
+
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;
 
@@ -54,17 +59,48 @@ public class PlayfabManager : MonoBehaviour
     }
 
 
+    private void Update()
+    {
+        Debug.Log("playfab title id: " + PlayFabSettings.TitleId);
+    }
+
+
     // Registering
     public void RegisterButtonPressed()
     {
+        // Check if username and email are unique
+        // If username and email are unique, proceed to registration
+
+        PasswordErrorTextObj.SetActive(false);
+        UsernameErrorTextObj.SetActive(false);
+        EmailErrorTextObj.SetActive(false);
+
         var request = new RegisterPlayFabUserRequest
         {
             Email = RegisterEmailInput.text,
+            Username = RegisterUsernameInput.text,
             Password = RegisterPasswordInput.text,
             RequireBothUsernameAndEmail = false
         };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, RegisterButtonPressedError);
     }
+    bool IsValidPassword(string username, string password)
+    {
+        if (password.Length < 6)
+        {
+            return false;
+        }
+
+        if (password.Contains(username))
+        {
+            return false;
+        }
+
+        // Add any additional checks if needed
+
+        return true;
+    }
+
 
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
@@ -82,6 +118,7 @@ public class PlayfabManager : MonoBehaviour
 
         LoginSettings();
     }
+
 
     #region Send Leaderboard initial stats
 
@@ -128,8 +165,7 @@ public class PlayfabManager : MonoBehaviour
             }
         }
     }
-
-   
+    
 
     #endregion
 
@@ -250,6 +286,27 @@ public class PlayfabManager : MonoBehaviour
     void RegisterButtonPressedError(PlayFabError error)
     {
         Debug.Log("Error: " + error.ErrorMessage);
+
+        if (!IsValidPassword(RegisterUsernameInput.text, RegisterPasswordInput.text))
+        {
+            PasswordErrorTextObj.SetActive(true);
+        }
+
+        if(error.GenerateErrorReport().ToString().Contains("Email: Email address already exists."))
+        {
+            EmailErrorTextObj.SetActive(true);
+            Debug.LogError("Email alrady exist error: " + error.GenerateErrorReport());
+        }
+        else if(error.GenerateErrorReport().ToString().Contains("Username: User name already exists."))
+        {
+            UsernameErrorTextObj.SetActive(true);
+            Debug.LogError("Email alrady exist error: " + error.GenerateErrorReport());
+        }
+        else
+        {
+            Debug.LogError("An error occurred during registration: " + error.GenerateErrorReport());
+            // Handle other types of errors
+        }
     }
 
     #endregion
