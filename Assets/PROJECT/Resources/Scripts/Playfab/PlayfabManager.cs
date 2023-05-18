@@ -28,6 +28,8 @@ public class PlayfabManager : MonoBehaviour
 
     public TMP_InputField LoginUserNameInput;
     public TMP_InputField LoginPasswordInput;
+    public GameObject LoginEmailErrorTextObj;
+    public GameObject LoginPasswordErrorTextObj;
 
     public TMP_InputField RegisterEmailInput;
     public TMP_InputField RegisterUsernameInput;
@@ -172,6 +174,10 @@ public class PlayfabManager : MonoBehaviour
     // Logging in
     public void LoginButtonPressed()
     {
+
+        LoginEmailErrorTextObj.SetActive(false);
+        LoginPasswordErrorTextObj.SetActive(false);
+
         var request = new LoginWithEmailAddressRequest
         {
             Email = LoginUserNameInput.text,
@@ -256,7 +262,17 @@ public class PlayfabManager : MonoBehaviour
     #region Error
     void OnLoginError(PlayFabError error)
     {
-        Debug.Log("onloginError " + error.ErrorMessage);
+        Debug.LogError("onloginError " + error.GenerateErrorReport());
+        if (error.GenerateErrorReport().ToString().Contains("Invalid input parameters"))
+        {
+            LoginEmailErrorTextObj.SetActive(true);
+            LoginPasswordErrorTextObj.SetActive(true);
+        }
+        else if (error.GenerateErrorReport().ToString().Contains("User not found"))
+        {
+            LoginEmailErrorTextObj.SetActive(true);
+            LoginPasswordErrorTextObj.SetActive(true);
+        }
     }
     void OnError(PlayFabError error)
     {

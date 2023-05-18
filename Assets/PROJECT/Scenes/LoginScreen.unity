@@ -1343,6 +1343,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &727660587 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2136771271395876332, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+  m_PrefabInstance: {fileID: 100281963}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &727660588 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 674817316450855968, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+  m_PrefabInstance: {fileID: 100281963}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &763437226
 GameObject:
   m_ObjectHideFlags: 0
@@ -2842,6 +2852,8 @@ MonoBehaviour:
   localPlayerHonor: 0
   LoginUserNameInput: {fileID: 100281968}
   LoginPasswordInput: {fileID: 100281967}
+  LoginEmailErrorTextObj: {fileID: 727660588}
+  LoginPasswordErrorTextObj: {fileID: 727660587}
   RegisterEmailInput: {fileID: 100281965}
   RegisterUsernameInput: {fileID: 100281966}
   RegisterPasswordInput: {fileID: 100281964}
