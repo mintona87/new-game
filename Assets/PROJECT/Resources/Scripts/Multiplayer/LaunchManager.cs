@@ -50,7 +50,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitForPlayfabDataToLoad()
     {
-        while (playfabManager.localPlayerHonor == 0)
+        while (playfabManager.localPlayerHonor == -1)
         {
             Debug.Log("inside honor did not load");
             yield return null;
@@ -273,6 +273,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                     getPlayer.GetPlayerNumber() + 1,
                     getPlayer.CustomProperties["Nickname"].ToString(),
                     playerHonor,
+                    "",
                     "matchmaking"
                 );
             }
@@ -288,6 +289,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 (player.GetPlayerNumber() + 1,
                 player.CustomProperties["Nickname"].ToString(),
                 playerHonor,
+                "",
                 "matchmaking"
                 ) ;
         }
