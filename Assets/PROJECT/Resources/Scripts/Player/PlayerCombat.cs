@@ -37,7 +37,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         };
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-
     }
 
 
@@ -451,7 +450,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (playerManager.HasLost()) return;
 
         int damage = playerManager.Attack();
-
+        Debug.Log("insideAttack " + PhotonNetwork.LocalPlayer.NickName);
         // to do set target
 
         int localPlayerViewID = playerManager.pv.ViewID;

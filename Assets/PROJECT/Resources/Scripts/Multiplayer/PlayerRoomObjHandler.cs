@@ -17,7 +17,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI WonLostText;
 
 
-    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string type)
+    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type)
     {
         if (type != "leaderboard")
         {
@@ -45,51 +45,16 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         {
             WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
 
-            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor));
+            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor, winOrLost));
         }
         //to do set the image
     }
 
-    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor)
+    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, string winOrLost)
     {
-        while (PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString() == "null")
-        {
-            yield return null;
-        }
-
-        if (nickName == PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString())
-        {
-            WonLostText.text = PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString();
-                
-            PlayerHonorText.text = playerHonor.ToString();
-        }
-        else
-        {
-            // Find the remote player with the given nickname
-            Photon.Realtime.Player remotePlayer = null;
-            foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
-            {
-                if (player.CustomProperties["Nickname"].ToString() == nickName && player != PhotonNetwork.LocalPlayer)
-                {
-                    remotePlayer = player;
-                    break;
-                }
-            }
-
-            if (remotePlayer != null)
-            {
-                while (remotePlayer.CustomProperties["WonLost"].ToString() == "null")
-                {
-                    yield return null;
-                }
-                WonLostText.text = remotePlayer.CustomProperties["WonLost"].ToString();
-                    PlayerHonorText.text = playerHonor.ToString();
-            }
-            else
-            {
-                Debug.LogError("Remote player not found: " + nickName);
-            }
-        }
+        PlayerHonorText.text = playerHonor.ToString();
+        WonLostText.text = winOrLost;
+        yield return null;
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
@@ -98,11 +63,16 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         // Check if the "Honor" property has been updated
         if (changedProps.ContainsKey("Honor"))
         {
+
             // Get the updated honor value
             int updatedHonor = Convert.ToInt32(changedProps["Honor"]);
 
+            //Debug.Log("honorremoteplayerlocal3 " + PlayerNameText.text + " nickname " + targetPlayer.CustomProperties["Nickname"].ToString());
             // Do something with the updated honor value, e.g., update the UI
-            UpdateHonorUI(updatedHonor);
+            if (PlayerNameText.text == targetPlayer.CustomProperties["Nickname"].ToString())
+            {
+                UpdateHonorUI(updatedHonor);
+            }
         }
     }
 

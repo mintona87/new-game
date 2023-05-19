@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public int HP = 100;
     public int MaxHP = 100;
     public bool HasCharged = false;
-    public bool isDefending = false;
+    public bool isDefending;
     public bool isStunned = false;
 
     int ATK;
@@ -241,6 +241,13 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
+        Debug.Log("isDefending" + isDefending +" "+PhotonNetwork.LocalPlayer.NickName);
+        if (isDefending)
+        {
+            amount = 0;
+            SetIsDefending(false);
+        }
+
         HP += amount;
         if (HP < 0)
         {
@@ -274,6 +281,7 @@ public class PlayerManager : MonoBehaviour
             }
             gameController.gameOverManager.DisplayPlayersGameOverObj();
         }
+        Debug.Log("HPafterdamage" +HP);
     }
 
 
@@ -311,6 +319,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void SetIsDefendingRPC(bool condition)
     {
+        Debug.Log("isdefendingset" +condition);
         isDefending = condition;
     }
 

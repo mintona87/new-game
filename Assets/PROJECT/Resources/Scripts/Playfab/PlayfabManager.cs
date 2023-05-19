@@ -44,6 +44,7 @@ public class PlayfabManager : MonoBehaviour
 
     private void Awake()
     {
+        localPlayerHonor = -1;
         LoginPasswordInput.inputType = TMP_InputField.InputType.Password;
         RegisterPasswordInput.inputType = TMP_InputField.InputType.Password;
         
@@ -64,6 +65,7 @@ public class PlayfabManager : MonoBehaviour
     private void Update()
     {
         Debug.Log("playfab title id: " + PlayFabSettings.TitleId);
+        Debug.Log("check localhonor update " + localPlayerHonor);
     }
 
 
@@ -116,7 +118,7 @@ public class PlayfabManager : MonoBehaviour
 
         SubmitNameButton();
 
-        SendLeaderboard(1);
+        SendLeaderboard(0);
 
         LoginSettings();
     }
@@ -157,10 +159,17 @@ public class PlayfabManager : MonoBehaviour
 
     void OnGetStatistics(GetPlayerStatisticsResult result)
     {
-        Debug.Log("Received the following Statistics:");
+        Debug.Log("Received the following Statistics:"+ result.Statistics.Count);
+
+        if (result.Statistics.Count == 0)
+        {
+            SendLeaderboard(0);
+        }
+
         foreach (var eachStat in result.Statistics)
         {
-            if(eachStat.StatisticName == "Honor_Leaderboard")
+            Debug.Log("statisticname " + eachStat.StatisticName);
+            if (eachStat.StatisticName == "Honor_Leaderboard")
             {
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
                 localPlayerHonor = eachStat.Value;
