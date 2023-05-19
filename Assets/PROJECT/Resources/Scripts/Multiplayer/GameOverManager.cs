@@ -43,12 +43,15 @@ public class GameOverManager : MonoBehaviourPunCallbacks
             GameObject playerRoomObj = Instantiate(PlayerGameOverObjPrefab, Vector3.zero, Quaternion.identity);
 
             playerRoomObj.transform.SetParent(PlayerGameOverObjContainer.transform);
+            playerRoomObj.transform.localScale = Vector3.one;
             int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
+            string winOrLost = getPlayer.CustomProperties["WonLost"].ToString();
             playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
             (
                 getPlayer.GetPlayerNumber() + 1,
                 getPlayer.CustomProperties["Nickname"].ToString(),
                 playerHonor,
+                winOrLost,
                 "gameover"
             );
         }
