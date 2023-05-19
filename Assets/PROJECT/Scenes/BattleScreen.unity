@@ -554,7 +554,7 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     source: {fileID: 0}
-  shoudPlayBgm: 0
+  shoudPlayBgm: 1
 --- !u!114 &613451000
 MonoBehaviour:
   m_ObjectHideFlags: 0
