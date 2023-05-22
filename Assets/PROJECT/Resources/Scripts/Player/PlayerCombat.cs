@@ -33,7 +33,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     {
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "countPlayerPlayingAction", 0 }
+            { "countPlayerPlayingAction", 0 },
+            { "isGameOver",  false}
         };
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
@@ -431,6 +432,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
             }
         }
+        else if (propertiesThatChanged.TryGetValue("isGameOver", out object gameoverValue))
+        {
+            bool isGameOver = (bool)gameoverValue;
+            playerManager.gameController.gameOverManager.isGameOver = isGameOver;
+            Debug.Log("roomvalue update gameover " + isGameOver);
+            
+        }
+
     }
 
 

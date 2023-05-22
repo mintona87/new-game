@@ -52,7 +52,14 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 
     IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, string winOrLost)
     {
-        PlayerHonorText.text = playerHonor.ToString();
+        if (winOrLost == "Won")
+        {
+            PlayerHonorText.text = "+10";/*playerHonor.ToString()*/
+        }
+        else
+        {
+            PlayerHonorText.text = "0";
+        }
         WonLostText.text = winOrLost;
         yield return null;
     }
@@ -71,15 +78,23 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
             // Do something with the updated honor value, e.g., update the UI
             if (PlayerNameText.text == targetPlayer.CustomProperties["Nickname"].ToString())
             {
-                UpdateHonorUI(updatedHonor);
+                string winOrLost = targetPlayer.CustomProperties["WonLost"].ToString();
+                UpdateHonorUI(updatedHonor, winOrLost);
             }
         }
     }
 
-    private void UpdateHonorUI(int updatedHonor)
+    private void UpdateHonorUI(int updatedHonor,string winOrLost)
     {
         // Update your UI elements here, e.g., the honor text
-        PlayerHonorText.text = updatedHonor.ToString();
+        if (winOrLost == "Won")
+        {
+            PlayerHonorText.text = "+10";/*playerHonor.ToString()*/
+        }
+        else
+        {
+            PlayerHonorText.text = "0";
+        }
     }
     public void SetPlayerPicture()
     {

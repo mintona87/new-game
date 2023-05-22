@@ -21,7 +21,6 @@ public class GameController : MonoBehaviourPunCallbacks
     public int Turn = 0;
     
 
-    private bool isGameOver = false;
 
     public AudioManager audioManager;
     public List<PlayerManager> playerList = new List<PlayerManager>();
@@ -150,6 +149,10 @@ public class GameController : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties["isPlayerStun"] = "notStun";
         PhotonNetwork.LocalPlayer.CustomProperties["isPlayingAction"] = false;
     }
+
+
+
+
 }
 
 

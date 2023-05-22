@@ -261,6 +261,13 @@ public class PlayerManager : MonoBehaviour
 
         if (HasLost())
         {
+
+            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "isGameOver", true}
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
             // Set "Win" for a player different than the local player
             foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
             {
@@ -279,7 +286,7 @@ public class PlayerManager : MonoBehaviour
                     }
                 }
             }
-            gameController.gameOverManager.DisplayPlayersGameOverObj();
+            StartCoroutine(InitGameOver());
         }
         Debug.Log("HPafterdamage" +HP);
     }
@@ -395,5 +402,17 @@ public class PlayerManager : MonoBehaviour
     public bool HasLost()
     {
         return HP <= 0;
+    }
+    IEnumerator InitGameOver()
+    {
+        while (!gameController.gameOverManager.isGameOver)
+        {
+            Debug.Log("is playing action");
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(2.0f);
+
+        gameController.gameOverManager.DisplayPlayersGameOverObj();
     }
 }

@@ -14,6 +14,8 @@ public class GameOverManager : MonoBehaviourPunCallbacks
     public GameObject PlayerGameOverObjPrefab;
     public GameObject GameOverPanelObj;
 
+    public bool isGameOver;
+
     PhotonView pv;
 
     void Start()
