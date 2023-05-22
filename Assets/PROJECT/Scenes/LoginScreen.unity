@@ -1945,6 +1945,8 @@ MonoBehaviour:
   uiContainer: {fileID: 0}
   NickNameText: {fileID: 0}
   RankText: {fileID: 0}
+  canMatchWithEveryBody: 0
+  ToggleMatchWithEveryone: {fileID: 0}
 --- !u!1 &1169582532
 GameObject:
   m_ObjectHideFlags: 0
@@ -3011,6 +3013,14 @@ PrefabInstance:
       value: IngameDebugConsole
       objectReference: {fileID: 0}
     - target: {fileID: 132536, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 178532, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 183006, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
