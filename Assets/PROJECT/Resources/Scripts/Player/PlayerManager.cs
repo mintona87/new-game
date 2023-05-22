@@ -98,8 +98,6 @@ public class PlayerManager : MonoBehaviour
         //    }
         //}
         InitPlayerStatOnline();
-
-        
     }
 
     void InitPlayerStatOnline()

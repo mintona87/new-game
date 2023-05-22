@@ -12,6 +12,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] public TextMeshProUGUI ActionText;
     public TextMeshProUGUI playerNumberText;
     public TextMeshProUGUI playerUsernameText;
+    public TextMeshProUGUI HPText;
 
     public Button playerAttackButton;
     public Button playerHealButton;
@@ -33,6 +34,7 @@ public class PlayerUI : MonoBehaviour
         float sliderValue = GetNormalizedHP(player.HP, player.MaxHP);
         hpSlider.maxValue = sliderValue;
         hpSlider.value = sliderValue;
+        HPText.text = player.HP.ToString() + "/" + player.MaxHP.ToString();
     }
 
     public void SetHealthSlider(int hp)
@@ -45,7 +47,7 @@ public class PlayerUI : MonoBehaviour
     public void SetHealthSliderRPC(int hp, float sliderValue)
     {
         hpSlider.value = sliderValue;
-        
+        HPText.text = hp.ToString() + "/" + player.MaxHP.ToString();
     }
     public void SetActiveButtons(bool condition)
     {
