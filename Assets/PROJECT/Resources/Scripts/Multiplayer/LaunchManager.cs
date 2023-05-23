@@ -33,6 +33,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerCountText;
 
     public TextMeshProUGUI LoadingText;
+    public TextMeshProUGUI LookingForOpponentText;
+    public TextMeshProUGUI TimerText;
 
     bool isJoinMatchClicked;
 
@@ -121,6 +123,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             if (timeBeforeIncreaseHonorOtherPlayer > 0)
             {
                 timeBeforeIncreaseHonorOtherPlayer -= Time.deltaTime;
+                TimerText.text = Mathf.Round(timeBeforeIncreaseHonorOtherPlayer).ToString()+"s" ;
             }
             else
             {
