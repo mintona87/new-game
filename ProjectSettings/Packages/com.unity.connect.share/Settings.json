@@ -21,7 +21,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"D:/pfppb-mvp1-build_05182023;D:/pfppb-mvp1-build_05172023;D:/pfppb-mvp1-build_05142023;D:/pfppb-mvp1-build;C:/Users/yohan/Desktop/tutophoton;C:/Users/yohan/Desktop/DecimalistBuildWebGL;C:/Users/yohan/Desktop/dcimalistProject/WebGL Builds;;;\"}"
+                "value": "{\"m_Value\":\"E:/Work/Tasks/backup/result/Build;E:/Work/Tasks/pfppb/buildResult;E:/Work/Tasks/pfppb/buildResult/Build;E:/Work/Tasks/pfppb/Build_pure;E:/Work/Tasks/pfppb/Build;D:/work/cardano unity/webgl;D:/pfppb-mvp1-build_05172023;D:/pfppb-mvp1-build_05142023;D:/pfppb-mvp1-build;C:/Users/yohan/Desktop/tutophoton\"}"
             }
         ]
     }
