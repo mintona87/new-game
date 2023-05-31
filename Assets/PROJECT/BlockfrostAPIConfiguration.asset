@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9939ab4e8bdef674f8d614eb5927fc8e, type: 3}
   m_Name: BlockfrostAPIConfiguration
   m_EditorClassIdentifier: 
-  ProjectId: mainnetKOgSmE9IyK4dykL7gq9uvrxsxOxYziNr
+  ProjectId: mainnetqzikrTn0oOdQY05IAnl7gbuhDvbfN9dx
   RequestTimeout: 0
   DebugLogging: 0
   _currentApi: Cardano
