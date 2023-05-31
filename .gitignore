@@ -59,3 +59,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 /.vsconfig
+Assets/PlayFabEditorExtensions/Editor/Resources/MostRecentPackage.unitypackage.meta
+Assets/PROJECT/Scripts/CardanoBech32/CardanoBech32.csproj.meta
