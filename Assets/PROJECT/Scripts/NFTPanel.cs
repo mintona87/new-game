@@ -13,6 +13,7 @@ public class NFTPanel : MonoBehaviour
 
     public Image nftPotrait;
     public TMP_Text nftName;
+    public TMP_Text nftDescription;
     public TMP_Text[] nftTraits;
 
     // Start is called before the first frame update
@@ -45,7 +46,8 @@ public class NFTPanel : MonoBehaviour
     {
         nftPotrait.sprite = _sprite;
         nftName.text = _nftData.name;
-        for(int i = 0; i < nftTraits.Length; i++)
+        nftDescription.text = _nftData.description;
+        for (int i = 0; i < nftTraits.Length; i++)
         {
             nftTraits[i].gameObject.SetActive(false);
         }

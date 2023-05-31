@@ -16,12 +16,26 @@ public class NFTCell : MonoBehaviour
     public void InitCell(NFTMEtadata _data)
     {
         cellData = _data;
-        DownloadManager.instance.BookDownload(_data.imageUrl, LoadSprite);
+        if(_data.rawImage)
+        {
+            if(_data.imageUrl != null)
+            {
+                LoadSprite(GlobalData.instance.GetTextureFromBase64(_data.imageUrl));
+            }
+        }
+        else
+        {
+            DownloadManager.instance.BookDownload(_data.imageUrl, LoadSprite);
+        }
         //nftImage.sprite = 
     }
     void LoadSprite(Texture2D loadedTexture)
     {
         nftSprite = GlobalData.instance.LoadSpriteFromTexture(loadedTexture);
         nftImage.sprite = nftSprite;
+    }
+    private void OnDestroy()
+    {
+        DownloadManager.instance.UnBookDownload(cellData.imageUrl);
     }
 }

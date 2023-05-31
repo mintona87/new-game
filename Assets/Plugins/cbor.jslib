@@ -1,3 +1,4 @@
+
 mergeInto(LibraryManager.library, {
 
     JsonParse: function (metadatas) {
@@ -6,35 +7,56 @@ mergeInto(LibraryManager.library, {
 
       // Initialize array to hold rearranged JSON objects
       const dataArray = [];
+      console.log(metadatas, splitJson, '----------metadatas, splitJson ');
 
       for (var i=0; i<splitJson.length; i++) {
         var splitString = splitJson[i];
         if (!splitString) continue;
 
         // Split the string into name and data parts
-        const [unit, dataString] = splitString.split('!@#');
+        const [unit, dataString, isUpdated] = splitString.split('!@#');
         // Parse the data JSON string and extract desired properties
         const dataJson = JSON.parse(dataString);
-        const policyId = Object.keys(Object.values(dataJson)[0])[0];
-        const hexEncodedName = unit.split(policyId)[1];
-        const name = Hex2a(hexEncodedName);
+        
+        var name;
+        var imageData;
+        var properties, hexEncodedName="", website=""
+        var description;
+        if (isUpdated) {
+            const propertyData = base64DecodeObject(JSON.parse(dataString)[0]);
 
-
-        const propertyData = dataJson["721"][policyId][name];
-
-        // Rearrange extracted properties into desired format
-        const properties = Object.entries(propertyData)
-          .filter(([key]) => key !== 'Website' && key !== 'image')
-          .map(([key, value]) => `${key.replace(/_/g, '-')}:::${value}`)
-          .join('|||');
+            name = propertyData.name? propertyData.name:"";
+            properties = getProperties(propertyData);
+            imageData = propertyData.image? getImageData(propertyData.image):"";
+            description = propertyData.description? getDescription(propertyData.description):"";
+            
+        } else {
+    
+            if (!dataJson["721"]) continue;
+            
+            const policyId = Object.keys(Object.values(dataJson)[0])[0];
+            hexEncodedName = unit.split(policyId)[1];
+    
+            if (!dataJson || !policyId || !hexEncodedName) continue;
+        
+            name = Hex2a(hexEncodedName);
+            const propertyData = dataJson["721"][policyId][name];
+            properties = getProperties(propertyData);
+            imageData = propertyData.image? getImageData(propertyData.image):"";
+            description = propertyData.description? getDescription(propertyData.description):"";
+            website = propertyData.Website? propertyData.Website:"";
+    
+        }
 
         dataArray.push({
           unit,
           name,
-          imageUrl: propertyData.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
+          imageUrl:imageData.imageUrl,
+          rawImage:imageData.rawImage,
           property: properties,
-          website: propertyData.Website.trim(),
+          website,
           hexEncodedName,
+          description,
         });
       }
       console.log(dataArray, '----------dataArray');

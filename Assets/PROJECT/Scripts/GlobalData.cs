@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using System;
 
 [System.Serializable]
 public class NFTMEtadata
 {
     public string unit;
     public string name;
+    public string description;
+    public bool rawImage;
     public string imageUrl;
     public string hexEncodedName;
     public string website;
@@ -33,10 +36,12 @@ public class GlobalData : MonoBehaviour
     public string playfabId;
     public Dictionary<string, string> playerData = new Dictionary<string, string>();
 
+    public Action<NFTMEtadata> nftSelectAction = null;
     string jsonData = "{\"data\":[{\"unit\":\"123\",\"name\":\"456\",\"imageUrl\":\"https://ipfs.io/ipfs/QmXfB96Nm16Yf8eSnYUw69vx54iP64oVcyfS8BEKWv3CfN\",\"property\":\"zc-/-ewrwer///xv-/-werwer\"},{\"unit\":\"123\",\"name\":\"sefsdf\",\"imageUrl\":\"https://ipfs.io/ipfs/QmXfB96Nm16Yf8eSnYUw69vx54iP64oVcyfS8BEKWv3CfN\",\"property\":\"zsdfec-/-ewrwsefer///xv-/-werwer\"}]}";
     string splitStr = "|||";
     string subSplitStr = ":::";
 
+    public Texture2D testTexture;
     
     
     // Start is called before the first frame update
@@ -85,6 +90,10 @@ public class GlobalData : MonoBehaviour
         },
         result => {
             Debug.Log("Successfully updated user data");
+            if(nftSelectAction != null)
+            {
+                nftSelectAction(_data);
+            }
         },
         error => {
             Debug.Log("Got error setting user data Ancestor to Arthur");
@@ -105,5 +114,19 @@ public class GlobalData : MonoBehaviour
             Debug.Log("Got error retrieving user data:");
             Debug.Log(error.GenerateErrorReport());
         });
+    }
+    public Texture2D GetTextureFromBase64(string _base64Str)
+    {
+        byte[] imageBytes = Convert.FromBase64String(_base64Str);
+        Texture2D tex = new Texture2D(2, 2);
+        tex.LoadImage(imageBytes);
+        return tex;
+    }
+    public void ReduceTextureSize()
+    {
+        Debug.Log("texture size: " + testTexture.width.ToString());
+        testTexture.Reinitialize(testTexture.width / 2, testTexture.height / 2, TextureFormat.RGBA32, false);
+        testTexture.Apply();
+        Debug.Log("texture size: " + testTexture.desiredMipmapLevel.ToString());
     }
 }
