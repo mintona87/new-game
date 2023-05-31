@@ -44,7 +44,6 @@ public class PlayfabManager : MonoBehaviour
 
     private void Awake()
     {
-        localPlayerHonor = -1;
         LoginPasswordInput.inputType = TMP_InputField.InputType.Password;
         RegisterPasswordInput.inputType = TMP_InputField.InputType.Password;
         
@@ -64,8 +63,7 @@ public class PlayfabManager : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("playfab title id: " + PlayFabSettings.TitleId);
-        Debug.Log("check localhonor update " + localPlayerHonor);
+        //Debug.Log("playfab title id: " + PlayFabSettings.TitleId);
     }
 
 
@@ -118,9 +116,10 @@ public class PlayfabManager : MonoBehaviour
 
         SubmitNameButton();
 
-        SendLeaderboard(0);
+        SendLeaderboard(1);
 
         LoginSettings();
+        GlobalData.instance.playfabId = result.PlayFabId;
     }
 
 
@@ -159,17 +158,10 @@ public class PlayfabManager : MonoBehaviour
 
     void OnGetStatistics(GetPlayerStatisticsResult result)
     {
-        Debug.Log("Received the following Statistics:"+ result.Statistics.Count);
-
-        if (result.Statistics.Count == 0)
-        {
-            SendLeaderboard(0);
-        }
-
+        Debug.Log("Received the following Statistics:");
         foreach (var eachStat in result.Statistics)
         {
-            Debug.Log("statisticname " + eachStat.StatisticName);
-            if (eachStat.StatisticName == "Honor_Leaderboard")
+            if(eachStat.StatisticName == "Honor_Leaderboard")
             {
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
                 localPlayerHonor = eachStat.Value;
@@ -202,7 +194,7 @@ public class PlayfabManager : MonoBehaviour
     void OnLoginSuccess(LoginResult result)
     {
         Debug.Log("Logged in!");
-
+        
         // CHECK IF THE ACCOUNT HAS DISPLAY NAME, PROMPT FORM IF NOT
         string name = null;
         if (result.InfoResultPayload.PlayerProfile != null)
@@ -224,6 +216,7 @@ public class PlayfabManager : MonoBehaviour
         {
             LoginSettings();
         }
+        GlobalData.instance.playfabId = result.PlayFabId;
     }
 
     void LoginSettings()
@@ -385,5 +378,6 @@ public class PlayfabManager : MonoBehaviour
                   );
             SavePlayerSavedData(playerSavedData);
         }
+        GlobalData.instance.playerData["PlayerSavedData"] = JsonConvert.SerializeObject(playerSavedData);
     }
 }

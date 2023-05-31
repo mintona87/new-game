@@ -158,6 +158,7 @@ public class PlayerEffect : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         targetScript.playerEffect.defendEffect.enabled = false;
+        targetScript.SetIsDefending(false);
     }
 
     // The rest of the code remains the same

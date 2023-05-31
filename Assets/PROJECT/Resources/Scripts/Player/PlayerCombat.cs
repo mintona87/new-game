@@ -33,11 +33,11 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     {
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "countPlayerPlayingAction", 0 },
-            { "isGameOver",  false}
+            { "countPlayerPlayingAction", 0 }
         };
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
     }
 
 
@@ -432,14 +432,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
             }
         }
-        else if (propertiesThatChanged.TryGetValue("isGameOver", out object gameoverValue))
-        {
-            bool isGameOver = (bool)gameoverValue;
-            playerManager.gameController.gameOverManager.isGameOver = isGameOver;
-            Debug.Log("roomvalue update gameover " + isGameOver);
-            
-        }
-
     }
 
 
@@ -459,7 +451,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (playerManager.HasLost()) return;
 
         int damage = playerManager.Attack();
-        Debug.Log("insideAttack " + PhotonNetwork.LocalPlayer.NickName);
+
         // to do set target
 
         int localPlayerViewID = playerManager.pv.ViewID;

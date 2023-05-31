@@ -21,7 +21,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     private Dictionary<string, RoomInfo> cachedRoomList;
 
-
     public string roomType;// set in ChooseModeHandler.cs
     public bool isConnectedOnMaster;
 
@@ -33,26 +32,13 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerCountText;
 
     public TextMeshProUGUI LoadingText;
-    public TextMeshProUGUI LookingForOpponentText;
-    public TextMeshProUGUI TimerText;
 
     bool isJoinMatchClicked;
 
-
-    // increase honor every minute when searching for other player
-    bool shouldStartSearchHonorTimer;
-    bool isItOnRematch;
-    float timeBeforeIncreaseHonorOtherPlayer;
-    int otherPlayerhonorDifference;
-    //
     void Awake()
     {
         Instance = this;
-        
-        timeBeforeIncreaseHonorOtherPlayer = 60.0f;
-        otherPlayerhonorDifference = 10;
         isConnectedOnMaster = false;
-        shouldStartSearchHonorTimer = false;
         roomType = "";
         playfabManager = FindObjectOfType<PlayfabManager>();
         cachedRoomList = new Dictionary<string, RoomInfo>();
@@ -64,7 +50,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitForPlayfabDataToLoad()
     {
-        while (playfabManager.localPlayerHonor == -1)
+        while (playfabManager.localPlayerHonor == 0)
         {
             Debug.Log("inside honor did not load");
             yield return null;
@@ -96,15 +82,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = playfabManager.nickname;
     }
 
-
-    #region Update
-
     private void FixedUpdate()
     {
         if (PhotonNetwork.IsConnectedAndReady)
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(false);
-            Debug.Log("devregion " +PhotonNetwork.CloudRegion);
+            //Debug.Log("devregion " +PhotonNetwork.CloudRegion);
         }
         else
         {
@@ -113,34 +96,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         //Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
         //Debug.Log("inlobby " + PhotonNetwork.InLobby);
     }
-
-    private void Update()
-    {
-        Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
-
-        if (shouldStartSearchHonorTimer)
-        {
-            if (timeBeforeIncreaseHonorOtherPlayer > 0)
-            {
-                timeBeforeIncreaseHonorOtherPlayer -= Time.deltaTime;
-                TimerText.text = Mathf.Round(timeBeforeIncreaseHonorOtherPlayer).ToString()+"s" ;
-            }
-            else
-            {
-                Debug.Log("Timer has finished. Resetting...");
-                PhotonNetwork.LeaveRoom();
-                isItOnRematch = true;
-                timeBeforeIncreaseHonorOtherPlayer = 60;
-            }
-        }
-    }
-
-    #endregion
-
     public void JoinMatchClicked()
     {
         isJoinMatchClicked = true;
-        shouldStartSearchHonorTimer = true;
+
         UpdateLobby();
         LoadingText.text = "Searching room...";
 
@@ -190,12 +149,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())));
 
-        if (FindObjectOfType<DebugUI>().ToggleMatchWithEveryone.isOn)
-        {
-            otherPlayerhonorDifference = 50000;
-        }
-
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= otherPlayerhonorDifference)
+        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= /*1*/5000)
         {
             shouldMatch = true;
         }
@@ -243,6 +197,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
     }
+
+   
 
     public void JoinRoom(RoomInfo info)// for customize and training room 
     {
@@ -317,7 +273,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                     getPlayer.GetPlayerNumber() + 1,
                     getPlayer.CustomProperties["Nickname"].ToString(),
                     playerHonor,
-                    "",
                     "matchmaking"
                 );
             }
@@ -333,7 +288,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 (player.GetPlayerNumber() + 1,
                 player.CustomProperties["Nickname"].ToString(),
                 playerHonor,
-                "",
                 "matchmaking"
                 ) ;
         }
@@ -359,7 +313,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             {
                 PlayMultiButtonObj.SetActive(true);
             }
-            shouldStartSearchHonorTimer = false;
         }
         LoadingText.text = "Searching for other players...";
     }
@@ -378,8 +331,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             insideRoomUiObj.SetActive(true);
         
             RoomLoadingScreen.SetActive(false);
-
-            shouldStartSearchHonorTimer = false;
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
@@ -414,9 +365,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             {
                 PlayMultiButtonObj.SetActive(true);
             }
-            shouldStartSearchHonorTimer = false;
         }
-
 
     }
 
@@ -436,7 +385,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        Debug.Log("listUpdate called " + roomList.Count);
+        Debug.Log("listUpdate called");
 
         foreach (RoomInfo room in roomList)
         {
@@ -465,8 +414,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 }
             }
         }
-
-
         //foreach (RoomInfo room in cachedRoomList.Values)
         //{
         //    Debug.Log("instantiate called");
@@ -505,17 +452,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             Destroy(PlayerRoomObj.gameObject);
         }
         insideRoomUiObj.SetActive(false);
-        
-        shouldStartSearchHonorTimer = false;
-        roomType = "";
 
-        if (isItOnRematch)
-        {
-            otherPlayerhonorDifference += 10;
-            JoinMatchClicked();
-            isJoinMatchClicked = true;
-            isItOnRematch = false;
-        }
+        roomType = "";
     }
     #endregion
 
@@ -557,8 +495,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         }
     }
 
-
-    
 
 
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 
 public class DebugUI : MonoBehaviour
 {
@@ -12,21 +11,17 @@ public class DebugUI : MonoBehaviour
 
     public Text NickNameText, RankText;
 
-    public bool canMatchWithEveryBody;
-
-    public Toggle ToggleMatchWithEveryone;
-
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         playfabManager = FindObjectOfType<PlayfabManager>();
     }
 
-    public void DisconnectButtonClicked()
+    
+    public void ResetRankPressed()
     {
-        PhotonNetwork.Disconnect();
-    }
 
+    }
 
     public void SetPlayer2ButtonPressed()
     {

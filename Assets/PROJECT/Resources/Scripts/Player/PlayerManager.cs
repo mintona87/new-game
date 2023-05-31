@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     public int HP = 100;
     public int MaxHP = 100;
     public bool HasCharged = false;
-    public bool isDefending;
+    public bool isDefending = false;
     public bool isStunned = false;
 
     int ATK;
@@ -98,6 +98,8 @@ public class PlayerManager : MonoBehaviour
         //    }
         //}
         InitPlayerStatOnline();
+
+        
     }
 
     void InitPlayerStatOnline()
@@ -239,13 +241,6 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        Debug.Log("isDefending" + isDefending +" "+PhotonNetwork.LocalPlayer.NickName);
-        if (isDefending)
-        {
-            amount = 0;
-            SetIsDefending(false);
-        }
-
         HP += amount;
         if (HP < 0)
         {
@@ -259,13 +254,6 @@ public class PlayerManager : MonoBehaviour
 
         if (HasLost())
         {
-
-            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
-            {
-                { "isGameOver", true}
-            };
-            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-
             // Set "Win" for a player different than the local player
             foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
             {
@@ -284,9 +272,8 @@ public class PlayerManager : MonoBehaviour
                     }
                 }
             }
-            StartCoroutine(InitGameOver());
+            gameController.gameOverManager.DisplayPlayersGameOverObj();
         }
-        Debug.Log("HPafterdamage" +HP);
     }
 
 
@@ -324,7 +311,6 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void SetIsDefendingRPC(bool condition)
     {
-        Debug.Log("isdefendingset" +condition);
         isDefending = condition;
     }
 
@@ -400,17 +386,5 @@ public class PlayerManager : MonoBehaviour
     public bool HasLost()
     {
         return HP <= 0;
-    }
-    IEnumerator InitGameOver()
-    {
-        while (!gameController.gameOverManager.isGameOver)
-        {
-            Debug.Log("is playing action");
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(2.0f);
-
-        gameController.gameOverManager.DisplayPlayersGameOverObj();
     }
 }
