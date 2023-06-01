@@ -61,6 +61,15 @@ public class PlayerManager : MonoBehaviour
     //{
     //    Debug.Log("spd " + SPD + " ismine " + isItMyPlayer);
     //}
+    private void Update()
+    {
+        if (isItMyPlayer)
+        {
+            Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
+
+            FindObjectOfType<DebugUI>().ChargeText.text = "charge " + TurnsSinceCharge;
+        }
+    }
 
     void InitPlayer()
     {

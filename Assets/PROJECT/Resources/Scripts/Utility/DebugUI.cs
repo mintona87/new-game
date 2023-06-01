@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DebugUI : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class DebugUI : MonoBehaviour
     PlayfabManager playfabManager;
 
     public Text NickNameText, RankText;
+
+    public Toggle ToggleMatchWithEveryone;
+
+    public TextMeshProUGUI ChargeText;
+
 
     void Start()
     {
