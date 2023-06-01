@@ -35,12 +35,8 @@ public class WalletConnect : MonoBehaviour
     {
         loadingScreen.SetActive(false);
         client = new Blockfrost.Cardano(myConfiguration);
-        //Address = "addr1qy9v0eaay6j4ypnj7tpegqw6ftkdc57fh58pwdzfenrqecx7ghgwceed03tl3f8k2htmf3ut7mkt8a3jcg6szn7yh9hsmpksxz";
-        NFT = "aa19d5f5ae9b6c93c8e278851194553ddd4789d77f86d3ad2f7480d8"; // Cardano Crocs Club
-        //Address = "addr1q9cqfw8tmcmtrxtk8mlp259qeu2qslrh8mmuvjt276r34vgd60j6flje32l6py8jetyreqcghd6t3rsrnv7mahqkl07sdplgaq";
-        //NFT = "0889a2d542897f0c7eefed47d2d809bd8d8ec78881bd4ff9464f683a"; // PFPPB
     }
-    public async void OnClickNamiWalletConnect()
+    public void OnClickNamiWalletConnect()
     {
         //GlobalData.instance.LoadNFTMetaData();
 #if UNITY_WEBGL
@@ -93,12 +89,39 @@ public class WalletConnect : MonoBehaviour
                                 if (refAmount.unit == refAsset)
                                 {
                                     //var data = HexStringToString(output.inline_datum);
+                                    if (!String.IsNullOrEmpty(output.inline_datum))
+                                    {
+                                        byte[] bytes1 = StringToByteArray(output.inline_datum);
+                                        cbor = CBORObject.DecodeFromBytes(bytes1);
+                                        var metadata = cbor.ToJSONString();
+                                        Debug.Log($"({metadata})");
+                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata + "!@#updated";
+                                    }
+                                    else if (!String.IsNullOrEmpty(output.data_hash))
+                                    {
+                                        ScriptDatumCbor data = await client.GetDatumCBORValue(output.data_hash);
+                                        byte[] bytes = StringToByteArray(data.cbor);
+                                        cbor = CBORObject.DecodeFromBytes(bytes);
+                                        var metadata = cbor.ToJSONString();
+                                        Debug.Log($"({metadata})");
+                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata + "!@#updated";
+                                    }
+                                    else
+                                    {
+                                        var txContentMetadataCbor = await client.GetTransactionMetadataInCBOR(nft.initial_mint_tx_hash);
+                                        //await Task.Delay(1000);
+                                        Debug.Log($"({txContentMetadataCbor})");
 
-                                    byte[] bytes1 = StringToByteArray(output.inline_datum);
-                                    cbor = CBORObject.DecodeFromBytes(bytes1);
-                                    var metadata = cbor.ToJSONString();
-                                    Debug.Log($"({metadata})");
-                                    metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata + "!@#updated";
+                                        //await Task.Delay(1000);
+                                        if (txContentMetadataCbor.Length != 0)
+                                        {
+                                            byte[] bytes1 = StringToByteArray(txContentMetadataCbor[0].metadata);
+                                            cbor = CBORObject.DecodeFromBytes(bytes1);
+                                            var metadata = cbor.ToJSONString();
+                                            Debug.Log($"({metadata})");
+                                            metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -127,7 +150,7 @@ public class WalletConnect : MonoBehaviour
         catch (Exception e)
         {
             //  Block of code to handle errors
-            Debug.Log("No nft");
+            Debug.Log("No nft"+ e);
             loadingScreen.SetActive(false);
             return;
         }
@@ -140,10 +163,9 @@ public class WalletConnect : MonoBehaviour
         GlobalData.instance.isWalletConnected = true;
         var converter = new CardanoBech32Wrapper();
         Address = converter.ConvertToBech32AddressFromHex(address, AddressType.addr);
-        Debug.Log(Address);
-        //Address = "addr1qy9v0eaay6j4ypnj7tpegqw6ftkdc57fh58pwdzfenrqecx7ghgwceed03tl3f8k2htmf3ut7mkt8a3jcg6szn7yh9hsmpksxz";
-        //Address = "addr1qy6kymmqdhwpsqh0hgthnnfgk6wptahze7k4n0mnsq45rsw9c8dfrcfhk43nl52622cuayy8229v5rqw44h59yzzjzzsh2k0x7";
 
+        //Address = "addr1q95vldfjvqd5vuxe6e2pxee5rl9l0tj5949dkzvg8t2dymdrmmz5crk4sm24rgppdmy9ytfn2f0cv9q9e3r59443qd2salsw7w";
+        Debug.Log(Address);
         FetchNFTs();
     }
 
