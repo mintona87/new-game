@@ -33,11 +33,12 @@ public class LeaderboardManager : MonoBehaviour
             GameObject newEntry = Instantiate(playerEntryPrefab, leaderboardContent);
 
             newEntry.transform.SetParent(leaderboardContent);
-            
+
             newEntry.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo(
                 0,
                 entry.DisplayName,
                 entry.StatValue,
+                "",
                 "leaderboard"
                 );
             // You can set the player image here, e.g., by using a Coroutine to download it from a URL.

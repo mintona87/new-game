@@ -22,13 +22,7 @@ public class DebugUI : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         playfabManager = FindObjectOfType<PlayfabManager>();
     }
-
     
-    public void ResetRankPressed()
-    {
-
-    }
-
     public void SetPlayer2ButtonPressed()
     {
         playfabManager.LoginUserNameInput.text = "tt@gl.com";

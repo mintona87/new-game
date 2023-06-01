@@ -10,7 +10,7 @@ using Photon.Realtime;
 public class GameController : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TextMeshProUGUI gameOverText;
-    
+
     public AudioSource backgroundMusic;
 
     public int player1Honor = 0;
@@ -19,9 +19,8 @@ public class GameController : MonoBehaviourPunCallbacks
     private float[] playerHonor = new float[2];
 
     public int Turn = 0;
-    
 
-    private bool isGameOver = false;
+
 
     public AudioManager audioManager;
     public List<PlayerManager> playerList = new List<PlayerManager>();
@@ -86,7 +85,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public void SetPlayerList()
     {
-        for(int i = 0; i < PlayerListContainer.transform.childCount; i++)
+        for (int i = 0; i < PlayerListContainer.transform.childCount; i++)
         {
             playerList.Add(PlayerListContainer.transform.GetChild(i).GetComponent<PlayerManager>());
         }

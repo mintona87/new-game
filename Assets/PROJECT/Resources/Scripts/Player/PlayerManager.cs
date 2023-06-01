@@ -18,10 +18,9 @@ public class PlayerManager : MonoBehaviour
     int SPD;
     int LUCK;
 
-   public int Gold { get; private set; } = 0;
+    public int Gold { get; private set; } = 0;
 
     public int TurnsSinceCharge = 6;
-
 
     public GameController gameController;
     public PlayerUI playerUI;
@@ -39,8 +38,8 @@ public class PlayerManager : MonoBehaviour
 
     public bool isItMyPlayer;
 
-    
-    
+
+
     private void Awake()
     {
         gameController = FindObjectOfType<GameController>();
@@ -57,10 +56,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     ////tmp
-    //private void Update()
-    //{
-    //    Debug.Log("spd " + SPD + " ismine " + isItMyPlayer);
-    //}
     private void Update()
     {
         if (isItMyPlayer)
@@ -107,8 +102,6 @@ public class PlayerManager : MonoBehaviour
         //    }
         //}
         InitPlayerStatOnline();
-
-        
     }
 
     void InitPlayerStatOnline()
@@ -148,12 +141,12 @@ public class PlayerManager : MonoBehaviour
             canPlay = false;
         }
 
-        Debug.Log("getnum " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "playernum "+ playerNumber);
+        Debug.Log("getnum " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "playernum " + playerNumber);
         if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == playerNumber)
         {
             isItMyPlayer = true;
         }
-        Debug.Log("isitMyPlayer " +gameObject.name+" cond "+ isItMyPlayer);
+        Debug.Log("isitMyPlayer " + gameObject.name + " cond " + isItMyPlayer);
 
         if (isItMyPlayer)
         {
@@ -236,7 +229,7 @@ public class PlayerManager : MonoBehaviour
     {
         return UpgradeStat(ref LUCK, tier);
     }
-   
+
     public void ResetCharge()
     {
         HasCharged = false;
@@ -263,6 +256,13 @@ public class PlayerManager : MonoBehaviour
 
         if (HasLost())
         {
+
+            ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
+            {
+                { "isGameOver", true}
+            };
+            PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+
             // Set "Win" for a player different than the local player
             foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
             {
@@ -281,7 +281,7 @@ public class PlayerManager : MonoBehaviour
                     }
                 }
             }
-            gameController.gameOverManager.DisplayPlayersGameOverObj();
+            StartCoroutine(InitGameOver());
         }
     }
 
@@ -315,7 +315,7 @@ public class PlayerManager : MonoBehaviour
 
     public void SetIsDefending(bool condition)
     {
-        pv.RPC("SetIsDefendingRPC", RpcTarget.AllBuffered,condition);
+        pv.RPC("SetIsDefendingRPC", RpcTarget.AllBuffered, condition);
     }
     [PunRPC]
     void SetIsDefendingRPC(bool condition)
@@ -334,7 +334,7 @@ public class PlayerManager : MonoBehaviour
             // 70% chance of stun
             if (random <= 0.7)
             {
-                Debug.Log("shouldSetOtherPlayerStun"+ playerCombat.GetOtherPlayer().GetPlayerNumber());
+                Debug.Log("shouldSetOtherPlayerStun" + playerCombat.GetOtherPlayer().GetPlayerNumber());
                 Debug.Log("onchangestun2");
                 playerCombat.GetOtherPlayer().SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "stun" } });
             }
@@ -395,5 +395,17 @@ public class PlayerManager : MonoBehaviour
     public bool HasLost()
     {
         return HP <= 0;
+    }
+    IEnumerator InitGameOver()
+    {
+        while (!gameController.gameOverManager.isGameOver)
+        {
+            Debug.Log("is playing action");
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(2.0f);
+
+        gameController.gameOverManager.DisplayPlayersGameOverObj();
     }
 }
