@@ -12,6 +12,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] public TextMeshProUGUI ActionText;
     public TextMeshProUGUI playerNumberText;
     public TextMeshProUGUI playerUsernameText;
+    public TextMeshProUGUI HPText;
 
     public Button playerAttackButton;
     public Button playerHealButton;
@@ -33,6 +34,7 @@ public class PlayerUI : MonoBehaviour
         float sliderValue = GetNormalizedHP(player.HP, player.MaxHP);
         hpSlider.maxValue = sliderValue;
         hpSlider.value = sliderValue;
+        HPText.text = player.HP.ToString() + "/" + player.MaxHP.ToString();
     }
 
     public void SetHealthSlider(int hp)
@@ -45,7 +47,7 @@ public class PlayerUI : MonoBehaviour
     public void SetHealthSliderRPC(int hp, float sliderValue)
     {
         hpSlider.value = sliderValue;
-        
+        HPText.text = hp.ToString() + "/" + player.MaxHP.ToString();
     }
     public void SetActiveButtons(bool condition)
     {
@@ -66,14 +68,18 @@ public class PlayerUI : MonoBehaviour
 
     public void SetPlayerPicture()
     {
-        if(gameObject.name == "Player1")
+        // comment this when nft part is done
+
+        if (gameObject.name == "Player1")
         {
-            PlayerPicture.sprite =  Resources.Load<Sprite>("Sprites/$decimalist");
+            PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
         }
         else
         {
             PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
         }
+        //activate when get nft image 
+        //PlayerPicture.sprite = playfabManager.localImageObj.GetComponent<Image>().sprite;
     }
 
     public float GetNormalizedHP(int hp, int maxHealth)

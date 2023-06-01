@@ -33,7 +33,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     {
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
         {
-            { "countPlayerPlayingAction", 0 }
+            { "countPlayerPlayingAction", 0 },
+            { "isGameOver",  false}
         };
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
@@ -44,7 +45,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     public void SetDefaultTarget()
     {
         // To do : does not make sens 
-        if(PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
+        if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
         {
             playerManager.gameController.MyPlayerObj = playerManager.gameController.playerList[0].gameObject;
             targetObj = playerManager.gameController.playerList[1].gameObject;
@@ -64,7 +65,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         targetScript = targetObj.GetComponent<PlayerManager>();
     }
 
-    public enum Actions 
+    public enum Actions
     {
         NoAction = 0,
         Attack = 1,
@@ -74,11 +75,11 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     }
 
     public Actions choosenAction;
-    
+
     void UpdateTurnAndUI()
     {
         Debug.Log("istargetstuned " + playerManager.playerCombat.targetScript.isStunned);
-        
+
         if (playerManager.playerCombat.targetScript.isStunned)
         {
             playerManager.playerCombat.targetScript.gameController.HandlePlayerTurn();
@@ -133,7 +134,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         const float waitTime = 3.0f;
         isPlayingAction = true;
         targetScript.playerCombat.isPlayingAction = true;
-        
+
 
         // wait if no actions are selected (Unless there is a buf it should never be called)
         if (PhotonNetwork.LocalPlayer.IsLocal)
@@ -147,7 +148,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         //Reset DidFinishChoosingAction for all players
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            player.CustomProperties["DidFinishChoosingAction"] =  false;
+            player.CustomProperties["DidFinishChoosingAction"] = false;
         }
 
         int sharedRandomNumber = (int)PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"];
@@ -156,8 +157,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         // set the variable that indicates that the player is not choosing action anymore but he is playing the action that he choose
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayingAction", true } });
 
-       
-        
+
+
         int localSpd = Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["SPD"]);
         int otherSpd = Convert.ToInt32(GetOtherPlayer().CustomProperties["SPD"]);
 
@@ -170,7 +171,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                 CheckStunAndChooseAction();
             }
         }
-        else if(localSpd == otherSpd)
+        else if (localSpd == otherSpd)
         {
             //choose who plays first randomely
             if (sharedRandomNumber > 50)
@@ -232,7 +233,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             int targetPlayerViewID = targetScript.pv.ViewID;
             string targetName = "localPlayer";
 
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text+" is stunned!", localPlayerViewID, targetPlayerViewID, targetName);
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + " is stunned!", localPlayerViewID, targetPlayerViewID, targetName);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
         }
@@ -240,10 +241,10 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     public void DisableButtonUI()
     {
-        
+
         foreach (PlayerManager playerManager in FindObjectsOfType<PlayerManager>())
         {
-            Debug.Log("shouldbedisabled"+ playerManager.gameObject.name);
+            Debug.Log("shouldbedisabled" + playerManager.gameObject.name);
             playerManager.playerUI.playerAttackButton.interactable = false;
             playerManager.playerUI.playerHealButton.interactable = false;
             playerManager.playerUI.playerDefendButton.interactable = false;
@@ -268,7 +269,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     }
     void ChooseAction()
     {
-        switch (choosenAction) 
+        switch (choosenAction)
         {
             case Actions.Attack:
                 Attack();
@@ -295,7 +296,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
         Debug.Log("Callback called");
-        
+
         // Check if the "DidFinishChoosingAction" property has been updated
         if (changedProps.ContainsKey("DidFinishChoosingAction"))
         {
@@ -310,7 +311,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                     bool didFinishChoosingAction = (bool)player.CustomProperties["DidFinishChoosingAction"];
 
                     // Perform any required action based on the value
-                    Debug.Log($"callbackdisfinish {player.NickName} has DidFinishChoosingAction set to: {didFinishChoosingAction}" + " trucount "+ countTrue);
+                    Debug.Log($"callbackdisfinish {player.NickName} has DidFinishChoosingAction set to: {didFinishChoosingAction}" + " trucount " + countTrue);
                     if (didFinishChoosingAction)
                     {
                         countTrue++;
@@ -330,10 +331,10 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
         else if (changedProps.ContainsKey("isPlayingAction"))
         {
-            
+
 
             // Iterate through all players in the room
-            
+
             // Check if the player has the custom property "DidFinishChoosingAction"
             if (targetPlayer.CustomProperties.ContainsKey("isPlayingAction"))
             {
@@ -342,25 +343,25 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                 {
                     bool isPlayingAction = (bool)targetPlayer.CustomProperties["isPlayingAction"];
 
-                    Debug.Log("customprop isPlayingAction " + isPlayingAction + " objname "+gameObject.name);
-                    
+                    Debug.Log("customprop isPlayingAction " + isPlayingAction + " objname " + gameObject.name);
+
                     // Perform any required action based on the value
-                    
-                    Debug.Log($"callbackPlayingaction {targetPlayer.NickName} has isPlayingAction set to: {isPlayingAction}" );
+
+                    Debug.Log($"callbackPlayingaction {targetPlayer.NickName} has isPlayingAction set to: {isPlayingAction}");
                     if (isPlayingAction == false)
                     {
                         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("countPlayerPlayingAction", out object value))
                         {
                             int countPlayerPlayingAction = (int)value;
-                            countPlayerPlayingAction ++;
-                            Debug.Log("wtfincrease " + countPlayerPlayingAction + "value "+(int)value);
+                            countPlayerPlayingAction++;
+                            Debug.Log("wtfincrease " + countPlayerPlayingAction + "value " + (int)value);
 
                             ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
                             {
                                 { "countPlayerPlayingAction", countPlayerPlayingAction }
                             };
                             Debug.Log("countPlayerPlayingAction " + countPlayerPlayingAction + " num " + targetPlayer.GetPlayerNumber());
-                                
+
                             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                         }
                     }
@@ -378,7 +379,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                     bool isPlayerStun;
 
                     // Get the updated value
-                    if (player.CustomProperties["isPlayerStun"].ToString() == "stun") 
+                    if (player.CustomProperties["isPlayerStun"].ToString() == "stun")
                     {
                         isPlayerStun = true;
                     }
@@ -386,7 +387,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                     {
                         isPlayerStun = false;
                     }
-                 
+
                     Debug.Log("stunplayerid " + player.GetPlayerNumber() + " stun " + isPlayerStun);
                     if (player.GetPlayerNumber() == PhotonNetwork.LocalPlayer.GetPlayerNumber())
                     {
@@ -418,7 +419,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         {
             int getCountPlayerPlayingAction = (int)value;
             Debug.Log("roomvalue update " + getCountPlayerPlayingAction);
-            if (getCountPlayerPlayingAction == 2) 
+            if (getCountPlayerPlayingAction == 2)
             {
                 isPlayingAction = false;
                 targetScript.playerCombat.isPlayingAction = false;
@@ -432,6 +433,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
             }
         }
+        else if (propertiesThatChanged.TryGetValue("isGameOver", out object gameoverValue))
+        {
+            bool isGameOver = (bool)gameoverValue;
+            playerManager.gameController.gameOverManager.isGameOver = isGameOver;
+            Debug.Log("roomvalue update gameover " + isGameOver);
+
+        }
+
     }
 
 
@@ -461,7 +470,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID,targetPlayerViewID, targetName);
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
         }
         else
         {
@@ -469,11 +478,13 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
 
         playerManager.TurnsSinceCharge++;
+        Debug.Log("should charge " + playerManager.TurnsSinceCharge);
+
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
     }
     #endregion
 
-  
+
     #region Heal
     public void OnPlayerHealButtonClicked()
     {
@@ -492,14 +503,15 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         {
             playerManager.HP = playerManager.MaxHP;
         }
-        targetScript.TurnsSinceCharge++;
+        playerManager.TurnsSinceCharge++;
+        Debug.Log("should charge " + playerManager.TurnsSinceCharge);
         StartCoroutine(playerEffect.PlayHealEffect());
 
         int localPlayerViewID = playerManager.pv.ViewID;
         int targetPlayerViewID = targetScript.pv.ViewID;
         string targetName = "localPlayer";
 
-        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + $" healed for {healAmount}!", localPlayerViewID, targetPlayerViewID,targetName);
+        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + $" healed for {healAmount}!", localPlayerViewID, targetPlayerViewID, targetName);
 
     }
 
@@ -517,7 +529,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     void Defend()
     {
         playerManager.SetIsDefending(true);
-        targetScript.TurnsSinceCharge++;
+        playerManager.TurnsSinceCharge++;
+        Debug.Log("should charge " + playerManager.TurnsSinceCharge);
         StartCoroutine(playerEffect.PlayDefendEffect());
     }
     #endregion
@@ -543,13 +556,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         targetScript.ChangeHP(-damage);
 
         playerManager.TurnsSinceCharge = 0; // Reset the counter
+        Debug.Log("should charge " + playerManager.TurnsSinceCharge);
 
         StartCoroutine(playerEffect.PlaySwordSlashEffect());
 
 
         int localPlayerViewID = playerManager.pv.ViewID;
         int targetPlayerViewID = targetScript.pv.ViewID;
-        string targetName ="target";
+        string targetName = "target";
 
         playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
     }
@@ -564,14 +578,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         PlayerManager localPlayerManager = localPlayerPV.GetComponent<PlayerManager>();
         PlayerManager targetPlayerManager = targetPlayerPV.GetComponent<PlayerManager>();
 
-        switch (targetName) 
-        { 
+        switch (targetName)
+        {
             case "target":
                 StartCoroutine(ShowActionText(text, targetPlayerManager.playerUI.ActionText));
-            break;
+                break;
             case "localPlayer":
                 StartCoroutine(ShowActionText(text, localPlayerManager.playerUI.ActionText));
-            break;
+                break;
         }
     }
 

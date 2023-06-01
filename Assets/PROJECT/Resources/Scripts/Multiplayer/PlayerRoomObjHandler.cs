@@ -16,8 +16,14 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerHonorText;
     public TextMeshProUGUI WonLostText;
 
+    PlayfabManager playfabManager;
 
-    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string type)
+    private void Awake()
+    {
+        playfabManager = FindObjectOfType<PlayfabManager>();
+    }
+
+    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type)
     {
         if (type != "leaderboard")
         {
@@ -36,7 +42,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
             PlayerHonorText.text = playerHonor.ToString();
         }
 
-        if(type == "gameover" || type == "matchmaking")
+        if (type == "gameover" || type == "matchmaking")
         {
             SetPlayerPicture();
         }
@@ -45,74 +51,61 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         {
             WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
 
-            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor));
+            StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor, winOrLost));
         }
         //to do set the image
     }
 
-    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor)
+    IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, string winOrLost)
     {
-        while (PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString() == "null")
+        if (winOrLost == "Won")
         {
-            yield return null;
-        }
-
-        if (nickName == PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString())
-        {
-            WonLostText.text = PhotonNetwork.LocalPlayer.CustomProperties["WonLost"].ToString();
-                
-            PlayerHonorText.text = playerHonor.ToString();
+            PlayerHonorText.text = "+10";/*playerHonor.ToString()*/
         }
         else
         {
-            // Find the remote player with the given nickname
-            Photon.Realtime.Player remotePlayer = null;
-            foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
-            {
-                if (player.CustomProperties["Nickname"].ToString() == nickName && player != PhotonNetwork.LocalPlayer)
-                {
-                    remotePlayer = player;
-                    break;
-                }
-            }
-
-            if (remotePlayer != null)
-            {
-                while (remotePlayer.CustomProperties["WonLost"].ToString() == "null")
-                {
-                    yield return null;
-                }
-                WonLostText.text = remotePlayer.CustomProperties["WonLost"].ToString();
-                    PlayerHonorText.text = playerHonor.ToString();
-            }
-            else
-            {
-                Debug.LogError("Remote player not found: " + nickName);
-            }
+            PlayerHonorText.text = "0";
         }
+        WonLostText.text = winOrLost;
+        yield return null;
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
-        Debug.Log("callback called" );
+        Debug.Log("callback called");
         // Check if the "Honor" property has been updated
         if (changedProps.ContainsKey("Honor"))
         {
+
             // Get the updated honor value
             int updatedHonor = Convert.ToInt32(changedProps["Honor"]);
 
+            //Debug.Log("honorremoteplayerlocal3 " + PlayerNameText.text + " nickname " + targetPlayer.CustomProperties["Nickname"].ToString());
             // Do something with the updated honor value, e.g., update the UI
-            UpdateHonorUI(updatedHonor);
+            if (PlayerNameText.text == targetPlayer.CustomProperties["Nickname"].ToString())
+            {
+                string winOrLost = targetPlayer.CustomProperties["WonLost"].ToString();
+                UpdateHonorUI(updatedHonor, winOrLost);
+            }
         }
     }
 
-    private void UpdateHonorUI(int updatedHonor)
+    private void UpdateHonorUI(int updatedHonor, string winOrLost)
     {
         // Update your UI elements here, e.g., the honor text
-        PlayerHonorText.text = updatedHonor.ToString();
+        if (winOrLost == "Won")
+        {
+            PlayerHonorText.text = "+10";/*playerHonor.ToString()*/
+        }
+        else
+        {
+            PlayerHonorText.text = "0";
+        }
     }
     public void SetPlayerPicture()
     {
+
+        // comment this when nft part is done
         if (PlayerNumberText.text == "Player 1")
         {
             PlayerImage.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
@@ -121,5 +114,9 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         {
             PlayerImage.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
         }
+
+        //activate when nft logic is set
+        //PlayerImage.sprite = playfabManager.localImageObj.GetComponent<Image>().sprite;
+
     }
 }
