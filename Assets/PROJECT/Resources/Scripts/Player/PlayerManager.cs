@@ -27,6 +27,8 @@ public class PlayerManager : MonoBehaviour
     public PlayerCombat playerCombat;
     public PlayerEffect playerEffect;
     public PhotonView pv;
+    public ActionTextHandler actionTextHandler;
+
 
     public float[] playerHonor = new float[2];
 
@@ -152,7 +154,6 @@ public class PlayerManager : MonoBehaviour
         {
             localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
             playerUI.playerUsernameText.text = localPlayerNickname;
-
         }
         else
         {
@@ -160,7 +161,7 @@ public class PlayerManager : MonoBehaviour
         }
 
 
-        FindObjectOfType<ActionTextHandler>().SetActionPosition();
+        StartCoroutine(actionTextHandler.SetActionPosition());
 
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();

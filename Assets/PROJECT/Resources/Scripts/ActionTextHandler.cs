@@ -6,18 +6,23 @@ using Photon.Pun.UtilityScripts;
 
 public class ActionTextHandler : MonoBehaviour
 {
-    PlayerManager playerManager;
+    public PlayerManager playerManager;
 
-    private void Awake()
+
+    public IEnumerator SetActionPosition()
     {
-        playerManager = transform.parent.GetComponent<PlayerManager>();
-    }
+        while(playerManager == null)
+        {
 
+            Debug.Log("action text problem");
+            yield return null;
+        }
 
-    public void SetActionPosition()
-    {
         if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
         {
+            Debug.Log("parentname " + playerManager.gameObject.name);
+            Debug.Log("testexist1" + playerManager);
+            Debug.Log("testexist2" + playerManager.isItMyPlayer);
             if (playerManager.isItMyPlayer)
             {
                 transform.localPosition = new Vector3(450.0f, -1.5f, 0.0f);
@@ -25,9 +30,7 @@ public class ActionTextHandler : MonoBehaviour
             else
             {
                 transform.localPosition = new Vector3(-280.0f, -1.5f, 0.0f);
-
             }
-            gameObject.SetActive(false);
         }
         else
         {
@@ -39,8 +42,9 @@ public class ActionTextHandler : MonoBehaviour
             {
                 transform.localPosition = new Vector3(450.0f, -1.5f, 0.0f);
             }
-            gameObject.SetActive(false);
         }
+        Debug.Log("actiontexthere1");
+        gameObject.SetActive(false);
     }
 
 
