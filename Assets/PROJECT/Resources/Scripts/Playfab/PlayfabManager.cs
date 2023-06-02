@@ -39,6 +39,8 @@ public class PlayfabManager : MonoBehaviour
     public GameObject EmailErrorTextObj;
     public GameObject PasswordErrorTextObj;
 
+    public Sprite getNFTSprite;
+
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;
 
