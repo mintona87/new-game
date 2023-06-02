@@ -36,6 +36,9 @@ public class WalletConnect : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void Fetch0xNFTs(string address);
 
+    [DllImport("__Internal")]
+    private static extern void FetchSolNFTs(string address);
+
     public string Address { get; protected set; }
     public string NFT { get; protected set; }
 
@@ -215,7 +218,8 @@ public class WalletConnect : MonoBehaviour
         else if (type == "phantom")
         {
             Address = address;
-            loadingScreen.SetActive(false);
+            GlobalData.instance.SetWalletInfo(true, type, Address);
+            FetchSolNFTs(Address);
         }
 
         Debug.Log(Address);

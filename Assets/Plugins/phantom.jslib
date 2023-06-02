@@ -12,6 +12,10 @@ mergeInto(LibraryManager.library, {
           });
         }
       }
+    },
+
+    FetchSolNFTs: function (address) {
+      window.unityInstance.SendMessage('WalletIntegration', 'ReceiveModifiedMetadata', String(JSON.stringify({"data":[]})));
     }
 
 });
