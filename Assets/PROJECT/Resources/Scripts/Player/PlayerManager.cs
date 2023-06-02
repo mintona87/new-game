@@ -27,6 +27,9 @@ public class PlayerManager : MonoBehaviour
     public PlayerCombat playerCombat;
     public PlayerEffect playerEffect;
     public PhotonView pv;
+    public ActionTextHandler actionTextHandler;
+    public PlayfabManager playfabManager;
+
 
     public float[] playerHonor = new float[2];
 
@@ -47,6 +50,7 @@ public class PlayerManager : MonoBehaviour
         playerCombat = GetComponent<PlayerCombat>();
         playerEffect = GetComponent<PlayerEffect>();
         pv = GetComponent<PhotonView>();
+        playfabManager = FindObjectOfType<PlayfabManager>();
     }
     private void Start()
     {
@@ -106,8 +110,6 @@ public class PlayerManager : MonoBehaviour
 
     void InitPlayerStatOnline()
     {
-        PlayfabManager playfabManager = LaunchManager.Instance.playfabManager;
-
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "ATK", playfabManager.GetPlayerSavedData().ATK } });
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DEF", playfabManager.GetPlayerSavedData().DEF } });
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "LUCK", playfabManager.GetPlayerSavedData().LUCK } });
@@ -152,7 +154,6 @@ public class PlayerManager : MonoBehaviour
         {
             localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
             playerUI.playerUsernameText.text = localPlayerNickname;
-
         }
         else
         {
@@ -160,7 +161,7 @@ public class PlayerManager : MonoBehaviour
         }
 
 
-        FindObjectOfType<ActionTextHandler>().SetActionPosition();
+        StartCoroutine(actionTextHandler.SetActionPosition());
 
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
@@ -243,7 +244,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        HP += amount;
+        HP += /*amount*/-1000;
         if (HP < 0)
         {
             HP = 0;

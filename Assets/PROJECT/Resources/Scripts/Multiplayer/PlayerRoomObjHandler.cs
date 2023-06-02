@@ -104,19 +104,18 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     }
     public void SetPlayerPicture()
     {
-
         // comment this when nft part is done
-        if (PlayerNumberText.text == "Player 1")
-        {
-            PlayerImage.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
-        }
-        else
-        {
-            PlayerImage.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
-        }
+        //if (PlayerNumberText.text == "Player 1")
+        //{
+        //    PlayerImage.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
+        //}
+        //else
+        //{
+        //    PlayerImage.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
+        //}
 
         //activate when nft logic is set
-        //PlayerImage.sprite = playfabManager.localImageObj.GetComponent<Image>().sprite;
+        PlayerImage.sprite = playfabManager.getNFTSprite;
 
     }
 }
