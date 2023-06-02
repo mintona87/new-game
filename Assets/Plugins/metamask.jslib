@@ -28,6 +28,7 @@ mergeInto(LibraryManager.library, {
       var baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${apiKey}/getNFTs/`;
       
       var pageKey = "";
+      ownerAddr = UTF8ToString(ownerAddr);
 
       var maxRetries = 10; 
       var retries = 0; 
@@ -60,7 +61,8 @@ mergeInto(LibraryManager.library, {
               pageKey = data.pageKey;
               if (data.ownedNfts.length < 100) break;
           } else {
-              throw new Error(`Received ${res.status} status code`); 
+            console.log(`Received ${res.status} status code`); 
+            break;
           }
 
       }
