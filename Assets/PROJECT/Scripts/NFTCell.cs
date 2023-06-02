@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ public class NFTCell : MonoBehaviour
     public void InitCell(NFTMEtadata _data)
     {
         cellData = _data;
-        if(_data.rawImage)
+        if (_data.rawImage)
         {
             if(_data.imageUrl != null)
             {
@@ -25,7 +26,10 @@ public class NFTCell : MonoBehaviour
         }
         else
         {
-            DownloadManager.instance.BookDownload(_data.imageUrl, LoadSprite);
+            if (!string.IsNullOrEmpty(_data.imageUrl))
+            {
+                DownloadManager.instance.BookDownload(_data.imageUrl, LoadSprite);
+            }
         }
         //nftImage.sprite = 
     }

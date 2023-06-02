@@ -27,6 +27,11 @@ public struct NFTMetadataProperty
     public string key;
     public string value;
 }
+public struct WalletInfo
+{
+    public string type;
+    public string address;
+}
 public class GlobalData : MonoBehaviour
 {
     public static GlobalData instance;
@@ -42,8 +47,10 @@ public class GlobalData : MonoBehaviour
     string subSplitStr = ":::";
 
     public Texture2D testTexture;
-    
-    
+
+    public WalletInfo connectedWallet;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -128,5 +135,31 @@ public class GlobalData : MonoBehaviour
         testTexture.Reinitialize(testTexture.width / 2, testTexture.height / 2, TextureFormat.RGBA32, false);
         testTexture.Apply();
         Debug.Log("texture size: " + testTexture.desiredMipmapLevel.ToString());
+    }
+    public void SetWalletInfo(bool _connected=false, string _type="", string _address="")
+    {
+        isWalletConnected = _connected;
+        connectedWallet.type = _type;
+        connectedWallet.address = _address;
+    }
+    public void ClearSelectedNFTData()
+    {
+        NFTMEtadata _data = new NFTMEtadata();
+        playerData["SelectedNFT"] = JsonUtility.ToJson(_data);
+        PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+        {
+            Data = playerData
+        },
+        result => {
+            Debug.Log("Successfully updated user data");
+            if (nftSelectAction != null)
+            {
+                nftSelectAction(_data);
+            }
+        },
+        error => {
+            Debug.Log("Got error setting user data Ancestor to Arthur");
+            Debug.Log(error.GenerateErrorReport());
+        });
     }
 }

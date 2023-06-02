@@ -15,6 +15,8 @@ public class NFTPanel : MonoBehaviour
     public TMP_Text nftName;
     public TMP_Text nftDescription;
     public TMP_Text[] nftTraits;
+    public TMP_Text walletAddress;
+    public Image walletImage;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +29,10 @@ public class NFTPanel : MonoBehaviour
     }
     public void InitPanel()
     {
-        for(int i = 0; i < GlobalData.instance.nftDataList.Length; i++)
+        walletAddress.text = GlobalData.instance.connectedWallet.address;
+        walletImage.sprite = Resources.Load<Sprite>("Assets/Resources/Sprites/" + GlobalData.instance.connectedWallet.type + "80");
+
+        for (int i = 0; i < GlobalData.instance.nftDataList.Length; i++)
         {
             NFTCell _nftCell = Instantiate(nftCellPref, nftListContent) as NFTCell;
             istantiatedObjects.Add(_nftCell.gameObject);

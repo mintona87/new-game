@@ -25,7 +25,16 @@ public class WalletConnect : MonoBehaviour
     private static extern void ConnectWalletEternl();
 
     [DllImport("__Internal")]
+    private static extern void ConnectWalletMetamask();
+
+    [DllImport("__Internal")]
+    private static extern void ConnectWalletPhantom();
+
+    [DllImport("__Internal")]
     private static extern void JsonParse(string metadatas);
+
+    [DllImport("__Internal")]
+    private static extern void Fetch0xNFTs(string address);
 
     public string Address { get; protected set; }
     public string NFT { get; protected set; }
@@ -36,9 +45,9 @@ public class WalletConnect : MonoBehaviour
         loadingScreen.SetActive(false);
         client = new Blockfrost.Cardano(myConfiguration);
     }
+
     public void OnClickNamiWalletConnect()
     {
-        //GlobalData.instance.LoadNFTMetaData();
 #if UNITY_WEBGL
         ConnectWalletNami();
 #else
@@ -46,9 +55,9 @@ public class WalletConnect : MonoBehaviour
 #endif
         Debug.Log("waiting connect to nami..");
     }
-    public void OnClickEernlWalletConnect()
+
+    public void OnClickEternlWalletConnect()
     {
-        // GlobalData.instance.LoadNFTMetaData();
 #if UNITY_WEBGL
         ConnectWalletEternl();
 #else
@@ -57,11 +66,34 @@ public class WalletConnect : MonoBehaviour
         Debug.Log("waiting connect to eternl..");
     }
 
+    public void OnClickMetamaskWalletConnect()
+    {
+#if UNITY_WEBGL
+        ConnectWalletMetamask();
+#else
+        Debug.Log("WebGL not support");
+#endif
+        Debug.Log("waiting connect to metamask..");
+    }
+
+    public void OnClickPhantomWalletConnect()
+    {
+#if UNITY_WEBGL
+        ConnectWalletPhantom();
+#else
+        Debug.Log("WebGL not support");
+#endif
+        Debug.Log("waiting connect to phantom..");
+    }
+    public void OnClickDisconnect()
+    {
+        GlobalData.instance.SetWalletInfo();
+    }
+
     public async void FetchNFTs()
     {
         Debug.Log("hhh, m here");
         string metadatas = "";
-        loadingScreen.SetActive(true);
         try
         {
             var ac = await client.GetSpecificAddress(Address);
@@ -157,16 +189,37 @@ public class WalletConnect : MonoBehaviour
 
     }
 
-    public void ReceiveWalletAddress(string address)
+    public void ReceiveWalletAddress(string arg)
     {
-        Debug.Log(address);
-        GlobalData.instance.isWalletConnected = true;
-        var converter = new CardanoBech32Wrapper();
-        Address = converter.ConvertToBech32AddressFromHex(address, AddressType.addr);
+        string[] args = arg.Split(",");
+        string type = args[0];
+        string address = args[1];
 
-        //Address = "addr1q95vldfjvqd5vuxe6e2pxee5rl9l0tj5949dkzvg8t2dymdrmmz5crk4sm24rgppdmy9ytfn2f0cv9q9e3r59443qd2salsw7w";
+        loadingScreen.SetActive(true);
+        Debug.Log(arg);
+        if (type == "nami" || type == "eternl")
+        {
+            var converter = new CardanoBech32Wrapper();
+            Address = converter.ConvertToBech32AddressFromHex(address, AddressType.addr);
+
+            //Address = "addr1q95vldfjvqd5vuxe6e2pxee5rl9l0tj5949dkzvg8t2dymdrmmz5crk4sm24rgppdmy9ytfn2f0cv9q9e3r59443qd2salsw7w";
+            GlobalData.instance.SetWalletInfo(true, type, Address);
+            FetchNFTs();
+        }
+        else if (type == "metamask")
+        {
+            Address = address;
+            GlobalData.instance.SetWalletInfo(true, type, Address);
+            Fetch0xNFTs(Address);
+        }
+        else if (type == "phantom")
+        {
+            Address = address;
+            loadingScreen.SetActive(false);
+        }
+
         Debug.Log(Address);
-        FetchNFTs();
+
     }
 
     public void ReceiveModifiedMetadata(string data)
@@ -215,6 +268,7 @@ public class WalletConnect : MonoBehaviour
         hexString = hexString.Replace("-", "");
         return hexString;
     }
+
     public static string HexStringToString(string hex)
     {
         byte[] dBytes = StringToByteArray(hex);

@@ -34,6 +34,8 @@ function base64DecodeObject(obj) {
 }
 
 function getProperties(obj) {
+    if (obj == null || obj == undefined || Object.keys(obj).length === 0) return;
+console.log(obj)
     return Object.entries(obj)
     .filter(([key]) => key !== 'Website' && key !== 'image' && key !== 'description' && key !== 'file' && key !== 'files' && key !== 'name')
     .map(([key, value]) => getTerminalKeyValues(Object.fromEntries(new Map([[key, value]]))))
@@ -76,8 +78,14 @@ function getImageData(image) {
       rawImage = true;
     } else {
         if (image) {
-            imageUrl = image.replace("ipfs://ipfs/", "https://ipfs.io/ipfs/");
-            imageUrl = imageUrl.replace("ipfs://", "https://ipfs.io/ipfs/");
+            if ( image.includes("base64") || image.includes("data:image") ) {
+                var strArray = imageUrl.split(",");
+                imageUrl = strArray[1];
+                rawImage = true;
+            } else {
+                imageUrl = image.replace("ipfs://ipfs/", "https://ipfs.io/ipfs/");
+                imageUrl = imageUrl.replace("ipfs://", "https://ipfs.io/ipfs/");
+            }
         } else {
             imageUrl = "";
         }
@@ -96,4 +104,8 @@ function getDescription(des) {
         }
     }
     return description;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
