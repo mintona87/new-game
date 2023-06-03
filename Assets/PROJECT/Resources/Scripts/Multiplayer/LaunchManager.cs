@@ -128,7 +128,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             else
             {
                 Debug.Log("Timer has finished. Resetting...");
-                PhotonNetwork.LeaveRoom();
+                if (PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.LeaveRoom();
+                }
                 isItOnRematch = true;
                 timeBeforeIncreaseHonorOtherPlayer = 5;
             }
