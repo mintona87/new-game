@@ -104,7 +104,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnectedAndReady)
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(false);
-            Debug.Log("devregion " +PhotonNetwork.CloudRegion);
+            //Debug.Log("devregion " +PhotonNetwork.CloudRegion);
         }
         else
         {
@@ -128,7 +128,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             else
             {
                 Debug.Log("Timer has finished. Resetting...");
-                PhotonNetwork.LeaveRoom();
+                if (PhotonNetwork.InRoom)
+                {
+                    PhotonNetwork.LeaveRoom();
+                }
                 isItOnRematch = true;
                 timeBeforeIncreaseHonorOtherPlayer = 5;
             }
@@ -242,6 +245,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public void ModifyPlayerCustomHonor(int honor)
     {
         PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
+    }
+    public int GetCustomHonor()
+    {
+        return (int)PhotonNetwork.LocalPlayer.CustomProperties["Honor"];
     }
 
     public void JoinRoom(RoomInfo info)// for customize and training room 

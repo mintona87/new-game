@@ -16,6 +16,7 @@ public class NFTMEtadata
     public string hexEncodedName;
     public string website;
     public string property;
+    public int honor;
 }
 [System.Serializable]
 public class NFTMEtadataList
