@@ -41,6 +41,8 @@ public class PlayfabManager : MonoBehaviour
 
     public Sprite getNFTSprite;
 
+    public NFTMEtadata getSelectedNFTData;
+
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;
 
@@ -63,10 +65,13 @@ public class PlayfabManager : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-        //Debug.Log("playfab title id: " + PlayFabSettings.TitleId);
-    }
+    //private void Update()
+    //{
+    //    if (SceneManager.GetActiveScene().name != "LoginScreen")
+    //    {
+    //        Debug.Log("honorplayfab " + GetPlayerSavedData().Honor);
+    //    }
+    //}
 
 
     // Registering

@@ -361,12 +361,14 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("OnWin");
         PlayfabManager playfabManager = FindObjectOfType<PlayfabManager>();
-        playfabManager.GetPlayerSavedData().Honor += 10;
-        int honor = playfabManager.GetPlayerSavedData().Honor;
+        //playfabManager.GetPlayerSavedData().Honor += 10;
+        //int honor = playfabManager.GetPlayerSavedData().Honor;
+        playfabManager.getSelectedNFTData.honor += 10;
         playfabManager.SavePlayerSavedData(playfabManager.GetPlayerSavedData());
-        Debug.Log("OnWin" + honor);
-        playfabManager.SendLeaderboard(honor);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "Honor", honor } });
+        GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
+        Debug.Log("OnWin" + playfabManager.getSelectedNFTData.honor);
+        playfabManager.SendLeaderboard(playfabManager.getSelectedNFTData.honor);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "Honor", playfabManager.getSelectedNFTData.honor } });
     }
 
     public bool Dodge()

@@ -18,10 +18,14 @@ public class NFTPanel : MonoBehaviour
     public TMP_Text walletAddress;
     public Image walletImage;
 
+    PlayfabManager playfabManager;
+    LaunchManager launchManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        playfabManager = FindObjectOfType<PlayfabManager>();
+        launchManager = FindObjectOfType<LaunchManager>();
     }
     private void OnEnable()
     {
@@ -52,6 +56,12 @@ public class NFTPanel : MonoBehaviour
         nftPotrait.sprite = _sprite;
         nftName.text = _nftData.name;
         nftDescription.text = _nftData.description;
+        Debug.Log("ne localhonor " + launchManager.GetCustomHonor() +" nfthonor" + _nftData.honor);
+
+        launchManager.ModifyPlayerCustomHonor(_nftData.honor);
+        
+        Debug.Log("localhonorAfter " + launchManager.GetCustomHonor()+" nfthonor "+ _nftData.honor);
+        
         for (int i = 0; i < nftTraits.Length; i++)
         {
             nftTraits[i].gameObject.SetActive(false);
@@ -65,7 +75,9 @@ public class NFTPanel : MonoBehaviour
                 nftTraits[i].text = properties[i].key + ": " + properties[i].value;
             }
         }
+
         selectedNFTData = _nftData;
+        playfabManager.getSelectedNFTData = selectedNFTData;
     }
     public void OnClickNFTCell(NFTCell _cell)
     {
@@ -78,5 +90,20 @@ public class NFTPanel : MonoBehaviour
     public void OnClickGetSavedNFTData()
     {
         GlobalData.instance.GetUserData(GlobalData.instance.playfabId);
+    }
+    public void DebugAddHonorAndSave()
+    {
+
+        int honor = 10;
+
+        playfabManager.getSelectedNFTData.honor += honor;
+        launchManager.ModifyPlayerCustomHonor(playfabManager.getSelectedNFTData.honor);
+
+        Debug.Log("nfthonor " + playfabManager.getSelectedNFTData.honor);
+
+        GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
+
+
+
     }
 }

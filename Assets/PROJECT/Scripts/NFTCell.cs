@@ -39,6 +39,9 @@ public class NFTCell : MonoBehaviour
         nftImage.sprite = nftSprite;
         FindObjectOfType<PlayfabManager>().getNFTSprite = nftSprite;
     }
+
+    
+
     private void OnDestroy()
     {
         DownloadManager.instance.UnBookDownload(cellData.imageUrl);
