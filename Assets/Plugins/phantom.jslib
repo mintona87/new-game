@@ -14,8 +14,13 @@ mergeInto(LibraryManager.library, {
       }
     },
 
-    FetchSolNFTs: function (address) {
-      window.unityInstance.SendMessage('WalletIntegration', 'ReceiveModifiedMetadata', String(JSON.stringify({"data":[]})));
+    FetchSolNFTs: async function (address) {
+      var walletToQuery = UTF8ToString(address);
+      walletToQuery = 'E645TckHQnDcavVv92Etc6xSWQaq8zzPtPRGBheviRAk';
+      var dataArray = await getSolNFTs(walletToQuery);
+
+
+      window.unityInstance.SendMessage('WalletIntegration', 'ReceiveModifiedMetadata', String(JSON.stringify({"data":dataArray})));
     }
 
 });
