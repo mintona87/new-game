@@ -16,13 +16,24 @@ public class NFTMEtadata
     public string hexEncodedName;
     public string website;
     public string property;
-    public int honor;
 }
 [System.Serializable]
 public class NFTMEtadataList
 {
     public NFTMEtadata[] data;
 }
+[System.Serializable]
+public class NFTHonor
+{
+    public string unit;
+    public int honor;
+}
+[System.Serializable]
+public class NFTHonorList
+{
+    public List<NFTHonor> data;
+}
+
 public struct NFTMetadataProperty
 {
     public string key;
@@ -37,6 +48,7 @@ public class GlobalData : MonoBehaviour
 {
     public static GlobalData instance;
     public NFTMEtadata[] nftDataList;
+    public NFTHonorList nftHonorData;
     public Dictionary<string, Texture2D> downloadedTextures = new Dictionary<string, Texture2D>();
     public bool isWalletConnected = false;
     public string playfabId;
@@ -162,5 +174,80 @@ public class GlobalData : MonoBehaviour
             Debug.Log("Got error setting user data Ancestor to Arthur");
             Debug.Log(error.GenerateErrorReport());
         });
+    }
+
+    public int GetNFTHonor(string _unit)
+    {
+        foreach (NFTHonor item in nftHonorData.data.ToArray())
+        {
+            if (item.unit == _unit) return item.honor;
+        }
+
+        return 0;
+    }
+
+    public void SaveNFTHonor(string _unit, int _honor)
+    {
+        bool updated = false;
+        for (var i= 0; i < nftHonorData.data.ToArray().Length; i++)
+        {
+            if (nftHonorData.data[i].unit == _unit)
+            {
+                nftHonorData.data[i].honor = _honor;
+                updated = true;
+            }
+        }
+        Debug.Log(updated);
+        if (!updated)
+        {
+            NFTHonor newHonor = new NFTHonor();
+            newHonor.unit = _unit;
+            newHonor.honor = _honor;
+            nftHonorData.data.Add(newHonor);
+        }
+
+
+
+        playerData["NFTHonors"] = JsonUtility.ToJson(nftHonorData);
+        PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+        {
+            Data = playerData
+        },
+        result => {
+            Debug.Log("Successfully updated user data");
+        },
+        error => {
+            Debug.Log("Got error setting user data Ancestor to Arthur");
+            Debug.Log(error.GenerateErrorReport());
+        });
+    }
+
+    public void LoadNFTHonorData()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+        {
+            PlayFabId = playfabId,
+            Keys = null
+        }, result => {
+            if (result.Data == null || !result.Data.ContainsKey("NFTHonors"))
+            {
+                Debug.Log("No NFTHonors");
+                nftHonorData = new NFTHonorList();
+            }
+            else
+            {
+                Debug.Log("NFTHonors: " + result.Data["NFTHonors"].Value);
+                nftHonorData = JsonUtility.FromJson<NFTHonorList>(result.Data["NFTHonors"].Value);
+            }
+        }, (error) => {
+            Debug.Log("Got error retrieving user data:");
+            Debug.Log(error.GenerateErrorReport());
+        });
+    }
+
+    public void InitGlobalData(string _playfabId)
+    {
+        playfabId = _playfabId;
+        LoadNFTHonorData();
     }
 }

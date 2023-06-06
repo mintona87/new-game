@@ -17,6 +17,7 @@ public class NFTPanel : MonoBehaviour
     public TMP_Text[] nftTraits;
     public TMP_Text walletAddress;
     public Image walletImage;
+    public TMP_Text nftHonor;
 
     PlayfabManager playfabManager;
     LaunchManager launchManager;
@@ -56,12 +57,16 @@ public class NFTPanel : MonoBehaviour
         nftPotrait.sprite = _sprite;
         nftName.text = _nftData.name;
         nftDescription.text = _nftData.description;
-        Debug.Log("ne localhonor " + launchManager.GetCustomHonor() +" nfthonor" + _nftData.honor);
 
-        launchManager.ModifyPlayerCustomHonor(_nftData.honor);
-        
-        Debug.Log("localhonorAfter " + launchManager.GetCustomHonor()+" nfthonor "+ _nftData.honor);
-        
+        int honor = GlobalData.instance.GetNFTHonor(_nftData.unit);
+        nftHonor.text = "Honor: " + honor.ToString();
+
+        Debug.Log("ne localhonor " + launchManager.GetCustomHonor() + " nfthonor" + honor);
+
+        launchManager.ModifyPlayerCustomHonor(honor);
+
+        Debug.Log("localhonorAfter " + launchManager.GetCustomHonor() + " nfthonor " + honor);
+
         for (int i = 0; i < nftTraits.Length; i++)
         {
             nftTraits[i].gameObject.SetActive(false);
@@ -94,16 +99,17 @@ public class NFTPanel : MonoBehaviour
     public void DebugAddHonorAndSave()
     {
 
-        int honor = 10;
+        if (selectedNFTData.unit != "")
+        {
+            int honor = GlobalData.instance.GetNFTHonor(selectedNFTData.unit) + 10;
+            GlobalData.instance.SaveNFTHonor(selectedNFTData.unit, honor);
 
-        playfabManager.getSelectedNFTData.honor += honor;
-        launchManager.ModifyPlayerCustomHonor(playfabManager.getSelectedNFTData.honor);
+            Debug.Log("ne localhonor " + launchManager.GetCustomHonor() + " nfthonor" + honor);
 
-        Debug.Log("nfthonor " + playfabManager.getSelectedNFTData.honor);
+            launchManager.ModifyPlayerCustomHonor(honor);
 
-        GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
-
-
+            GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
+        }
 
     }
 }

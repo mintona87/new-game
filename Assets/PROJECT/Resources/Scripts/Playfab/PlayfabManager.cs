@@ -126,7 +126,7 @@ public class PlayfabManager : MonoBehaviour
         SendLeaderboard(1);
 
         LoginSettings();
-        GlobalData.instance.playfabId = result.PlayFabId;
+        GlobalData.instance.InitGlobalData(result.PlayFabId);
     }
 
 
@@ -223,7 +223,7 @@ public class PlayfabManager : MonoBehaviour
         {
             LoginSettings();
         }
-        GlobalData.instance.playfabId = result.PlayFabId;
+        GlobalData.instance.InitGlobalData(result.PlayFabId);
     }
 
     void LoginSettings()
