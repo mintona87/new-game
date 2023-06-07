@@ -244,7 +244,7 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-        HP += /*amount*/-1000;
+        HP += amount;
         if (HP < 0)
         {
             HP = 0;
