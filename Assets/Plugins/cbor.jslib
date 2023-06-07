@@ -1,7 +1,7 @@
 
 mergeInto(LibraryManager.library, {
 
-    JsonParse: function (metadatas) {
+    JsonParse: async function (metadatas) {
 
       const splitJson = UTF8ToString(metadatas).split('|||');
 
@@ -27,7 +27,7 @@ mergeInto(LibraryManager.library, {
 
             name = propertyData.name? propertyData.name:"";
             properties = getProperties(propertyData);
-            imageData = propertyData.image? getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
+            imageData = propertyData.image? await getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
             description = propertyData.description? getDescription(propertyData.description):"";
             
         } else {
@@ -42,7 +42,7 @@ mergeInto(LibraryManager.library, {
             name = Hex2a(hexEncodedName);
             const propertyData = dataJson["721"][policyId][name];
             properties = getProperties(propertyData);
-            imageData = propertyData.image? getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
+            imageData = propertyData.image? await getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
             description = propertyData.description? getDescription(propertyData.description):"";
             website = propertyData.Website? propertyData.Website:"";
     
