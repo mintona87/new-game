@@ -27,7 +27,7 @@ mergeInto(LibraryManager.library, {
 
             name = propertyData.name? propertyData.name:"";
             properties = getProperties(propertyData);
-            imageData = propertyData.image? getImageData(propertyData.image):"";
+            imageData = propertyData.image? getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
             description = propertyData.description? getDescription(propertyData.description):"";
             
         } else {
@@ -42,11 +42,13 @@ mergeInto(LibraryManager.library, {
             name = Hex2a(hexEncodedName);
             const propertyData = dataJson["721"][policyId][name];
             properties = getProperties(propertyData);
-            imageData = propertyData.image? getImageData(propertyData.image):"";
+            imageData = propertyData.image? getImageData(propertyData.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
             description = propertyData.description? getDescription(propertyData.description):"";
             website = propertyData.Website? propertyData.Website:"";
     
         }
+
+        if (imageData.isInvalidImage) continue;
 
         dataArray.push({
           unit,

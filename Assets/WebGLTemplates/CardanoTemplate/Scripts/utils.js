@@ -68,9 +68,8 @@ function getTerminalKeyValues(obj) {
     return str.slice(0, -3);
 }
 
-function getImageData(image) {
-    var imageUrl="", rawImage=false;
-
+async function getImageData(image) {
+    var imageUrl="", rawImage=false, isInvalidImage=false;
     if ( image.constructor===Array ) {
       var fullImageUrl = image.join("");
       var strArray = fullImageUrl.split(",");
@@ -85,13 +84,29 @@ function getImageData(image) {
             } else {
                 imageUrl = image.replace("ipfs://ipfs/", "https://ipfs.io/ipfs/");
                 imageUrl = imageUrl.replace("ipfs://", "https://ipfs.io/ipfs/");
+                isInvalidImage = await checkInvalidImage(imageUrl);
             }
         } else {
             imageUrl = "";
         }
     }
 
-    return {imageUrl, rawImage};
+    return {imageUrl, rawImage, isInvalidImage};
+}
+
+async function checkInvalidImage(imageUrl) {
+    var isInvalidImage = false;
+    try {
+        const response = await axios.get(imageUrl, { responseType: 'blob' })
+        const contentType = response.headers['content-type'];
+        const data = response.data;
+        const extension = data.type.split('/')[1];
+        console.log('File extension:', extension);
+        if (extension != "png" && extension != "jpeg" && extension != "jpg") isInvalidImage = true;
+    } catch (error) {
+        console.log(error)
+    }
+    return isInvalidImage;
 }
 
 function getDescription(des) {
@@ -135,21 +150,23 @@ async function getSolNFTs() {
     console.log(metadata);
                 
                 const { data } = await axios.get(metadata.data.data.uri)
-    console.log(data);
+    // console.log(data);
                 nfts.push(data)
             }
         } catch(err) {
             continue;
         }
     }
-    console.log(nfts);
+    // console.log(nfts);
 
     var dataArray = [];
     for (var i=0; i<nfts.length; i++) {
         var nft = nfts[i];
 
         var properties = getProperties(nft.attributes);
-        var imageData = nft.image? getImageData(nft.image):"";
+        var imageData = nft.image? await getImageData(nft.image):{imageUrl:"", rawImage:"", isInvalidImage:false};
+        if (imageData.isInvalidImage) continue;
+        
         
         var unit = nft.name;
         var name = nft.name;
