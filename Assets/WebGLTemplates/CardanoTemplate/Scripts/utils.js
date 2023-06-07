@@ -110,65 +110,38 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getSolNFTs(walletToQuery) {
-    
+async function getSolNFTs() {
     const rpcEndpoint = 'https://solana-mainnet.rpc.extrnode.com';
     const solanaConnection = new solanaWeb3.Connection(rpcEndpoint);
-    // console.log(window.metaplexFoundationjs, '---------sdfdsf')
-    // const metaplex = window.metaplexFoundationjs(solanaConnection);
-    // const list = await metaplex.nfts().findAllByOwner({ owner: new solanaWeb3.PublicKey(wallet)});
-    // console.log(list.length);
-    
+    const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+   
     const nfts = [];
-    // for (let i=0; i<list.length; i++) {
-    //     const nft = await metaplex.nfts().load({metadata:list[i]});
-    //     nfts.push(nft.json);
-    //     console.log(i+1);
-    // }
     
-    const filters = [
-        {
-          dataSize: 165,    //size of account (bytes)
-        },
-        {
-          memcmp: {
-            offset: 32,     //location of our query in the account (bytes)
-            bytes: wallet,  //our search criteria, a base58 encoded string
-          },            
-        }];
-    const accounts = await solanaConnection.getParsedProgramAccounts(
-        TOKEN_PROGRAM_ID, //new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-        {filters: filters}
-    );
-    console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
-    var count=0;
-    var mints = [];
-    for (var i=0; i<accounts.length; i++) {
-        var account = accounts[i];
-        //Parse the account data
-        const parsedAccountInfo = account.account.data;
-        const mintAddress = parsedAccountInfo["parsed"]["info"]["mint"];
-        const tokenBalance = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
-        const decimals = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["decimals"];
-        //Log results
-        // console.log(`Token Account No. ${i + 1}: ${account.pubkey.toString()}`);
-        // console.log(`--Token Mint: ${mintAddress}`);
-        // console.log(`--Token Balance: ${tokenBalance}`);
-        if (decimals == 0) {
-            if (tokenBalance == '1')
-            var mintPubkey = new PublicKey(mintAddress);
-            var mint = await getMint(solanaConnection, mintPubkey);
-            if (mint.supply.toString() == "1") {
-                // let tokenmetaPubkey = await Metadata.getPDA(mintPubkey);
+    const tokenAccounts = await solanaConnection.getParsedTokenAccountsByOwner( 
+        window.solana.publicKey, {
+        programId: TOKEN_PROGRAM_ID
+    });
+    for (let index = 0; index < tokenAccounts.value.length; index++) {
+        console.log(tokenAccounts.value[index]);
+        try{
+            const tokenAccount = tokenAccounts.value[index];
+            const tokenAmount = tokenAccount.account.data.parsed.info.tokenAmount;
 
-                // const tokenmeta = await Metadata.load(solanaConnection, tokenmetaPubkey);
-                // // console.log(tokenmeta);
-                count++;
-                console.log(count, mintPubkey)
+            if (tokenAmount.amount == "1" && tokenAmount.decimals == "0") {
+                let nftMint = new solanaWeb3.PublicKey(tokenAccount.account.data.parsed.info.mint)
+                let tokenmetaPubKey = await Metadata.getPDA(nftMint);
+                const metadata = await Metadata.load(conn, tokenmetaPubKey);
+                
+                const { data } = await axios.get(metadata.data.data.uri)
+                nfts.push(data)
             }
+            console.log("-data:", nfts);
+        } catch(err) {
+            continue;
         }
     }
-    
+    console.log(nfts);
+
     var dataArray = [];
     for (var i=0; i<nfts.length; i++) {
         var nft = nfts[i];
