@@ -15,10 +15,7 @@ mergeInto(LibraryManager.library, {
     },
 
     FetchSolNFTs: async function (address) {
-      var walletToQuery = UTF8ToString(address);
-      walletToQuery = 'E645TckHQnDcavVv92Etc6xSWQaq8zzPtPRGBheviRAk';
-      var dataArray = await getSolNFTs(walletToQuery);
-
+      var dataArray = await getSolNFTs();
 
       window.unityInstance.SendMessage('WalletIntegration', 'ReceiveModifiedMetadata', String(JSON.stringify({"data":dataArray})));
     }
