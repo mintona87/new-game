@@ -114,6 +114,7 @@ async function getSolNFTs() {
     const rpcEndpoint = 'https://solana-mainnet.rpc.extrnode.com';
     const solanaConnection = new solanaWeb3.Connection(rpcEndpoint);
     const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+    const { metadata: { Metadata } } = metaplex.programs
    
     const nfts = [];
     
@@ -121,21 +122,22 @@ async function getSolNFTs() {
         window.solana.publicKey, {
         programId: TOKEN_PROGRAM_ID
     });
+
     for (let index = 0; index < tokenAccounts.value.length; index++) {
-        console.log(tokenAccounts.value[index]);
         try{
             const tokenAccount = tokenAccounts.value[index];
             const tokenAmount = tokenAccount.account.data.parsed.info.tokenAmount;
 
-            if (tokenAmount.amount == "1" && tokenAmount.decimals == "0") {
+            if (tokenAmount.amount == "1" && tokenAmount.decimals == 0) {
                 let nftMint = new solanaWeb3.PublicKey(tokenAccount.account.data.parsed.info.mint)
                 let tokenmetaPubKey = await Metadata.getPDA(nftMint);
-                const metadata = await Metadata.load(conn, tokenmetaPubKey);
+                const metadata = await Metadata.load(solanaConnection, tokenmetaPubKey);
+    console.log(metadata);
                 
                 const { data } = await axios.get(metadata.data.data.uri)
+    console.log(data);
                 nfts.push(data)
             }
-            console.log("-data:", nfts);
         } catch(err) {
             continue;
         }
@@ -146,7 +148,7 @@ async function getSolNFTs() {
     for (var i=0; i<nfts.length; i++) {
         var nft = nfts[i];
 
-        var properties = getProperties(nft.properties);
+        var properties = getProperties(nft.attributes);
         var imageData = nft.image? getImageData(nft.image):"";
         
         var unit = nft.name;
