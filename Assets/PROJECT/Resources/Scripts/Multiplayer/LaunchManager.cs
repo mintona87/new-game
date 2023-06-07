@@ -69,7 +69,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             Debug.Log("inside honor did not load");
             yield return null;
         }
-        PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
+       // PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();
         yield return null;
