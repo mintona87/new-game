@@ -35,6 +35,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public TextMeshProUGUI LoadingText;
     public TextMeshProUGUI LookingForOpponentText;
     public TextMeshProUGUI TimerText;
+    public TextMeshProUGUI RoomHonorText;
 
     bool isJoinMatchClicked;
 
@@ -49,8 +50,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         Instance = this;
         
-        timeBeforeIncreaseHonorOtherPlayer = 15.0f;
+        timeBeforeIncreaseHonorOtherPlayer = 5.0f;
         otherPlayerhonorDifference = 100;
+        RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
         isConnectedOnMaster = false;
         shouldStartSearchHonorTimer = false;
         roomType = "";
@@ -110,14 +112,15 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(true);
         }
-        //Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
-        //Debug.Log("inlobby " + PhotonNetwork.InLobby);
+
+        Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
+        Debug.Log("inlobby " + PhotonNetwork.InLobby);
     }
 
     private void Update()
     {
         Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
-
+        //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
         if (shouldStartSearchHonorTimer)
         {
             if (timeBeforeIncreaseHonorOtherPlayer > 0)
@@ -191,14 +194,18 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             getCustomPropValue = "0";// to avoid int.Parse error
         }
 
-        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())));
+        int twoPlayersHonorSubstraction = Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()));
+
+        Debug.Log("custom rank " + PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString()+" calcresult "+ twoPlayersHonorSubstraction);
+
+        Debug.Log("honor diffrences " + twoPlayersHonorSubstraction + " otherdifference "+ otherPlayerhonorDifference);
 
         if (FindObjectOfType<DebugUI>().ToggleMatchWithEveryone.isOn)
         {
             otherPlayerhonorDifference = 50000;
         }
 
-        if (Math.Abs(int.Parse(getCustomPropValue) - int.Parse(PhotonNetwork.LocalPlayer.CustomProperties["Honor"].ToString())) <= otherPlayerhonorDifference)
+        if (twoPlayersHonorSubstraction <= otherPlayerhonorDifference)
         {
             shouldMatch = true;
         }
@@ -206,6 +213,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             shouldMatch = false;
         }
+
+        Debug.Log("shouldMatch " + shouldMatch + "isOpen"+ isOpen+ " isItFirstRoom "+ isItFirstRoom);
 
         if (shouldMatch == true && isOpen == true && isItFirstRoom == false)
         {
@@ -228,7 +237,9 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     void SetPlayerCustomProperties()
     {
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor);
+        //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) +" unit "+ playfabManager.getSelectedNFTData.unit);
+
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor /*GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit)*/);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("DidFinishChoosingAction",false );
@@ -397,13 +408,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        //Hashtable customProperties = new Hashtable();
-
-        //int NonSpectatorPlayerCount = int.Parse(PhotonNetwork.CurrentRoom.CustomProperties["NonSpectatorPlayerCount"].ToString());
-        //NonSpectatorPlayerCount -= 1;
-        //customProperties["NonSpectatorPlayerCount"] = NonSpectatorPlayerCount;
-        //PhotonNetwork.CurrentRoom.SetCustomProperties(customProperties);
-
         // Remove the playerRoomObj when the player leaves the room
         int otherPlayerNumber = otherPlayer.GetPlayerNumber();
 
@@ -423,8 +427,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             }
             shouldStartSearchHonorTimer = false;
         }
-
-
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        {
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
     }
 
     IEnumerator WaitForMasterSwitch()
@@ -519,9 +525,14 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         if (isItOnRematch)
         {
             otherPlayerhonorDifference += 50;
+            RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
             JoinMatchClicked();
             isJoinMatchClicked = true;
             isItOnRematch = false;
+        }
+        else
+        {
+            otherPlayerhonorDifference = 100;
         }
     }
     #endregion

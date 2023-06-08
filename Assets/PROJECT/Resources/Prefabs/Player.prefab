@@ -2104,6 +2104,7 @@ MonoBehaviour:
   playerEffect: {fileID: 0}
   pv: {fileID: 0}
   actionTextHandler: {fileID: 7947157733474000646}
+  playfabManager: {fileID: 0}
   playerHonor:
   - 0
   - 0

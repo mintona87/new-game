@@ -13,6 +13,8 @@ public class OnLoadingScreen : MonoBehaviour
 
     CanvasGroup canvasGroup;
 
+
+
     void Start()
     {
         Instance = this;
