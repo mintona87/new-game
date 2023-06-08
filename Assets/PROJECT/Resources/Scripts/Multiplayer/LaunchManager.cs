@@ -49,8 +49,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         Instance = this;
         
-        timeBeforeIncreaseHonorOtherPlayer = 5.0f;
-        otherPlayerhonorDifference = 50;
+        timeBeforeIncreaseHonorOtherPlayer = 15.0f;
+        otherPlayerhonorDifference = 100;
         isConnectedOnMaster = false;
         shouldStartSearchHonorTimer = false;
         roomType = "";
