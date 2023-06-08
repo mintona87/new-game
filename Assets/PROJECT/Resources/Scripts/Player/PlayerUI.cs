@@ -68,18 +68,11 @@ public class PlayerUI : MonoBehaviour
 
     public void SetPlayerPicture()
     {
-        // comment this when nft part is done
-
-        //if (gameObject.name == "Player1")
-        //{
-        //    PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/$decimalist");
-        //}
-        //else
-        //{
-        //    PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
-        //}
-        //activate when get nft image 
-        PlayerPicture.sprite = player.playfabManager.getNFTSprite;
+        Debug.Log("isminepicture " + player.isItMyPlayer);
+        if (player.isItMyPlayer)
+        {
+            PlayerPicture.sprite = player.playfabManager.getNFTSprite;
+        }
     }
 
     public float GetNormalizedHP(int hp, int maxHealth)

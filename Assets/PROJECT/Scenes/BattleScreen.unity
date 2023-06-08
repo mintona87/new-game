@@ -312,6 +312,7 @@ MonoBehaviour:
   PlayerGameOverObjContainer: {fileID: 810037267}
   PlayerGameOverObjPrefab: {fileID: 2134168526130299968, guid: a835a2a52d8b96a4bb4b1ee2118dbfb2, type: 3}
   GameOverPanelObj: {fileID: 1555113717}
+  isGameOver: 0
 --- !u!114 &349095813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,9 +346,9 @@ GameObject:
   - component: {fileID: 613450994}
   - component: {fileID: 613451000}
   - component: {fileID: 613451001}
+  - component: {fileID: 613451002}
   - component: {fileID: 613450995}
   - component: {fileID: 613450999}
-  - component: {fileID: 613450998}
   - component: {fileID: 613450997}
   - component: {fileID: 613450996}
   m_Layer: 5
@@ -477,30 +478,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &613450998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 613450993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4aaf7a51803fd43808242b7a0a2184, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameOverText: {fileID: 0}
-  player1ActionText: {fileID: 0}
-  player2ActionText: {fileID: 0}
-  honorText: {fileID: 0}
-  player1AttackButton: {fileID: 0}
-  player1HealButton: {fileID: 0}
-  player1DefendButton: {fileID: 0}
-  player1ChargeButton: {fileID: 0}
-  player2AttackButton: {fileID: 0}
-  player2HealButton: {fileID: 0}
-  player2DefendButton: {fileID: 0}
-  player2ChargeButton: {fileID: 0}
 --- !u!114 &613450999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,6 +567,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
+--- !u!114 &613451002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613450993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2c2813ea00336c48b7260be16a48ccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &651024311
 GameObject:
   m_ObjectHideFlags: 0

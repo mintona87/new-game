@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class DebugUI : MonoBehaviour
 {
@@ -33,4 +34,10 @@ public class DebugUI : MonoBehaviour
         playfabManager.LoginUserNameInput.text = "rr@gh.com";
         playfabManager.LoginPasswordInput.text = "123456";
     }
+
+    public void DisconnectButtonClicked()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
 }
