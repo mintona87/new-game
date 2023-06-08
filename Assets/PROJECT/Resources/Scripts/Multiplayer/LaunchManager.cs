@@ -133,7 +133,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                     PhotonNetwork.LeaveRoom();
                 }
                 isItOnRematch = true;
-                timeBeforeIncreaseHonorOtherPlayer = 5;
+                timeBeforeIncreaseHonorOtherPlayer = 15;
             }
         }
     }
