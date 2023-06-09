@@ -244,6 +244,30 @@ public class GlobalData : MonoBehaviour
             Debug.Log(error.GenerateErrorReport());
         });
     }
+    public void LoadNFTImageURLData()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+        {
+            PlayFabId = playfabId,
+            Keys = null
+        }, result => {
+            if (result.Data == null || !result.Data.ContainsKey("NFTHonors"))
+            {
+                Debug.Log("No NFTHonors");
+                nftHonorData = new NFTHonorList();
+            }
+            else
+            {
+                Debug.Log("NFTHonors: " + result.Data["NFTHonors"].Value);
+                nftHonorData = JsonUtility.FromJson<NFTHonorList>(result.Data["NFTHonors"].Value);
+            }
+        }, (error) => {
+            Debug.Log("Got error retrieving user data:");
+            Debug.Log(error.GenerateErrorReport());
+        });
+    }
+
+
 
     public void InitGlobalData(string _playfabId)
     {

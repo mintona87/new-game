@@ -40,8 +40,11 @@ public class PlayfabManager : MonoBehaviour
     public GameObject PasswordErrorTextObj;
 
     public Sprite getNFTSprite;
+    public Sprite getTESTNFTSprite;
 
     public NFTMEtadata getSelectedNFTData;
+
+    public string SelectedNftImageURL;
 
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;

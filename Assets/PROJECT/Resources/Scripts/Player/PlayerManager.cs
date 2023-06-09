@@ -165,7 +165,14 @@ public class PlayerManager : MonoBehaviour
 
         playerCombat.SetDefaultTarget();
         playerUI.SetMaxHealthSlider();
-        playerUI.SetPlayerPicture();
+        if (isItMyPlayer)
+        {
+            playerUI.SetPlayerPicture(PhotonNetwork.LocalPlayer.CustomProperties["SpriteData"].ToString());
+        }
+        else
+        {
+            playerUI.SetPlayerPicture(playerCombat.GetOtherPlayer().CustomProperties["SpriteData"].ToString());
+        }
         StartCoroutine(OnSwitchTurnSettings());
 
         // change is mine

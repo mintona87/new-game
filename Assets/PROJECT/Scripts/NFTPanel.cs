@@ -90,6 +90,8 @@ public class NFTPanel : MonoBehaviour
     public void OnClickNFTSelectBtn()
     {
         playfabManager.getSelectedNFTData = selectedNFTData;
+        playfabManager.SelectedNftImageURL = selectedNFTData.imageUrl;
+        launchManager.ModifyPlayerCustomImageURL(playfabManager.SelectedNftImageURL);
         GlobalData.instance.SaveSelectedNFTData(selectedNFTData);
     }
     public void OnClickGetSavedNFTData()
