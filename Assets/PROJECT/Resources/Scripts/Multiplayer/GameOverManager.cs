@@ -42,7 +42,7 @@ public class GameOverManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("Called1" + getPlayer.CustomProperties["Nickname"].ToString());
 
-            GameObject playerRoomObj = Instantiate(PlayerGameOverObjPrefab, Vector3.zero, Quaternion.identity);
+            GameObject playerRoomObj = PhotonNetwork.Instantiate("Prefabs/PlayerRoomObj"/*PlayerGameOverObjPrefab*/, Vector3.zero, Quaternion.identity);
 
             playerRoomObj.transform.SetParent(PlayerGameOverObjContainer.transform);
             playerRoomObj.transform.localScale = Vector3.one;
@@ -54,7 +54,8 @@ public class GameOverManager : MonoBehaviourPunCallbacks
                 getPlayer.CustomProperties["Nickname"].ToString(),
                 playerHonor,
                 winOrLost,
-                "gameover"
+                "gameover",
+                getPlayer.CustomProperties["SpriteData"].ToString()
             );
         }
     }

@@ -2947,6 +2947,7 @@ MonoBehaviour:
   EmailErrorTextObj: {fileID: 578314338}
   PasswordErrorTextObj: {fileID: 578314337}
   getNFTSprite: {fileID: 0}
+  getTESTNFTSprite: {fileID: 0}
   getSelectedNFTData:
     unit: 
     name: 
@@ -2956,6 +2957,7 @@ MonoBehaviour:
     hexEncodedName: 
     website: 
     property: 
+  SelectedNftImageURL: 
 --- !u!1 &1495494072
 GameObject:
   m_ObjectHideFlags: 0
@@ -3502,6 +3504,10 @@ PrefabInstance:
     - target: {fileID: 3312624788341105952, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6919982251818971940, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 9125311163583770628, guid: 277744bc5cf3f364e96b5e77497f5318, type: 3}
       propertyPath: m_Name

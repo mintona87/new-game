@@ -37,7 +37,6 @@ public class NFTCell : MonoBehaviour
     {
         nftSprite = GlobalData.instance.LoadSpriteFromTexture(loadedTexture);
         nftImage.sprite = nftSprite;
-        FindObjectOfType<PlayfabManager>().getNFTSprite = nftSprite;
     }
 
     

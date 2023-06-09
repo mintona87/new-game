@@ -237,9 +237,18 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     void SetPlayerCustomProperties()
     {
-        //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) +" unit "+ playfabManager.getSelectedNFTData.unit);
+        
+        int honor = 0;
+#if UNITY_WEBGL
+        Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
+        honor = GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit);
+#else
+        honor = playfabManager.localPlayerHonor;
+#endif
 
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", playfabManager.localPlayerHonor /*GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit)*/);
+        
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("SpriteData", "");
+        PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", honor);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("DidFinishChoosingAction",false );
@@ -257,6 +266,13 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.CustomProperties["Honor"] = honor;
     }
+
+    public void ModifyPlayerCustomImageURL(string URL)
+    {
+        ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable { { "SpriteData", URL } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+    }
+
     public int GetCustomHonor()
     {
         return (int)PhotonNetwork.LocalPlayer.CustomProperties["Honor"];
@@ -323,26 +339,28 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
             foreach (Player getPlayer in sortedPlayers)
             {
-                Debug.Log("Called1" + getPlayer.CustomProperties["Nickname"].ToString());
+                Debug.Log("Called1" + PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString());
 
-                GameObject playerRoomObj = Instantiate(PlayerRoomObjPrefab, Vector3.zero, Quaternion.identity);
+                GameObject playerRoomObj = PhotonNetwork.Instantiate("Prefabs/PlayerRoomObj"/*PlayerRoomObjPrefab*/, Vector3.zero, Quaternion.identity);
 
                 playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
 
-                int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
+                int playerHonor = Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["Honor"]);
+
                 playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (
                     getPlayer.GetPlayerNumber() + 1,
                     getPlayer.CustomProperties["Nickname"].ToString(),
                     playerHonor,
                     "",
-                    "matchmaking"
+                    "matchmaking",
+                    getPlayer.CustomProperties["SpriteData"].ToString()
                 );
-            }
+            }           
         }
         else
         {
-            GameObject playerRoomObj = Instantiate(PlayerRoomObjPrefab, Vector3.zero, Quaternion.identity);
+            GameObject playerRoomObj = PhotonNetwork.Instantiate("Prefabs/PlayerRoomObj"/*PlayerRoomObjPrefab*/, Vector3.zero, Quaternion.identity);
 
             playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
             int playerHonor = Convert.ToInt32(player.CustomProperties["Honor"]);
@@ -352,7 +370,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 player.CustomProperties["Nickname"].ToString(),
                 playerHonor,
                 "",
-                "matchmaking"
+                "matchmaking",
+                player.CustomProperties["SpriteData"].ToString()
                 ) ;
         }
     }

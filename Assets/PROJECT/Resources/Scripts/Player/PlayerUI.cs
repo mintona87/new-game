@@ -66,13 +66,21 @@ public class PlayerUI : MonoBehaviour
     }
 
 
-    public void SetPlayerPicture()
+    public void SetPlayerPicture(string imageURL)
     {
-        Debug.Log("isminepicture " + player.isItMyPlayer);
-        if (player.isItMyPlayer)
+        if (player.playfabManager.getSelectedNFTData.rawImage)
         {
-            PlayerPicture.sprite = player.playfabManager.getNFTSprite;
+            OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
         }
+        else
+        {
+            DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+        }
+    }
+    void OnNFTImgDownloaded(Texture2D nftTexture)
+    {
+        player.playfabManager.getNFTSprite = GlobalData.instance.LoadSpriteFromTexture(nftTexture);
+        PlayerPicture.sprite = player.playfabManager.getNFTSprite;
     }
 
     public float GetNormalizedHP(int hp, int maxHealth)

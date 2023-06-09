@@ -7,6 +7,10 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using System;
 using Photon.Realtime;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Unity.VisualScripting;
+using UnityEngine.Networking;
 
 public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 {
@@ -17,13 +21,13 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     public TextMeshProUGUI WonLostText;
 
     PlayfabManager playfabManager;
-
+    
     private void Awake()
     {
         playfabManager = FindObjectOfType<PlayfabManager>();
     }
 
-    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type)
+    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type, string imageURL)
     {
         if (type != "leaderboard")
         {
@@ -44,7 +48,24 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 
         if (type == "gameover" || type == "matchmaking")
         {
-            SetPlayerPicture();
+            Debug.Log("selectactioncalled");
+            //GlobalData.instance.nftSelectAction = OnNFTSelected;
+            //string spriteUrl = playfabManager.SelectedNftImageURL;
+            Debug.Log("multiSetURL" + imageURL);
+            //ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable { { "SpriteData", imageURL } };
+            //PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
+            if (playfabManager.getSelectedNFTData.rawImage)
+            {
+                OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
+            }
+            else
+            {
+                DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+            }
+
+            //OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(spriteUrl));
+            //Debug.Log("multisprite " + playfabManager.getNFTSprite.name);
+            
         }
 
         if (type == "gameover")
@@ -88,6 +109,8 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
                 UpdateHonorUI(updatedHonor, winOrLost);
             }
         }
+
+       
     }
 
     private void UpdateHonorUI(int updatedHonor, string winOrLost)
@@ -102,10 +125,10 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
             PlayerHonorText.text = "0";
         }
     }
-    public void SetPlayerPicture()
+   
+    void OnNFTImgDownloaded(Texture2D nftTexture)
     {
-
+        playfabManager.getNFTSprite = GlobalData.instance.LoadSpriteFromTexture(nftTexture);
         PlayerImage.sprite = playfabManager.getNFTSprite;
-
     }
 }
