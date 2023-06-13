@@ -10,7 +10,7 @@ public class PlayerUI : MonoBehaviour
 {
 
     [SerializeField] public TextMeshProUGUI ActionText;
-    public TextMeshProUGUI playerNumberText;
+    //public TextMeshProUGUI playerNumberText;
     public TextMeshProUGUI playerUsernameText;
     public TextMeshProUGUI HPText;
 

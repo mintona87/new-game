@@ -200,10 +200,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
         Debug.Log("honor diffrences " + twoPlayersHonorSubstraction + " otherdifference "+ otherPlayerhonorDifference);
 
-        if (FindObjectOfType<DebugUI>().ToggleMatchWithEveryone.isOn)
-        {
-            otherPlayerhonorDifference = 50000;
-        }
+        //if (FindObjectOfType<DebugUI>().ToggleMatchWithEveryone.isOn)
+        //{
+        //    otherPlayerhonorDifference = 50000;
+        //}
 
         if (twoPlayersHonorSubstraction <= otherPlayerhonorDifference)
         {

@@ -233,7 +233,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             int targetPlayerViewID = targetScript.pv.ViewID;
             string targetName = "localPlayer";
 
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + " is stunned!", localPlayerViewID, targetPlayerViewID, targetName);
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerUsernameText.text + " is stunned!", localPlayerViewID, targetPlayerViewID, targetName);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
         }
@@ -470,11 +470,11 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerUsernameText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
         }
         else
         {
-            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + " missed the attack!", localPlayerViewID, targetPlayerViewID, targetName);
+            playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerUsernameText.text + " missed the attack!", localPlayerViewID, targetPlayerViewID, targetName);
         }
 
         playerManager.TurnsSinceCharge++;
@@ -511,7 +511,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int targetPlayerViewID = targetScript.pv.ViewID;
         string targetName = "localPlayer";
 
-        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerNumberText.text + $" healed for {healAmount}!", localPlayerViewID, targetPlayerViewID, targetName);
+        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, playerManager.playerUI.playerUsernameText.text + $" healed for {healAmount}!", localPlayerViewID, targetPlayerViewID, targetName);
 
     }
 
@@ -565,7 +565,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int targetPlayerViewID = targetScript.pv.ViewID;
         string targetName = "target";
 
-        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerNumberText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
+        playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerUsernameText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
     }
     #endregion
 

@@ -66,16 +66,16 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
 
-            FindObjectOfType<DebugUI>().ChargeText.text = "charge " + TurnsSinceCharge;
+            //FindObjectOfType<DebugUI>().ChargeText.text = "charge " + TurnsSinceCharge;
         }
     }
 
     void InitPlayer()
     {
         Debug.Log("loacl player num" + playerNumber);
-        playerUI.playerNumberText.text = "Player" + (playerNumber + 1).ToString();
+        //playerUI.playerNumberText.text = "Player" + (playerNumber + 1).ToString();
 
-        gameObject.name = playerUI.playerNumberText.text;
+        gameObject.name = "Player" + (playerNumber + 1).ToString()/*playerUI.playerNumberText.text*/;
         //playerUI.playerUsernameText.text = localPlayerNickname;
         transform.SetParent(gameController.PlayerListContainer.transform);
         gameObject.transform.localScale = new Vector2(1.0f, 1.0f);

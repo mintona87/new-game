@@ -16,7 +16,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 {
     public Image PlayerImage;
     public TextMeshProUGUI PlayerNameText;
-    public TextMeshProUGUI PlayerNumberText;
+    //public TextMeshProUGUI PlayerNumberText;
     public TextMeshProUGUI PlayerHonorText;
     public TextMeshProUGUI WonLostText;
 
@@ -32,7 +32,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     {
         if (type != "leaderboard")
         {
-            PlayerNumberText.text = "Player " + playerNumber.ToString();
+            //PlayerNumberText.text = "Player " + playerNumber.ToString();
             PlayerImage.gameObject.SetActive(true);
         }
         else
