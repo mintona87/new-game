@@ -59,7 +59,7 @@ MonoBehaviour:
   PlayerNameText: {fileID: 2134168527793261091}
   PlayerNumberText: {fileID: 2134168527714480160}
   PlayerHonorText: {fileID: 2134168527674102271}
-  WonLostText: {fileID: 0}
+  WonLostText: {fileID: 7802519751394223175}
 --- !u!114 &7865726678079169929
 MonoBehaviour:
   m_ObjectHideFlags: 0

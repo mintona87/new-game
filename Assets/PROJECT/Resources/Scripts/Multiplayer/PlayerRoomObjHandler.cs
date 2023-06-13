@@ -24,6 +24,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
     
     private void Awake()
     {
+
         playfabManager = FindObjectOfType<PlayfabManager>();
     }
 
@@ -48,12 +49,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
 
         if (type == "gameover" || type == "matchmaking")
         {
-            Debug.Log("selectactioncalled");
-            //GlobalData.instance.nftSelectAction = OnNFTSelected;
-            //string spriteUrl = playfabManager.SelectedNftImageURL;
             Debug.Log("multiSetURL" + imageURL);
-            //ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable { { "SpriteData", imageURL } };
-            //PhotonNetwork.LocalPlayer.SetCustomProperties(customProperties);
             if (playfabManager.getSelectedNFTData.rawImage)
             {
                 OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
@@ -62,17 +58,19 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
             {
                 DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
             }
-
-            //OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(spriteUrl));
-            //Debug.Log("multisprite " + playfabManager.getNFTSprite.name);
             
         }
 
         if (type == "gameover")
         {
+            WonLostText.gameObject.SetActive(true);
             WonLostText = transform.Find("WonLostText").GetComponent<TextMeshProUGUI>();
 
             StartCoroutine(WaitLostPropertyTobeSet(nickName, playerHonor, winOrLost));
+        }
+        else if(type == "matchmaking")
+        {
+            WonLostText.gameObject.SetActive(false);
         }
         //to do set the image
     }

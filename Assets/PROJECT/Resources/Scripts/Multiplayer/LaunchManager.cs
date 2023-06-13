@@ -240,8 +240,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         
         int honor = 0;
 #if UNITY_WEBGL
-        Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
-        honor = GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit);
+        //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
+        //honor = GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit);
 #else
         honor = playfabManager.localPlayerHonor;
 #endif

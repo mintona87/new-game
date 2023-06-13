@@ -193,6 +193,7 @@ MonoBehaviour:
   PlayerNameText: {fileID: 2134168527793261091}
   PlayerNumberText: {fileID: 2134168527714480160}
   PlayerHonorText: {fileID: 2134168527674102271}
+  WonLostText: {fileID: 5391501143491320856}
 --- !u!1 &2134168526230239209
 GameObject:
   m_ObjectHideFlags: 0
