@@ -60,15 +60,15 @@ public class PlayerManager : MonoBehaviour
         StartCoroutine(WaitFinishLoad());
     }
 
-    ////tmp
-    private void Update()
-    {
-        if (isItMyPlayer)
-        {
-            Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
-            Debug.Log("isdefending " + (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"] + " index " + isDefendingTurnIndex);
-        }
-    }
+    //////tmp
+    //private void Update()
+    //{
+    //    if (isItMyPlayer)
+    //    {
+    //        Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
+    //        Debug.Log("isdefending " + (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"] + " index " + isDefendingTurnIndex);
+    //    }
+    //}
 
     void InitPlayer()
     {
