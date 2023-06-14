@@ -2112,6 +2112,7 @@ MonoBehaviour:
   playerNumber: 0
   localPlayerNickname: 
   isItMyPlayer: 0
+  isDefendingTurnIndex: 0
 --- !u!114 &1199268779151830662
 MonoBehaviour:
   m_ObjectHideFlags: 0

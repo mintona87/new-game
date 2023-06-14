@@ -93,6 +93,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public void HandlePlayerTurn()
     {
+        
         SwitchPlayerTurn();
     }
 

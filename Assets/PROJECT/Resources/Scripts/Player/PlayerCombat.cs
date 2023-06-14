@@ -21,8 +21,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     public bool isPlayingAction;
 
-
-
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -110,7 +108,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     private void Update()
     {
         //Debug.Log(" num " + PhotonNetwork.LocalPlayer.GetPlayerNumber()+"turncharge " + playerManager.TurnsSinceCharge +" hascharged "+playerManager.HasCharged);
-        Debug.Log("isplayingaction" + isPlayingAction + " num " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "manastun " + playerManager.canPlay);
+        //Debug.Log("isplayingaction" + isPlayingAction + " num " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + "manastun " + playerManager.canPlay);
         if (isPlayingAction == true || (bool)PhotonNetwork.LocalPlayer.CustomProperties["DidFinishChoosingAction"] == true)
         {
             DisableButtonUI();
@@ -218,6 +216,12 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         targetScript.playerCombat.isPlayingAction = false;
         PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
         choosenAction = Actions.NoAction;
+
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"])
+        {
+            playerManager.isDefendingTurnIndex++;
+        }
+
         yield return null;
     }
 
@@ -260,6 +264,13 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             playerManager.playerUI.playerDefendButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerChargeButton.interactable = playerManager.canPlay && playerManager.TurnsSinceCharge >= 6;
 
+            if (playerManager.isDefendingTurnIndex >= 2)
+            {
+                playerManager.SetIsDefending(PhotonNetwork.LocalPlayer, false);
+                playerManager.isDefendingTurnIndex = 0;
+            }
+
+           
             if (playerManager.TurnsSinceCharge >= 6)
             {
                 playerManager.ResetCharge();
@@ -361,7 +372,6 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
                                 { "countPlayerPlayingAction", countPlayerPlayingAction }
                             };
                             Debug.Log("countPlayerPlayingAction " + countPlayerPlayingAction + " num " + targetPlayer.GetPlayerNumber());
-
                             PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                         }
                     }
@@ -466,10 +476,16 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int localPlayerViewID = playerManager.pv.ViewID;
         int targetPlayerViewID = targetScript.pv.ViewID;
         string targetName = "target";
-
+        Debug.Log("istargetdefending? " + targetScript.isDefending);
         if (!targetScript.Dodge()) // Check if Player 2 dodged the attack
         {
             targetScript.ChangeHP(-damage);
+            Debug.Log("changeHPDefending " + (bool)GetOtherPlayer().CustomProperties["isDefending"]);
+            if ((bool)GetOtherPlayer().CustomProperties["isDefending"])
+            {
+                targetScript.SetIsDefending(GetOtherPlayer() ,false);
+                targetScript.isDefendingTurnIndex = 0;
+            }
             playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerUsernameText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
         }
         else
@@ -528,9 +544,10 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
     void Defend()
     {
-        playerManager.SetIsDefending(true);
+        playerManager.SetIsDefending(PhotonNetwork.LocalPlayer,true);
         playerManager.TurnsSinceCharge++;
-        Debug.Log("should charge " + playerManager.TurnsSinceCharge);
+
+        Debug.Log("Should defend");
         StartCoroutine(playerEffect.PlayDefendEffect());
     }
     #endregion
@@ -553,8 +570,14 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
 
         int damage = playerManager.Charge(targetScript);
-        targetScript.ChangeHP(-damage);
 
+        targetScript.ChangeHP(-damage);
+        Debug.Log("changeHPDefending " + (bool)GetOtherPlayer().CustomProperties["isDefending"]);
+        if ((bool)GetOtherPlayer().CustomProperties["isDefending"])
+        {
+            targetScript.SetIsDefending(GetOtherPlayer(), false);
+            targetScript.isDefendingTurnIndex = 0;
+        }
         playerManager.TurnsSinceCharge = 0; // Reset the counter
         Debug.Log("should charge " + playerManager.TurnsSinceCharge);
 
@@ -564,7 +587,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         int localPlayerViewID = playerManager.pv.ViewID;
         int targetPlayerViewID = targetScript.pv.ViewID;
         string targetName = "target";
-
+        
         playerManager.pv.RPC("ShowActionRPC", RpcTarget.AllBuffered, targetScript.playerUI.playerUsernameText.text + $" dealt {damage} damage!", localPlayerViewID, targetPlayerViewID, targetName);
     }
     #endregion

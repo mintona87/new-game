@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool isItMyPlayer;
 
+    public int isDefendingTurnIndex;
 
 
     private void Awake()
@@ -65,8 +66,7 @@ public class PlayerManager : MonoBehaviour
         if (isItMyPlayer)
         {
             Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
-
-            //FindObjectOfType<DebugUI>().ChargeText.text = "charge " + TurnsSinceCharge;
+            Debug.Log("isdefending " + (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"] + " index " + isDefendingTurnIndex);
         }
     }
 
@@ -114,8 +114,8 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DEF", playfabManager.GetPlayerSavedData().DEF } });
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "LUCK", playfabManager.GetPlayerSavedData().LUCK } });
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", playfabManager.GetPlayerSavedData().SPD } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isDefending", isDefending} });
     }
-
 
     IEnumerator WaitFinishLoad()
     {
@@ -191,7 +191,6 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("buttonactivated" + canPlay + " didchoose " + PhotonNetwork.LocalPlayer.CustomProperties["DidFinishChoosingAction"]);
 
-
             playerUI.playerAttackButton.interactable = canPlay;
             playerUI.playerHealButton.interactable = canPlay;
             playerUI.playerDefendButton.interactable = canPlay;
@@ -251,6 +250,8 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
+       
+        
         HP += amount;
         if (HP < 0)
         {
@@ -303,7 +304,7 @@ public class PlayerManager : MonoBehaviour
             damage = Mathf.RoundToInt(damage * 1.75f); // 1.75x damage for critical hits
         }
 
-        if (isDefending)
+        if ((bool)playerCombat.GetOtherPlayer().CustomProperties["isDefending"])
         {
             damage = 0;
         }
@@ -321,15 +322,11 @@ public class PlayerManager : MonoBehaviour
         return healing;
     }
 
-    public void SetIsDefending(bool condition)
+    public void SetIsDefending(Player player, bool condition)
     {
-        pv.RPC("SetIsDefendingRPC", RpcTarget.AllBuffered, condition);
+        player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isDefending", condition } });
     }
-    [PunRPC]
-    void SetIsDefendingRPC(bool condition)
-    {
-        isDefending = condition;
-    }
+   
 
     public int Charge(PlayerManager opponent)
     {
@@ -356,7 +353,7 @@ public class PlayerManager : MonoBehaviour
             {
                 damage = Mathf.RoundToInt(damage * 1.75f); // 1.75x damage for critical hits
             }
-            if (isDefending)
+            if ((bool)playerCombat.GetOtherPlayer().CustomProperties["isDefending"])
             {
                 damage = 0;
             }
