@@ -52,6 +52,7 @@ public class GlobalData : MonoBehaviour
     public Dictionary<string, Texture2D> downloadedTextures = new Dictionary<string, Texture2D>();
     public bool isWalletConnected = false;
     public string playfabId;
+    public string userName;
     public Dictionary<string, string> playerData = new Dictionary<string, string>();
 
     public Action<NFTMEtadata> nftSelectAction = null;

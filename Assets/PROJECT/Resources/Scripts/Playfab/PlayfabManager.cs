@@ -122,6 +122,8 @@ public class PlayfabManager : MonoBehaviour
         GetLoadedPlayerDatas();//load and create data if no data
 
         nickname = RegisterUsernameInput.text;
+        GlobalData.instance.userName = nickname;
+        ChatManager.instance.Connect();
         //debugUI.NickNameText.text = nickname;
 
         SubmitNameButton();
@@ -220,10 +222,13 @@ public class PlayfabManager : MonoBehaviour
         if (name == null)
         {
             Debug.Log("no name, show set name form ...");
+            ChatManager.instance.Connect();
             SubmitNameButton();
         }
         else
         {
+            GlobalData.instance.userName = name;
+            ChatManager.instance.Connect();
             LoginSettings();
         }
         GlobalData.instance.InitGlobalData(result.PlayFabId);
@@ -254,6 +259,7 @@ public class PlayfabManager : MonoBehaviour
     void OnDisplayNameUpdate(UpdateUserTitleDisplayNameResult result)
     {
         Debug.Log("Updated display name!");
+        GlobalData.instance.userName = result.DisplayName;
         SceneManager.LoadScene("MainMenu");
     }
 

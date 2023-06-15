@@ -75,4 +75,8 @@ public class MainMenuController : MonoBehaviour
 
 
     }
+    public void OnClickChatButton()
+    {
+        WndManager.instance.OpenDialog(DLGType.CHAT_DLG);
+    }
 }
