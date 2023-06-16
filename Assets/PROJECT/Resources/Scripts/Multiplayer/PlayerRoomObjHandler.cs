@@ -58,7 +58,6 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
             {
                 DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
             }
-            
         }
 
         if (type == "gameover")

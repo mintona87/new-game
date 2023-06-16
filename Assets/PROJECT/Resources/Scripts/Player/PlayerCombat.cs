@@ -32,6 +32,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable roomProperties = new ExitGames.Client.Photon.Hashtable
         {
             { "countPlayerPlayingAction", 0 },
+            { "SharedRandomNumber", 0 },
             { "isGameOver",  false}
         };
 
@@ -121,7 +122,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             int rnd = UnityEngine.Random.Range(1, 100);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SharedRandomNumber", rnd } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SharedRandomNumber", rnd } });
         }
     }
 
@@ -149,7 +150,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             player.CustomProperties["DidFinishChoosingAction"] = false;
         }
 
-        int sharedRandomNumber = (int)PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"];
+        int sharedRandomNumber = (int)PhotonNetwork.CurrentRoom.CustomProperties["SharedRandomNumber"];
         Debug.Log("SharedRandomNumber: " + sharedRandomNumber);
 
         // set the variable that indicates that the player is not choosing action anymore but he is playing the action that he choose
@@ -214,7 +215,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
         isPlayingAction = false;
         targetScript.playerCombat.isPlayingAction = false;
-        PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"] = 0;
+        PhotonNetwork.CurrentRoom.CustomProperties["SharedRandomNumber"] = 0;
         choosenAction = Actions.NoAction;
 
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"])
@@ -411,7 +412,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
     IEnumerator WaitForSharedRandomNumberAndStartCheck()
     {
         Debug.Log("Waiting for SharedRandomNumber");
-        while (Convert.ToInt32(PhotonNetwork.MasterClient.CustomProperties["SharedRandomNumber"]) == 0)
+        while (Convert.ToInt32(PhotonNetwork.CurrentRoom.CustomProperties["SharedRandomNumber"]) == 0)
         {
             yield return null;
         }

@@ -258,7 +258,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.Add("LUCK", 0);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("isDefending", false);
 
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("SharedRandomNumber", 0 );
         PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayerStun", "notStun");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("isPlayingAction", false);
     }

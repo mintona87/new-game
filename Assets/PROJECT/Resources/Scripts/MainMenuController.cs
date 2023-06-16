@@ -19,26 +19,14 @@ public class MainMenuController : MonoBehaviour
         selectCharacterContent.SetActive(false);
         GlobalData.instance.nftSelectAction = OnNFTSelected;
         playfabManager = FindObjectOfType<PlayfabManager>();
-        StartCoroutine(WaitForActorNum());
-    }
-    // for testing in pc
-    IEnumerator WaitForActorNum()
-    {
-        while (PhotonNetwork.LocalPlayer.ActorNumber == -1)
-        {
-            yield return null;
-        }
-        Debug.Log("actornum " + PhotonNetwork.LocalPlayer.ActorNumber);
-        if (PhotonNetwork.LocalPlayer.ActorNumber == 1)
-        {
-            playfabManager.getTESTNFTSprite = Resources.Load<Sprite>("Sprites/$decimalist");
-        }
-        else
-        {
-            playfabManager.getTESTNFTSprite = Resources.Load<Sprite>("Sprites/CardanoCroc1");
-        }
-    }
 
+        if (playfabManager.getNFTSprite != null)
+        {
+            Debug.Log("get nft sprite is not null");
+            FindObjectOfType<LaunchManager>().ModifyPlayerCustomImageURL(playfabManager.SelectedNftImageURL);
+            GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
+        }
+    }
 
     public void StartGame()
     {
