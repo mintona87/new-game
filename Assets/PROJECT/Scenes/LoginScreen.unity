@@ -3039,7 +3039,7 @@ MonoBehaviour:
   EmailErrorTextObj: {fileID: 578314338}
   PasswordErrorTextObj: {fileID: 578314337}
   getNFTSprite: {fileID: 0}
-  getTESTNFTSprite: {fileID: 0}
+  SelectedDefaultSprite: {fileID: 0}
   getSelectedNFTData:
     unit: 
     name: 

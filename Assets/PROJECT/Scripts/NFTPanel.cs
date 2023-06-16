@@ -65,8 +65,6 @@ public class NFTPanel : MonoBehaviour
 
         launchManager.ModifyPlayerCustomHonor(honor);
 
-        Debug.Log("localhonorAfter " + launchManager.GetCustomHonor() + " nfthonor " + honor);
-
         for (int i = 0; i < nftTraits.Length; i++)
         {
             nftTraits[i].gameObject.SetActive(false);

@@ -28,7 +28,7 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         playfabManager = FindObjectOfType<PlayfabManager>();
     }
 
-    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type, string imageURL)
+    public void SetUpPlayerInfo(int playerNumber, string nickName, int playerHonor, string winOrLost, string type, string imageURL,string imageSpriteName)
     {
         if (type != "leaderboard")
         {
@@ -50,13 +50,20 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         if (type == "gameover" || type == "matchmaking")
         {
             Debug.Log("multiSetURL" + imageURL);
-            if (playfabManager.getSelectedNFTData.rawImage)
+            if (imageURL != "")
             {
-                OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
+                if (playfabManager.getSelectedNFTData.rawImage)
+                {
+                    OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
+                }
+                else
+                {
+                    DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+                }
             }
             else
             {
-                DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+                PlayerImage.sprite = Resources.Load<Sprite>("Sprites/DefaultSprite/" + imageSpriteName);
             }
         }
 
@@ -71,7 +78,8 @@ public class PlayerRoomObjHandler : MonoBehaviourPunCallbacks
         {
             WonLostText.gameObject.SetActive(false);
         }
-        //to do set the image
+        
+
     }
 
     IEnumerator WaitLostPropertyTobeSet(string nickName, int playerHonor, string winOrLost)

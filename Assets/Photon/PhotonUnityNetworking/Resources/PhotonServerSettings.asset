@@ -48,10 +48,8 @@ MonoBehaviour:
   - PlaySwordSlashEffectRPC
   - RespawnSpaceship
   - SetHealthSliderRPC
-  - SetIsDefendingRPC
   - ShowActionRPC
   - SynchronizePlayerNumber
-  - SetPlayerPicture
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

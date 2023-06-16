@@ -66,15 +66,22 @@ public class PlayerUI : MonoBehaviour
     }
 
 
-    public void SetPlayerPicture(string imageURL)
+    public void SetPlayerPicture(string imageURL,string defaultImageName)
     {
-        if (player.playfabManager.getSelectedNFTData.rawImage)
+        if (imageURL != "")
         {
-            OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
+            if (player.playfabManager.getSelectedNFTData.rawImage)
+            {
+                OnNFTImgDownloaded(GlobalData.instance.GetTextureFromBase64(imageURL));
+            }
+            else
+            {
+                DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+            }
         }
         else
         {
-            DownloadManager.instance.BookDownload(imageURL, OnNFTImgDownloaded);
+            PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/DefaultSprite/" + defaultImageName);
         }
     }
     void OnNFTImgDownloaded(Texture2D nftTexture)

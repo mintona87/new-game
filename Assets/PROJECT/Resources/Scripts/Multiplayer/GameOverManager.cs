@@ -18,6 +18,7 @@ public class GameOverManager : MonoBehaviourPunCallbacks
 
     PhotonView pv;
 
+
     void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -48,6 +49,8 @@ public class GameOverManager : MonoBehaviourPunCallbacks
             playerRoomObj.transform.localScale = Vector3.one;
             int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
             string winOrLost = getPlayer.CustomProperties["WonLost"].ToString();
+
+
             playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
             (
                 getPlayer.GetPlayerNumber() + 1,
@@ -55,7 +58,8 @@ public class GameOverManager : MonoBehaviourPunCallbacks
                 playerHonor,
                 winOrLost,
                 "gameover",
-                getPlayer.CustomProperties["SpriteData"].ToString()
+                getPlayer.CustomProperties["SpriteData"].ToString(),
+                getPlayer.CustomProperties["DefaultSpriteName"].ToString()
             );
         }
     }

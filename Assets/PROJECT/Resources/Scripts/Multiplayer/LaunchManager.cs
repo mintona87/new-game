@@ -246,7 +246,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         honor = playfabManager.localPlayerHonor;
 #endif
 
-        
+        //defaultSpriteName is added in the MainMenuController
         PhotonNetwork.LocalPlayer.CustomProperties.Add("SpriteData", "");
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", honor);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
@@ -324,7 +324,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         Debug.Log("Joined Lobby");
     }
 
-
     IEnumerator WaitToFinishLoadPlayerInfo(Player player, bool isItJoining)
     {
         while(player.GetPlayerNumber() == -1)
@@ -345,7 +344,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
                 playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
 
-                int playerHonor = Convert.ToInt32(PhotonNetwork.LocalPlayer.CustomProperties["Honor"]);
+                int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
 
                 playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (
@@ -354,7 +353,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                     playerHonor,
                     "",
                     "matchmaking",
-                    getPlayer.CustomProperties["SpriteData"].ToString()
+                    getPlayer.CustomProperties["SpriteData"].ToString(),
+                    getPlayer.CustomProperties["DefaultSpriteName"].ToString()
                 );
             }           
         }
@@ -371,7 +371,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 playerHonor,
                 "",
                 "matchmaking",
-                player.CustomProperties["SpriteData"].ToString()
+                player.CustomProperties["SpriteData"].ToString(),
+                player.CustomProperties["DefaultSpriteName"].ToString()
                 ) ;
         }
     }

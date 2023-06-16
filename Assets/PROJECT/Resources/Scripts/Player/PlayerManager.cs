@@ -167,11 +167,11 @@ public class PlayerManager : MonoBehaviour
         playerUI.SetMaxHealthSlider();
         if (isItMyPlayer)
         {
-            playerUI.SetPlayerPicture(PhotonNetwork.LocalPlayer.CustomProperties["SpriteData"].ToString());
+            playerUI.SetPlayerPicture(PhotonNetwork.LocalPlayer.CustomProperties["SpriteData"].ToString(), PhotonNetwork.LocalPlayer.CustomProperties["DefaultSpriteName"].ToString());
         }
         else
         {
-            playerUI.SetPlayerPicture(playerCombat.GetOtherPlayer().CustomProperties["SpriteData"].ToString());
+            playerUI.SetPlayerPicture(playerCombat.GetOtherPlayer().CustomProperties["SpriteData"].ToString(), playerCombat.GetOtherPlayer().CustomProperties["DefaultSpriteName"].ToString());
         }
         StartCoroutine(OnSwitchTurnSettings());
 

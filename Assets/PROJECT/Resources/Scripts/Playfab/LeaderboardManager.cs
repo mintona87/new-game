@@ -40,7 +40,8 @@ public class LeaderboardManager : MonoBehaviour
                 entry.StatValue,
                 "",
                 "leaderboard",
-                null
+                null,
+                ""
                 );
             // You can set the player image here, e.g., by using a Coroutine to download it from a URL.
         }
