@@ -14,13 +14,13 @@ mergeInto(LibraryManager.library, {
         if (!splitString) continue;
 
         // Split the string into name and data parts
-        const [unit, dataString, isUpdated] = splitString.split('!@#');
+        const [unit, hexEncodedName, dataString, isUpdated] = splitString.split('!@#');
         // Parse the data JSON string and extract desired properties
         const dataJson = JSON.parse(dataString);
         
         var name;
         var imageData;
-        var properties, hexEncodedName="", website=""
+        var properties, website=""
         var description;
         if (isUpdated) {
             const propertyData = base64DecodeObject(JSON.parse(dataString)[0]);
@@ -34,8 +34,7 @@ mergeInto(LibraryManager.library, {
     
             if (!dataJson["721"]) continue;
             
-            const policyId = Object.keys(Object.values(dataJson)[0])[0];
-            hexEncodedName = unit.split(policyId)[1];
+            const policyId = unit.split(hexEncodedName)[0];
     
             if (!dataJson || !policyId || !hexEncodedName) continue;
         

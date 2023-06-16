@@ -130,7 +130,7 @@ public class WalletConnect : MonoBehaviour
                                         cbor = CBORObject.DecodeFromBytes(bytes1);
                                         var metadata = cbor.ToJSONString();
                                         Debug.Log($"({metadata})");
-                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata + "!@#updated";
+                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + nft.asset_name + "!@#" + metadata + "!@#updated";
                                     }
                                     else if (!String.IsNullOrEmpty(output.data_hash))
                                     {
@@ -139,7 +139,7 @@ public class WalletConnect : MonoBehaviour
                                         cbor = CBORObject.DecodeFromBytes(bytes);
                                         var metadata = cbor.ToJSONString();
                                         Debug.Log($"({metadata})");
-                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata + "!@#updated";
+                                        metadatas = metadatas + "|||" + amount.unit + "!@#" + nft.asset_name + "!@#" + metadata + "!@#updated";
                                     }
                                     else
                                     {
@@ -154,7 +154,7 @@ public class WalletConnect : MonoBehaviour
                                             cbor = CBORObject.DecodeFromBytes(bytes1);
                                             var metadata = cbor.ToJSONString();
                                             Debug.Log($"({metadata})");
-                                            metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata;
+                                            metadatas = metadatas + "|||" + amount.unit + "!@#" + nft.asset_name + "!@#" + metadata;
                                         }
                                     }
                                 }
@@ -174,7 +174,7 @@ public class WalletConnect : MonoBehaviour
                             cbor = CBORObject.DecodeFromBytes(bytes1);
                             var metadata = cbor.ToJSONString();
                             Debug.Log($"({metadata})");
-                            metadatas = metadatas + "|||" + amount.unit + "!@#" + metadata;
+                                metadatas = metadatas + "|||" + amount.unit + "!@#" + nft.asset_name + "!@#" + metadata;
                         }
                     }
                 }
