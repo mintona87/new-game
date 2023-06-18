@@ -21,7 +21,7 @@ public class InBattleLaunchManager : MonoBehaviourPunCallbacks
        
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("isGameOver", out object value))
         {
-            if (playerManager.gameController.gameOverManager.isGameOver && PhotonNetwork.CurrentRoom.PlayerCount == 1)
+            if (!playerManager.gameController.gameOverManager.isGameOver && PhotonNetwork.CurrentRoom.PlayerCount == 1)
             {
                 OnConnectionErrorPanel.Instance.SetErrorPanelScreenActive(true);
             }
