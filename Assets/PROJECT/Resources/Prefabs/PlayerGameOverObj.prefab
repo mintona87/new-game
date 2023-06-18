@@ -191,7 +191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerImage: {fileID: 2134168526230239211}
   PlayerNameText: {fileID: 2134168527793261091}
-  PlayerNumberText: {fileID: 2134168527714480160}
   PlayerHonorText: {fileID: 2134168527674102271}
   WonLostText: {fileID: 5391501143491320856}
 --- !u!1 &2134168526230239209
@@ -260,7 +259,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8608fa0a6e302f74cb8f1c9c7c6c4f18, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -16,6 +16,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 {
     public static LaunchManager Instance;
     public PlayfabManager playfabManager;
+    public MainMenuController mainMenuController;
 
     [SerializeField] GameObject PlayMultiButton;
 
@@ -49,13 +50,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         Instance = this;
-        
-        timeBeforeIncreaseHonorOtherPlayer = 5.0f;
-        otherPlayerhonorDifference = 100;
-        RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
+
+        SetOiriginRoomHonor();
         isConnectedOnMaster = false;
         shouldStartSearchHonorTimer = false;
         roomType = "";
+        mainMenuController = FindObjectOfType<MainMenuController>();
         playfabManager = FindObjectOfType<PlayfabManager>();
         cachedRoomList = new Dictionary<string, RoomInfo>();
     }
@@ -166,8 +166,17 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoomButtonClicked()
     {
+        SetOiriginRoomHonor();
         PhotonNetwork.LeaveRoom();
     }
+
+    void SetOiriginRoomHonor()
+    {
+        timeBeforeIncreaseHonorOtherPlayer = 5.0f;
+        otherPlayerhonorDifference = 100;
+        RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
+    }
+
 
     [PunRPC]
     void LoadBattleScreen()
@@ -247,7 +256,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 #endif
 
         //defaultSpriteName is added in the MainMenuController
-        PhotonNetwork.LocalPlayer.CustomProperties.Add("SpriteData", "");
+        //PhotonNetwork.LocalPlayer.CustomProperties.Add("SpriteData", "");SpriteDatais added in the MainMenuController
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", honor);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Nickname", playfabManager.nickname);
         PhotonNetwork.LocalPlayer.CustomProperties.Add("WonLost", "null");
@@ -345,6 +354,11 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 playerRoomObj.transform.SetParent(PlayerRoomObjContainerObj.transform);
 
                 int playerHonor = Convert.ToInt32(getPlayer.CustomProperties["Honor"]);
+
+                while(getPlayer.CustomProperties["SpriteData"].ToString() == "" && getPlayer.CustomProperties["DefaultSpriteName"].ToString() == "")
+                {
+                    yield return null;
+                }
 
                 playerRoomObj.GetComponent<PlayerRoomObjHandler>().SetUpPlayerInfo
                 (

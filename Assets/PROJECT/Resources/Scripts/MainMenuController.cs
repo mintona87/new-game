@@ -14,7 +14,6 @@ public class MainMenuController : MonoBehaviour
     PlayfabManager playfabManager;
     DefaultImageManager defaultImageManager;
 
-
     private void Start()
     {
         walletConnectContent.SetActive(false);
@@ -22,12 +21,16 @@ public class MainMenuController : MonoBehaviour
         GlobalData.instance.nftSelectAction = OnNFTSelected;
         playfabManager = FindObjectOfType<PlayfabManager>();
         defaultImageManager = FindObjectOfType<DefaultImageManager>();
+        SetPlayerSprite();
+    }
 
+    public void SetPlayerSprite()
+    {
         if (playfabManager.SelectedNftImageURL != "")
         {
-            Debug.Log("get nft sprite is not null" + playfabManager.SelectedNftImageURL + " data "+ playfabManager.getSelectedNFTData.name);
+            Debug.Log("get nft sprite is not null" + playfabManager.SelectedNftImageURL + " data " + playfabManager.getSelectedNFTData.name);
 
-            FindObjectOfType<LaunchManager>().ModifyPlayerCustomImageURL(playfabManager.SelectedNftImageURL);
+            LaunchManager.Instance.ModifyPlayerCustomImageURL(playfabManager.SelectedNftImageURL);
             GlobalData.instance.SaveSelectedNFTData(playfabManager.getSelectedNFTData);
         }
         else
@@ -42,6 +45,7 @@ public class MainMenuController : MonoBehaviour
     {
         selectedNFTImg.sprite = defaultImageManager.defaultSpriteList[0];
         playfabManager.SelectedDefaultSprite = selectedNFTImg.sprite;
+        LaunchManager.Instance.ModifyPlayerCustomImageURL("");
         PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DefaultSpriteName", playfabManager.SelectedDefaultSprite.name } });
     }
 

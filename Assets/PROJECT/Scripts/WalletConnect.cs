@@ -90,6 +90,8 @@ public class WalletConnect : MonoBehaviour
     }
     public void OnClickDisconnect()
     {
+        LaunchManager.Instance.playfabManager.SelectedNftImageURL = "";
+        LaunchManager.Instance.mainMenuController.SetPlayerSprite();
         GlobalData.instance.SetWalletInfo();
     }
 

@@ -68,6 +68,7 @@ public class OnConnectionErrorPanel : MonoBehaviourPunCallbacks
 
     public void TryAgainClicked()
     {
+        FindObjectOfType<PlayfabManager>().SelectedNftImageURL = "";
         DestroyAllDontDestroyOnLoad();
         SceneManager.LoadScene(0);
         SetErrorPanelScreenActive(false);
