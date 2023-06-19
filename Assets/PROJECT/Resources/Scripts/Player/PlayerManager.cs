@@ -82,29 +82,6 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("finish load value set");
         gameController.didGameFinishLoad = true;
 
-        ////tmp
-        //if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
-        //{
-        //    if (isItMyPlayer)
-        //    {
-        //        SPD = 1;
-        //    }
-        //    else
-        //    {
-        //        SPD = 5;
-        //    }
-        //}
-        //else
-        //{
-        //    if (isItMyPlayer)
-        //    {
-        //        SPD = 5;
-        //    }
-        //    else
-        //    {
-        //        SPD = 1;
-        //    }
-        //}
         InitPlayerStatOnline();
     }
 
@@ -154,10 +131,12 @@ public class PlayerManager : MonoBehaviour
         {
             localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
             playerUI.playerUsernameText.text = localPlayerNickname;
+            playerUI.PlayerPicture.raycastTarget = true; 
         }
         else
         {
             playerUI.playerUsernameText.text = playerCombat.GetOtherPlayer().CustomProperties["Nickname"].ToString();
+            playerUI.PlayerPicture.raycastTarget = false;
         }
 
 

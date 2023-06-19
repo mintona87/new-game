@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerFlip : MonoBehaviour
+public class PlayerFlip : MonoBehaviour, IPointerClickHandler
 {
-    private void OnMouseDown()
+
+
+    public void OnPointerClick(PointerEventData eventData)
     {
         // Flips the object
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+        Debug.Log("PlayerImage was clicked");
     }
 }
