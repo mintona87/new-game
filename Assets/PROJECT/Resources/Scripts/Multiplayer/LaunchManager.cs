@@ -134,7 +134,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             disconnectedTime = 0;
         }
-        Debug.Log("dusconnected time " + disconnectedTime);
+        Debug.Log("disconnected time " + disconnectedTime);
         //Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
         //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
         if (shouldStartSearchHonorTimer)
@@ -190,7 +190,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         timeBeforeIncreaseHonorOtherPlayer = 5.0f;
         otherPlayerhonorDifference = 100;
-        RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
+        RoomHonorText.text = "Honor Range +/- : " + otherPlayerhonorDifference.ToString();
     }
 
 
