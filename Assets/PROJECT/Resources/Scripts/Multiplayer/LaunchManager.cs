@@ -47,6 +47,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     float timeBeforeIncreaseHonorOtherPlayer;
     int otherPlayerhonorDifference;
     //
+
+    public float disconnectedTime;
+    bool shouldStartCheckForDisctonnectedTime;
+
     void Awake()
     {
         Instance = this;
@@ -106,11 +110,13 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnectedAndReady)
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(false);
+            shouldStartCheckForDisctonnectedTime = false;
             //Debug.Log("devregion " +PhotonNetwork.CloudRegion);
         }
         else
         {
             OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+            shouldStartCheckForDisctonnectedTime = true;
         }
 
         Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
@@ -119,7 +125,17 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
+
+        if (shouldStartCheckForDisctonnectedTime)
+        {
+            disconnectedTime += Time.deltaTime;
+        }
+        else
+        {
+            disconnectedTime = 0;
+        }
+        Debug.Log("dusconnected time " + disconnectedTime);
+        //Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
         //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
         if (shouldStartSearchHonorTimer)
         {

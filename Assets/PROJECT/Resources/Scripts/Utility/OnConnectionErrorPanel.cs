@@ -52,7 +52,29 @@ public class OnConnectionErrorPanel : MonoBehaviourPunCallbacks
         base.OnDisconnected(cause);
         // Call your function to display an error screen here
         Debug.Log("disconect cause " +cause.ToString());
-        SetErrorPanelScreenActive(true);
+        //SetErrorPanelScreenActive(true);
+        ReconnectToServer();
+    }
+
+
+    void ReconnectToServer()
+    {
+        if (!PhotonNetwork.IsConnected)
+        {
+            Debug.Log("Attempting to reconnect...");
+            PhotonNetwork.ConnectUsingSettings(); // Connects to Photon master servers using the settings provided via the PhotonServerSettings file.
+            if(LaunchManager.Instance.disconnectedTime >= 30)
+            {
+                LaunchManager.Instance.disconnectedTime = 0;
+                SetErrorPanelScreenActive(true);
+            }
+        }
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Successfully reconnected to the server!");
+        // Here you could also handle what should happen upon reconnection. For example, joining a room or a lobby.
     }
 
     void DestroyAllDontDestroyOnLoad()
