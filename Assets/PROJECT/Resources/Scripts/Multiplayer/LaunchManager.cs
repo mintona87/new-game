@@ -43,13 +43,13 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     // increase honor every minute when searching for other player
     bool shouldStartSearchHonorTimer;
-    bool isItOnRematch;
+    public bool isItOnRematch;
     float timeBeforeIncreaseHonorOtherPlayer;
     int otherPlayerhonorDifference;
     //
 
     public float disconnectedTime;
-    bool shouldStartCheckForDisctonnectedTime;
+    public bool shouldStartCheckForDisctonnectedTime;
 
     void Awake()
     {
@@ -70,16 +70,28 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     IEnumerator WaitForPlayfabDataToLoad()
     {
+        OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+        Debug.Log("SetLoadingScreenActivetrue1");
         while (playfabManager.localPlayerHonor == -1)
         {
             Debug.Log("inside honor did not load");
             yield return null;
         }
-       // PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";//tmp
 
         PhotonNetwork.ConnectUsingSettings();
+
+        while (!PhotonNetwork.IsConnectedAndReady)
+        {
+            OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+            Debug.Log("SetLoadingScreenActivetrue2");
+            yield return null;
+        }
+
+        OnLoadingScreen.Instance.SetLoadingScreenActive(false);
+        Debug.Log("SetLoadingScreenActivefalse2");
+        shouldStartCheckForDisctonnectedTime = false;
+
         yield return null;
-        //Debug.Log("Connecting to Master country2 " + characterBox.GetStats().country);
     }
 
     public override void OnConnectedToMaster()
@@ -89,12 +101,14 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
         PhotonNetwork.AutomaticallySyncScene = true;
         isConnectedOnMaster = true;
+        Debug.Log("isitConnectedAndReady" + PhotonNetwork.IsConnectedAndReady);
+            
         if (PhotonNetwork.LocalPlayer.CustomProperties["Honor"] == null)
         {
             SetPlayerCustomProperties();
         }
+        
         SetLocalPlayerNickName();
-
     }
 
     void SetLocalPlayerNickName()
@@ -102,30 +116,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.NickName = playfabManager.nickname;
     }
 
-
     #region Update
-
-    private void FixedUpdate()
-    {
-        if (PhotonNetwork.IsConnectedAndReady)
-        {
-            OnLoadingScreen.Instance.SetLoadingScreenActive(false);
-            shouldStartCheckForDisctonnectedTime = false;
-            //Debug.Log("devregion " +PhotonNetwork.CloudRegion);
-        }
-        else
-        {
-            OnLoadingScreen.Instance.SetLoadingScreenActive(true);
-            shouldStartCheckForDisctonnectedTime = true;
-        }
-
-        Debug.Log("isitConnectedAndready " + PhotonNetwork.IsConnectedAndReady);
-        Debug.Log("inlobby " + PhotonNetwork.InLobby);
-    }
 
     private void Update()
     {
-
         if (shouldStartCheckForDisctonnectedTime)
         {
             disconnectedTime += Time.deltaTime;
@@ -135,8 +129,6 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             disconnectedTime = 0;
         }
         Debug.Log("disconnected time " + disconnectedTime);
-        //Debug.Log("otherplayerhonordif" + otherPlayerhonorDifference + " time "+ timeBeforeIncreaseHonorOtherPlayer);
-        //Debug.Log("getnfthonor " + GlobalData.instance.GetNFTHonor(playfabManager.getSelectedNFTData.unit) + " unit " + playfabManager.getSelectedNFTData.unit);
         if (shouldStartSearchHonorTimer)
         {
             if (timeBeforeIncreaseHonorOtherPlayer > 0)
@@ -149,6 +141,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
                 Debug.Log("Timer has finished. Resetting...");
                 if (PhotonNetwork.InRoom)
                 {
+                    OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+                    Debug.Log("SetLoadingScreenActivetrue3");
                     PhotonNetwork.LeaveRoom();
                 }
                 isItOnRematch = true;
@@ -165,7 +159,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         shouldStartSearchHonorTimer = true;
         UpdateLobby();
         LoadingText.text = "Searching room...";
-
+        OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+        Debug.Log("SetLoadingScreenActivetrue4");
         Debug.Log("join match clicked");
     }
 
@@ -411,6 +406,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         StartCoroutine(WaitToFinishLoadPlayerInfo(PhotonNetwork.LocalPlayer, true));
 
+        OnLoadingScreen.Instance.SetLoadingScreenActive(false);
+        Debug.Log("SetLoadingScreenActivefalse3");
         PlayerCountText.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString() + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
 
         Debug.Log("joinedroom");
@@ -562,7 +559,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     }
     public override void OnLeftRoom()
     {
-        Debug.Log("onleftroom");
+        Debug.Log("onleftroom" + isItOnRematch);
         foreach (Transform PlayerRoomObj in PlayerRoomObjContainerObj.transform)
         {
             Destroy(PlayerRoomObj.gameObject);
@@ -582,8 +579,12 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            Debug.Log("SetLoadingScreenActivefalse1");
+            OnLoadingScreen.Instance.SetLoadingScreenActive(false);
             otherPlayerhonorDifference = 100;
         }
+
+        
     }
     #endregion
 

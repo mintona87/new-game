@@ -15,6 +15,8 @@ public class OnConnectionErrorPanel : MonoBehaviourPunCallbacks
 
     CanvasGroup canvasGroup;
 
+    bool WasItDisconnected;
+
     void Start()
     {
         Instance = this;
@@ -50,10 +52,14 @@ public class OnConnectionErrorPanel : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         base.OnDisconnected(cause);
+        OnLoadingScreen.Instance.SetLoadingScreenActive(true);
+        LaunchManager.Instance.shouldStartCheckForDisctonnectedTime = true;
         // Call your function to display an error screen here
         Debug.Log("disconect cause " +cause.ToString());
+        WasItDisconnected = true;
         //SetErrorPanelScreenActive(true);
         ReconnectToServer();
+
     }
 
 
@@ -75,6 +81,13 @@ public class OnConnectionErrorPanel : MonoBehaviourPunCallbacks
     {
         Debug.Log("Successfully reconnected to the server!");
         // Here you could also handle what should happen upon reconnection. For example, joining a room or a lobby.
+        if (WasItDisconnected)
+        {
+            OnLoadingScreen.Instance.SetLoadingScreenActive(false);
+            LaunchManager.Instance.shouldStartCheckForDisctonnectedTime = false;
+            Debug.Log("SetLoadingScreenActivefalse4");
+            WasItDisconnected = false;
+        }
     }
 
     void DestroyAllDontDestroyOnLoad()
