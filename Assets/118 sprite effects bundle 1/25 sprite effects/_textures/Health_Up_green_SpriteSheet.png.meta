@@ -3,7 +3,7 @@ guid: c336ca688e4b0ff4bb625cc88488c775
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -23,6 +23,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -31,16 +33,16 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -54,9 +56,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -70,9 +77,1065 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 1825
+        y: 1776
+        width: 45
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89a20ab13b2270d4e9aa9a59145eb229
+      internalID: 821642140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 2050
+        y: 1584
+        width: 506
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 282a4c5cd09974d42aa673bf37301311
+      internalID: 1136963846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 2562
+        y: 1587
+        width: 508
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4669c52ab6b98b4cb3cca438bbbb6be
+      internalID: -882219566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 3072
+        y: 1587
+        width: 510
+        height: 269
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6ba5ed1159927b4b9e0fa379b13c19f
+      internalID: -49806407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 3586
+        y: 1587
+        width: 508
+        height: 301
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df90f6f7d4bbfdd4eaef8d99dc1e752c
+      internalID: 17555311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 1587
+        width: 468
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 956f4a1f5e1cf5943a26a5dd41618822
+      internalID: 1501687411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 1587
+        width: 492
+        height: 148
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94b4e2ac9d780d646913c1b5143368f9
+      internalID: -1738622429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 1581
+        width: 494
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3764714cfb7921f45b7d181ec233c65d
+      internalID: 449425909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 1581
+        width: 508
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e45c30ead49fdc4b939b8fb5f64d56a
+      internalID: -199250232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 2568
+        y: 1075
+        width: 496
+        height: 459
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20ed6b278e8f7dd439e48cf638986c87
+      internalID: -1578153210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 2724
+        y: 1532
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 193cac732b1fd31499413834e16316a1
+      internalID: 1369256044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 3092
+        y: 1075
+        width: 472
+        height: 461
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e53d4ed69f09b7c4caec5ec99620dbad
+      internalID: -1070474886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 2056
+        y: 1075
+        width: 496
+        height: 443
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b90910efcfe2b149bc9eb81e5e6ebcd
+      internalID: 368171828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 2252
+        y: 1502
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cda045f91b3c70b4f89b79443e4939b7
+      internalID: 81061789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1075
+        width: 510
+        height: 331
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c039c7169c039b49aaae3f61faa3142
+      internalID: 1574943723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1075
+        width: 510
+        height: 361
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eecb43c277e8c24438029527d3883483
+      internalID: -367930837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_16
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1075
+        width: 510
+        height: 391
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30c87188d546ccc45a32fbfcec27458c
+      internalID: -926575259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_17
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 1075
+        width: 510
+        height: 423
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e86566417c84844594d79d5cf4ecd46
+      internalID: -2119437891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_18
+      rect:
+        serializedVersion: 2
+        x: 3769
+        y: 1323
+        width: 45
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d5f912f384af5a4582357be78d8534b
+      internalID: 1111218187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_19
+      rect:
+        serializedVersion: 2
+        x: 3873
+        y: 1348
+        width: 45
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77afcb2b279e39049bdb7668adf3ff94
+      internalID: 1683802678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_20
+      rect:
+        serializedVersion: 2
+        x: 3810
+        y: 1248
+        width: 59
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1355791b575c6c740b2688b58b05f267
+      internalID: 1460136384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_21
+      rect:
+        serializedVersion: 2
+        x: 3884
+        y: 1228
+        width: 73
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e368cf41c23084048929010bcdcd64f1
+      internalID: -1334757746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_22
+      rect:
+        serializedVersion: 2
+        x: 3740
+        y: 1153
+        width: 79
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cd6045cf75a8954f8e0a9ba6b4a7ebd
+      internalID: -1606408865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_23
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 870
+        width: 42
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b16963d172a4ef544b2cbbcabaa80178
+      internalID: 706689431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_24
+      rect:
+        serializedVersion: 2
+        x: 1826
+        y: 882
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da968af6a6bb1594c85346e33bf4f6dd
+      internalID: -1956520836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_25
+      rect:
+        serializedVersion: 2
+        x: 2338
+        y: 894
+        width: 42
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4c4199c2654742489e70dc039690c9b
+      internalID: -1482058994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_26
+      rect:
+        serializedVersion: 2
+        x: 2852
+        y: 906
+        width: 38
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db9461a9e73d97944af23dc242a6415a
+      internalID: 1083491639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_27
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 846
+        width: 44
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 266de1f9baac2984b9193a8b5a312122
+      internalID: -1559222805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_28
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 825
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 536c0f583407c304080ddfe8b889949c
+      internalID: -1123018167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_29
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 858
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b59ad9f5bdba7541b7c41243bce8bb0
+      internalID: 988653609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_30
+      rect:
+        serializedVersion: 2
+        x: 1210
+        y: 832
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee126861d63c3bc4f929b852c3b6ae1b
+      internalID: -1451181668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_31
+      rect:
+        serializedVersion: 2
+        x: 1722
+        y: 840
+        width: 42
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b62ea1c6f42e67e4d960075f5e22b37d
+      internalID: 1173828348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_32
+      rect:
+        serializedVersion: 2
+        x: 2234
+        y: 846
+        width: 42
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aed4034b83ccd924faba12817a53d057
+      internalID: 1416277694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_33
+      rect:
+        serializedVersion: 2
+        x: 2746
+        y: 854
+        width: 42
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29f8598405c06534e8357c1ce83736b3
+      internalID: -1913115966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_34
+      rect:
+        serializedVersion: 2
+        x: 3260
+        y: 862
+        width: 38
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4b73c319b2ac2b48bd74289ba0f7f63
+      internalID: 628622185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_35
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 817
+        width: 45
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7c1c3b1f1fb122439f651a621dc4a55
+      internalID: 422554284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_36
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 764
+        width: 56
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c05c6a712edba9749a7cb90b96a954f8
+      internalID: -91873942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_37
+      rect:
+        serializedVersion: 2
+        x: 1326
+        y: 748
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c15f672e653ade842888c54d05f9b00d
+      internalID: 474119904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_38
+      rect:
+        serializedVersion: 2
+        x: 1764
+        y: 774
+        width: 54
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c61be031b36d8d46969e7d87450c8a2
+      internalID: -1831350164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_39
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 746
+        width: 59
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77c91f71bc4395b429cd447d57ab7a10
+      internalID: 1943392991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_40
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 726
+        width: 72
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 883936cfdcfed3442a01ada6f14ecd70
+      internalID: 1054973304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_41
+      rect:
+        serializedVersion: 2
+        x: 738
+        y: 754
+        width: 58
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0baaac3026530b643a1e49ec2928c62e
+      internalID: 1967841575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_42
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 736
+        width: 70
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d59991205e929ab4b9867a3c0f3761fb
+      internalID: 2133074747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_43
+      rect:
+        serializedVersion: 2
+        x: 1692
+        y: 682
+        width: 78
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dea970a6ea6b444e856ff312d86b87f
+      internalID: -1245885777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_44
+      rect:
+        serializedVersion: 2
+        x: 2206
+        y: 692
+        width: 74
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0331eec478c0b5b49bd7e0abcd97e6bb
+      internalID: 771284182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_45
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 650
+        width: 78
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ac0dc7a030467d45aa8fccfe7b2a3dd
+      internalID: -726790884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_46
+      rect:
+        serializedVersion: 2
+        x: 668
+        y: 661
+        width: 78
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d16612cb0d574e3458c6ac08d2d39465
+      internalID: 544093181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_green_SpriteSheet_47
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 670
+        width: 78
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 775f3139f5fe1ae42b8f9802bea2bdb9
+      internalID: 1326786069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -83,6 +1146,55 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Health_Up_green_SpriteSheet_0: 821642140
+      Health_Up_green_SpriteSheet_1: 1136963846
+      Health_Up_green_SpriteSheet_10: 1369256044
+      Health_Up_green_SpriteSheet_11: -1070474886
+      Health_Up_green_SpriteSheet_12: 368171828
+      Health_Up_green_SpriteSheet_13: 81061789
+      Health_Up_green_SpriteSheet_14: 1574943723
+      Health_Up_green_SpriteSheet_15: -367930837
+      Health_Up_green_SpriteSheet_16: -926575259
+      Health_Up_green_SpriteSheet_17: -2119437891
+      Health_Up_green_SpriteSheet_18: 1111218187
+      Health_Up_green_SpriteSheet_19: 1683802678
+      Health_Up_green_SpriteSheet_2: -882219566
+      Health_Up_green_SpriteSheet_20: 1460136384
+      Health_Up_green_SpriteSheet_21: -1334757746
+      Health_Up_green_SpriteSheet_22: -1606408865
+      Health_Up_green_SpriteSheet_23: 706689431
+      Health_Up_green_SpriteSheet_24: -1956520836
+      Health_Up_green_SpriteSheet_25: -1482058994
+      Health_Up_green_SpriteSheet_26: 1083491639
+      Health_Up_green_SpriteSheet_27: -1559222805
+      Health_Up_green_SpriteSheet_28: -1123018167
+      Health_Up_green_SpriteSheet_29: 988653609
+      Health_Up_green_SpriteSheet_3: -49806407
+      Health_Up_green_SpriteSheet_30: -1451181668
+      Health_Up_green_SpriteSheet_31: 1173828348
+      Health_Up_green_SpriteSheet_32: 1416277694
+      Health_Up_green_SpriteSheet_33: -1913115966
+      Health_Up_green_SpriteSheet_34: 628622185
+      Health_Up_green_SpriteSheet_35: 422554284
+      Health_Up_green_SpriteSheet_36: -91873942
+      Health_Up_green_SpriteSheet_37: 474119904
+      Health_Up_green_SpriteSheet_38: -1831350164
+      Health_Up_green_SpriteSheet_39: 1943392991
+      Health_Up_green_SpriteSheet_4: 17555311
+      Health_Up_green_SpriteSheet_40: 1054973304
+      Health_Up_green_SpriteSheet_41: 1967841575
+      Health_Up_green_SpriteSheet_42: 2133074747
+      Health_Up_green_SpriteSheet_43: -1245885777
+      Health_Up_green_SpriteSheet_44: 771284182
+      Health_Up_green_SpriteSheet_45: -726790884
+      Health_Up_green_SpriteSheet_46: 544093181
+      Health_Up_green_SpriteSheet_47: 1326786069
+      Health_Up_green_SpriteSheet_5: 1501687411
+      Health_Up_green_SpriteSheet_6: -1738622429
+      Health_Up_green_SpriteSheet_7: 449425909
+      Health_Up_green_SpriteSheet_8: -199250232
+      Health_Up_green_SpriteSheet_9: -1578153210
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
