@@ -572,7 +572,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         if (isItOnRematch)
         {
             otherPlayerhonorDifference += 50;
-            RoomHonorText.text = "Honor of the room : " + otherPlayerhonorDifference.ToString();
+            RoomHonorText.text = "Honor Range +/-: " + otherPlayerhonorDifference.ToString();
             JoinMatchClicked();
             isJoinMatchClicked = true;
             isItOnRematch = false;
