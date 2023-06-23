@@ -3,7 +3,7 @@ guid: cd578712b9f8ca345821aadc155cd128
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 10
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -23,6 +23,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -31,16 +33,16 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
     wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -54,9 +56,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 1
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -70,9 +77,771 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1576
+        width: 434
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 957dc00eec276c342aa07a773947e100
+      internalID: -1828763494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 1575
+        width: 458
+        height: 183
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 376df57659e8f5e4ba6f34007edf5f6f
+      internalID: -1076633894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1050
+        y: 1575
+        width: 460
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97d67a66277b7e44c86084a24f9e42f4
+      internalID: 1384270287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 1575
+        width: 472
+        height: 263
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d22d3d065a6a77429ccd16c2c8c45a5
+      internalID: 751692528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 2068
+        y: 1575
+        width: 470
+        height: 273
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14d2777ff13621a4c9ea63357cb94eaf
+      internalID: -2068381831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 2580
+        y: 1575
+        width: 472
+        height: 275
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef1839e68fc31794f8d6e93b9e5f5719
+      internalID: -16592100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 3090
+        y: 1575
+        width: 474
+        height: 277
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f02065d71c3099440b84689f51e29abc
+      internalID: -1885139401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 3604
+        y: 1575
+        width: 470
+        height: 303
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d5a64e16705a244cb33fd76329d115f
+      internalID: -1956442489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 2734
+        y: 1518
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3717320b389e6d647b6b9374e379f3ad
+      internalID: -1743338135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 3110
+        y: 1063
+        width: 436
+        height: 463
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63787c35b1c6baa468217e05b740e231
+      internalID: 842033856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 3278
+        y: 1520
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc45fcb7b63f57d4a9731ec1d630c168
+      internalID: 355782343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 2730
+        y: 1510
+        width: 12
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c89c11c294fa7bc47b5e048f16a98dcf
+      internalID: -2028604081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 2766
+        y: 1510
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f417699db4314643a4bec5fe253887d
+      internalID: -1109081103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 2222
+        y: 1490
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92067a0e52bb37d4da581f1b6f640ab0
+      internalID: -976733233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 2586
+        y: 1063
+        width: 460
+        height: 445
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2f616f1d4eeaf744a3803bc69bb7b6a
+      internalID: -1907862573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 1063
+        width: 474
+        height: 331
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 106184dada0bb1a44aa92f1665d54753
+      internalID: 1529864546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_16
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 1063
+        width: 474
+        height: 359
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef6bc4f0c5d5f174d8661a0ede247ce7
+      internalID: -2017309282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_17
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 1063
+        width: 474
+        height: 387
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8080a2b09b189b54eab0481bdfcecf14
+      internalID: 1818351466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_18
+      rect:
+        serializedVersion: 2
+        x: 1554
+        y: 1063
+        width: 474
+        height: 417
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ffb8ed2f143b0a408ec9cb77056c516
+      internalID: -535441291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_19
+      rect:
+        serializedVersion: 2
+        x: 2074
+        y: 1063
+        width: 460
+        height: 425
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af5851ce3b8513e4dba810d63e01abf7
+      internalID: 702092691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_20
+      rect:
+        serializedVersion: 2
+        x: 3726
+        y: 1136
+        width: 242
+        height: 266
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2591d5afe7f802b4eb22c84717d40b0f
+      internalID: -1207003197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_21
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 634
+        width: 242
+        height: 266
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 205fa8df0b4c49a40bb2c280bad4cff2
+      internalID: -11105727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_22
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 644
+        width: 240
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 460d090f497846746b8f1e3bcb70b9f5
+      internalID: 676561410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_23
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 828
+        width: 78
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 190a17d4de25b3644b2230f9ca6a39aa
+      internalID: 187050840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_24
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 654
+        width: 236
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37d406e824891814cb43e89f824b8211
+      internalID: -338679583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_25
+      rect:
+        serializedVersion: 2
+        x: 1292
+        y: 840
+        width: 78
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 974feff86f18e674ea4e935c2e657ff6
+      internalID: 1171420711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_26
+      rect:
+        serializedVersion: 2
+        x: 1680
+        y: 664
+        width: 154
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cfab1b159d3c58743aa9dcf7fbd623ab
+      internalID: -81697995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_27
+      rect:
+        serializedVersion: 2
+        x: 1804
+        y: 850
+        width: 78
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a3aad9e19ede8d4eba3f64ffecddae7
+      internalID: 513325904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_28
+      rect:
+        serializedVersion: 2
+        x: 2220
+        y: 820
+        width: 78
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c29c75f6ab9c16d489dda8463b5f965c
+      internalID: 769592045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_29
+      rect:
+        serializedVersion: 2
+        x: 2318
+        y: 862
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 296c474144282b34ab957fe722eeb6c0
+      internalID: -176555042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_30
+      rect:
+        serializedVersion: 2
+        x: 2734
+        y: 826
+        width: 76
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b30641c6a3df52443b70e5c4d306b7b1
+      internalID: 1204427319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_31
+      rect:
+        serializedVersion: 2
+        x: 2832
+        y: 874
+        width: 70
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 891004cf49b67c74b80e3b609ef64b79
+      internalID: -677161694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_32
+      rect:
+        serializedVersion: 2
+        x: 3248
+        y: 836
+        width: 70
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b26b474b1f03314e99be55f896bfa31
+      internalID: -460747029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Up_normal_SpriteSheet_33
+      rect:
+        serializedVersion: 2
+        x: 2194
+        y: 676
+        width: 108
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e1988a88447c2e419c9759f895b254e
+      internalID: -7793258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -83,6 +852,41 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Health_Up_normal_SpriteSheet_0: -1828763494
+      Health_Up_normal_SpriteSheet_1: -1076633894
+      Health_Up_normal_SpriteSheet_10: 355782343
+      Health_Up_normal_SpriteSheet_11: -2028604081
+      Health_Up_normal_SpriteSheet_12: -1109081103
+      Health_Up_normal_SpriteSheet_13: -976733233
+      Health_Up_normal_SpriteSheet_14: -1907862573
+      Health_Up_normal_SpriteSheet_15: 1529864546
+      Health_Up_normal_SpriteSheet_16: -2017309282
+      Health_Up_normal_SpriteSheet_17: 1818351466
+      Health_Up_normal_SpriteSheet_18: -535441291
+      Health_Up_normal_SpriteSheet_19: 702092691
+      Health_Up_normal_SpriteSheet_2: 1384270287
+      Health_Up_normal_SpriteSheet_20: -1207003197
+      Health_Up_normal_SpriteSheet_21: -11105727
+      Health_Up_normal_SpriteSheet_22: 676561410
+      Health_Up_normal_SpriteSheet_23: 187050840
+      Health_Up_normal_SpriteSheet_24: -338679583
+      Health_Up_normal_SpriteSheet_25: 1171420711
+      Health_Up_normal_SpriteSheet_26: -81697995
+      Health_Up_normal_SpriteSheet_27: 513325904
+      Health_Up_normal_SpriteSheet_28: 769592045
+      Health_Up_normal_SpriteSheet_29: -176555042
+      Health_Up_normal_SpriteSheet_3: 751692528
+      Health_Up_normal_SpriteSheet_30: 1204427319
+      Health_Up_normal_SpriteSheet_31: -677161694
+      Health_Up_normal_SpriteSheet_32: -460747029
+      Health_Up_normal_SpriteSheet_33: -7793258
+      Health_Up_normal_SpriteSheet_4: -2068381831
+      Health_Up_normal_SpriteSheet_5: -16592100
+      Health_Up_normal_SpriteSheet_6: -1885139401
+      Health_Up_normal_SpriteSheet_7: -1956442489
+      Health_Up_normal_SpriteSheet_8: -1743338135
+      Health_Up_normal_SpriteSheet_9: 842033856
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

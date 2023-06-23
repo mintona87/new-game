@@ -502,26 +502,26 @@ MonoBehaviour:
     source: {fileID: 0}
   sounds:
   - name: attackSound
-    clip: {fileID: 8300000, guid: ed7c5a1f79c3ada44b306e496c999072, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: f443483e0319bad4aa7ebf106b91f749, type: 3}
+    volume: 0.6
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: healSound
-    clip: {fileID: 8300000, guid: a4d92bc601ecbb440a2afa86a8f67df5, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: e1b0f766673745f40810657537204c3f, type: 3}
+    volume: 0.6
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: chargeSound
-    clip: {fileID: 8300000, guid: ba017d04f4589e347a6f4e9bd1a8a102, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 348655208638f6c4cbe3961433108988, type: 3}
+    volume: 0.6
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: defendSound
-    clip: {fileID: 8300000, guid: 5ea825e682333fd47a68b480daf63f34, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: d496cbea72495cd4ca09715de00879c5, type: 3}
+    volume: 0.6
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -637,7 +637,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 44b0b89c4a223c74fabf4a6624959a96, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7a776b9531690243b343cfd8c69fb40, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
