@@ -84,7 +84,7 @@ public class SendStats : MonoBehaviour
 		{
 			Statistics = new List<StatisticUpdate> {
 				new StatisticUpdate {
-					StatisticName = "PlayerRankings", // <-  CHANGE YOUR LEADERBOARD NAME HERE!
+					StatisticName = "Zeitaku_Leaderboard", // <-  CHANGE YOUR LEADERBOARD NAME HERE!
                     Value = score
                     //Value = Random.Range(10,100) <-  Use this to test out random send data
                 }

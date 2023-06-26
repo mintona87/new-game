@@ -581,7 +581,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         playerManager.TurnsSinceCharge = 0; // Reset the counter
         Debug.Log("should charge " + playerManager.TurnsSinceCharge);
 
-        StartCoroutine(playerEffect.PlaySwordSlashEffect());
+        StartCoroutine(playerEffect.PlayPlayer1ChargeEffect());
 
 
         int localPlayerViewID = playerManager.pv.ViewID;
