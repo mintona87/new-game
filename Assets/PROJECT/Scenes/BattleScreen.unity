@@ -158,8 +158,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 440, y: 272}
-  m_SizeDelta: {x: 250, y: 250}
+  m_AnchoredPosition: {x: 400.5197, y: 334.99997}
+  m_SizeDelta: {x: 212.0723, y: 198.7936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &119629045
 MonoBehaviour:
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.68235296}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -596,7 +596,7 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: defendSound
-    clip: {fileID: 8300000, guid: d496cbea72495cd4ca09715de00879c5, type: 3}
+    clip: {fileID: 8300000, guid: 16a75caf81ff3ed4d94ceb5cf63178ce, type: 3}
     volume: 0.6
     pitch: 1
     loop: 0
@@ -968,8 +968,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 773, y: 272}
-  m_SizeDelta: {x: 250, y: 250}
+  m_AnchoredPosition: {x: 683, y: 335}
+  m_SizeDelta: {x: 212.0723, y: 198.7936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1005411135
 MonoBehaviour:
@@ -984,7 +984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.68235296}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

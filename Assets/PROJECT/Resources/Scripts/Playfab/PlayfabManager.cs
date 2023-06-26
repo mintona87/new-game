@@ -145,7 +145,7 @@ public class PlayfabManager : MonoBehaviour
         {
             Statistics = new List<StatisticUpdate> {
                 new StatisticUpdate {
-                    StatisticName = "Honor_Leaderboard", // 
+                    StatisticName = "Zeitaku_Leaderboard", // 
                     Value = score
                     //Value = Random.Range(10,100) <- ⭐️ Use this to test out random send data
                 }
@@ -173,7 +173,7 @@ public class PlayfabManager : MonoBehaviour
         Debug.Log("Received the following Statistics:");
         foreach (var eachStat in result.Statistics)
         {
-            if(eachStat.StatisticName == "Honor_Leaderboard")
+            if(eachStat.StatisticName == "Zeitaku_Leaderboard")
             {
                 Debug.Log("Statistic (" + eachStat.StatisticName + "): " + eachStat.Value);
                 localPlayerHonor = eachStat.Value;
