@@ -39,6 +39,15 @@ public class WalletConnect : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void FetchSolNFTs(string address);
 
+    [DllImport("__Internal")]
+    private static extern void SetupXverseEnv();
+
+    [DllImport("__Internal")]
+    private static extern void ConnectWalletXverse();
+
+    [DllImport("__Internal")]
+    private static extern void FetchOrdinals(string address);
+
     public string Address { get; protected set; }
     public string NFT { get; protected set; }
 
@@ -87,6 +96,27 @@ public class WalletConnect : MonoBehaviour
         Debug.Log("WebGL not support");
 #endif
         Debug.Log("waiting connect to phantom..");
+    }
+    public void OnClickXverseWalletConnect()
+    {
+#if UNITY_WEBGL
+        SetupXverseEnv();
+        ConnectWalletXverse();
+
+        //string arg = "xverse,{\"addresses\":[{\"address\":\"bc1p5mq9k9345lwa38ya064vgvdjnjsyzmwu38hew05wmksk5lc56gtqnl3dx3\",\"publicKey\":\"051fdc7fa6340f58cc72556b644eb7654f343221b9c4b1b0dd66fc950833623e\",\"purpose\":\"ordinals\"},{\"address\":\"3KZjiEmVFgYExuKe9r3RrNu2gUtvBViPaQ\",\"publicKey\":\"03a713798d3b85882e12e757d9f117e9d2a51ef5bc0c5be507825655fc09e01965\",\"purpose\":\"payment\"}]}";
+        //string[] args = arg.Split(",");
+        //string type = args[0];
+        //string address = args[1];
+        //Debug.Log("type:" + type);
+        //Debug.Log("address:" + address);
+        //var walletAddresses = JsonUtility.FromJson<Addresses>(address);
+        //Debug.Log("Ordinals Wallet:" + walletAddresses.addresses[0].address);
+        //Debug.Log("Payments Wallet:" + walletAddresses.addresses[1].address);
+        //Address = walletAddresses.addresses[0].address;
+#else
+        Debug.Log("WebGL not support");
+#endif
+        Debug.Log("waiting connect to xverse..");
     }
     public void OnClickDisconnect()
     {
@@ -196,7 +226,7 @@ public class WalletConnect : MonoBehaviour
 
     public void ReceiveWalletAddress(string arg)
     {
-        string[] args = arg.Split(",");
+        string[] args = arg.Split(",,");
         string type = args[0];
         string address = args[1];
 
@@ -222,6 +252,24 @@ public class WalletConnect : MonoBehaviour
             Address = address;
             GlobalData.instance.SetWalletInfo(true, type, Address);
             FetchSolNFTs(Address);
+        }
+        else if (type == "xverse")
+        {
+
+            try
+            {
+                var walletAddresses = JsonUtility.FromJson<Addresses>(address);
+                Debug.Log("Ordinals Wallet:" + walletAddresses.addresses[0].address);
+                Debug.Log("Payments Wallet:" + walletAddresses.addresses[1].address);
+                Address = walletAddresses.addresses[0].address;
+                GlobalData.instance.SetWalletInfo(true, type, walletAddresses.addresses[0].address);
+                FetchOrdinals(Address);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Error while parsing addresses from wallet.");
+                throw;
+            }
         }
 
         Debug.Log(Address);

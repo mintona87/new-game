@@ -8,7 +8,7 @@ mergeInto(LibraryManager.library, {
               if (accounts.length === 0) {
                 console.log('Please connect to MetaMask.');
               } else { 
-                window.unityInstance.SendMessage('WalletIntegration', 'ReceiveWalletAddress', String("metamask," + accounts[0]));
+                window.unityInstance.SendMessage('WalletIntegration', 'ReceiveWalletAddress', String("metamask,," + accounts[0]));
               }
             })
             .catch(function(err) {

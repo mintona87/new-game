@@ -190,3 +190,86 @@ async function getSolNFTs() {
     console.log(dataArray)
     return dataArray;
 }
+
+async function getOrdinals(address) {
+    // address = 'bc1p6u674vpt4s0a6cmlleuvt4smqch0gv3v7c47kkjz540gq9t3kz9qx8rp94';
+
+    const apiKey = '';
+
+
+    var maxRetries = 10; 
+    var retries = 0; 
+
+    var limit = 60;
+    var offset = 0;
+    var inscriptions = [];
+
+    for (;;) {
+
+        var url = `https://api.hiro.so/ordinals/v1/inscriptions?address=${address}&limit=${limit}&offset=${offset}`;
+        var res = await fetch(url, {
+        });
+
+        if (res.status === 429 && retries < maxRetries) {
+            var retryAfter = res.headers.get("Retry-After"); 
+            if (retryAfter) {
+                var retryAfterMs = parseInt(retryAfter) * 1000; 
+                console.log(`Received 429 response, retrying after ${retryAfter} seconds`);
+                retries++;
+                await sleep(retryAfterMs);
+            } else {
+                var retryAfterMs = Math.floor(Math.random() * 251) + 1000; 
+                console.log(`Received 429 response, retrying after ${retryAfterMs} ms`);
+                retries++;
+                await sleep(retryAfterMs);
+            }
+        } else if (res.ok) {
+            var data = await res.json();
+            console.log(data.results, '-----------------result')
+            inscriptions = inscriptions.concat(data.results);
+            offset = data.offset + 1;
+            if (data.results.length < limit) break;
+        } else {
+          console.log(`Received ${res.status} status code`); 
+          break;
+        }
+    }
+
+
+    var dataArray = [];
+    retries = 0; 
+    for (var i=0; i<inscriptions.length; i++) {
+
+        var nft = inscriptions[i];
+        if (!nft.content_type.includes("image")) continue;
+
+        var url = `https://api.hiro.so/ordinals/v1/inscriptions/${nft.number}/content`;
+
+        var properties = getProperties(nft);
+        console.log(properties, '------------------properties');
+        var imageData = await getImageData(url);
+        if (imageData.isInvalidImage) continue;
+        
+        
+        var unit = nft.name;
+        var name = nft.name;
+        var description = nft.description? getDescription(nft.description):"";
+        var imageUrl = imageData.imageUrl;
+        var rawImage = imageData.rawImage;
+        var hexEncodedName = "";
+        var website = "";
+        var property = properties;
+        dataArray.push({
+            unit: unit? unit:"",
+            name: name? name:"",
+            description: description? description:"",
+            rawImage: rawImage? rawImage:"",
+            imageUrl: imageUrl? imageUrl:"",
+            hexEncodedName: hexEncodedName? hexEncodedName:"",
+            website: website? website:"",
+            property: property? property:"",
+        });
+    }
+    console.log(dataArray)
+    return dataArray;
+}
