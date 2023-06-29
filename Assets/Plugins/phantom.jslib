@@ -6,7 +6,7 @@ mergeInto(LibraryManager.library, {
           window.solana.connect().then((result) => {  
             console.log("Phantom--:", result.publicKey.toBase58());  
             const walletAddress = result.publicKey.toBase58();
-            window.unityInstance.SendMessage('WalletIntegration', 'ReceiveWalletAddress', String("phantom," + walletAddress));
+            window.unityInstance.SendMessage('WalletIntegration', 'ReceiveWalletAddress', String("phantom,," + walletAddress));
           }).catch((error) => {  
             console.error(error);  
           });
