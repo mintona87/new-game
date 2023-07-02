@@ -357,10 +357,7 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnSavePlayerDataError);
     }
 
-    public void SaveAll(PlayerSavedData data)
-    {
-        SavePlayerSavedData(data);
-    }
+   
 
     void OnDataSend(UpdateUserDataResult result)
     {

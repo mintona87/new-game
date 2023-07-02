@@ -70,7 +70,7 @@ public class PlayerEffect : MonoBehaviour
         targetScript.playerEffect.swordSlashEffect.enabled = true;
         targetScript.playerEffect.swordSlashAnimator.ResetTrigger("AnimationDone");
         targetScript.playerEffect.swordSlashAnimator.SetTrigger("PlaySwordSlash");
-
+        player.gameController.cameraShaker.TriggerShake();
         StartCoroutine(DisableSlashEffect(animationTime, targetScript));
 
     }
@@ -181,6 +181,8 @@ public class PlayerEffect : MonoBehaviour
         targetScript.playerEffect.chargeEffect.enabled = true;
         targetScript.playerEffect.chargeAnimator.ResetTrigger("AnimationDone");
         targetScript.playerEffect.chargeAnimator.SetTrigger("PlayCharge");
+        
+        player.gameController.cameraShaker.TriggerShake();
 
         StartCoroutine(DisableChargeEffect(animationTime, targetScript));
     }

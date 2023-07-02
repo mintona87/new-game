@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerSavedData 
 {
 
-    public int ATK = 1;
-    public int DEF = 1;
-    public int SPD = 1;
-    public int LUCK = 1;
+    public int ATK;
+    public int DEF;
+    public int SPD;
+    public int LUCK;
 
     public int Gold;
 

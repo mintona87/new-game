@@ -36,10 +36,12 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public GameOverManager gameOverManager;
 
+    public Shaker cameraShaker;
     private void Awake()
     {
         audioManager = GetComponent<AudioManager>();
         gameOverManager = FindObjectOfType<GameOverManager>();
+        cameraShaker = FindObjectOfType<Shaker>();
         pv = GetComponent<PhotonView>();
     }
 
