@@ -4,8 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
+using System;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
     public int HP = 100;
     public int MaxHP = 100;
@@ -61,14 +62,15 @@ public class PlayerManager : MonoBehaviour
     }
 
     //////tmp
-    //private void Update()
-    //{
-    //    if (isItMyPlayer)
-    //    {
-    //        Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
-    //        Debug.Log("isdefending " + (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"] + " index " + isDefendingTurnIndex);
-    //    }
-    //}
+    private void Update()
+    {
+        if (isItMyPlayer)
+        {
+            Debug.Log("ATK" +ATK);
+            //Debug.Log("charge: " + FindObjectOfType<PlayerManager>().TurnsSinceCharge);
+            //Debug.Log("isdefending " + (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDefending"] + " index " + isDefendingTurnIndex);
+        }
+    }
 
     void InitPlayer()
     {
@@ -87,12 +89,43 @@ public class PlayerManager : MonoBehaviour
 
     void InitPlayerStatOnline()
     {
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "ATK", playfabManager.GetPlayerSavedData().ATK } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "DEF", playfabManager.GetPlayerSavedData().DEF } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "LUCK", playfabManager.GetPlayerSavedData().LUCK } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "SPD", playfabManager.GetPlayerSavedData().SPD } });
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isDefending", isDefending} });
+        Debug.Log("SavedATT " + playfabManager.GetPlayerSavedData().ATK);
+        ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+    {
+        { "ATK", playfabManager.GetPlayerSavedData().ATK },
+        { "DEF", playfabManager.GetPlayerSavedData().DEF },
+        { "LUCK", playfabManager.GetPlayerSavedData().LUCK },
+        { "SPD", playfabManager.GetPlayerSavedData().SPD },
+        { "isDefending", isDefending }
+    };
+
+        PhotonNetwork.LocalPlayer.SetCustomProperties(playerProps);
     }
+
+
+    #region custom prop updated callback
+
+    // called after "PhotonNetwork.LocalPlayer.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { .... "is called
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        Debug.Log("Callback called playermanager");
+
+        if (targetPlayer.IsLocal)
+        {
+            // Check if the "DidFinishChoosingAction" property has been updated
+            if (changedProps.ContainsKey("ATK"))
+            {
+                Debug.Log("customATT " + (int)targetPlayer.CustomProperties["ATK"]);
+                ATK = (int)targetPlayer.CustomProperties["ATK"];
+                DEF = (int)targetPlayer.CustomProperties["DEF"];
+                LUCK = (int)targetPlayer.CustomProperties["LUCK"];
+                SPD = (int)targetPlayer.CustomProperties["SPD"];
+            }
+        }
+    }
+
+    #endregion
+
 
     IEnumerator WaitFinishLoad()
     {
@@ -229,8 +262,6 @@ public class PlayerManager : MonoBehaviour
     [PunRPC]
     void ChangeHPRPC(int amount)
     {
-       
-        
         HP += amount;
         if (HP < 0)
         {
@@ -276,7 +307,7 @@ public class PlayerManager : MonoBehaviour
 
     public int Attack()
     {
-        int damage = Random.Range(10, 15) + ATK;
+        int damage = UnityEngine.Random.Range(10, 15) + ATK;
 
         if (IsCriticalHit())
         {
@@ -293,7 +324,7 @@ public class PlayerManager : MonoBehaviour
 
     public int Heal()
     {
-        int healing = Random.Range(10, 15);
+        int healing = UnityEngine.Random.Range(10, 15);
         if (IsCriticalHeal())
         {
             healing *= 2; // 2x healing for critical heals
@@ -327,7 +358,7 @@ public class PlayerManager : MonoBehaviour
                 playerCombat.GetOtherPlayer().SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "isPlayerStun", "notStun" } });
             }
 
-            damage = Random.Range(20, 30);
+            damage = UnityEngine.Random.Range(20, 30);
             if (IsCriticalHit())
             {
                 damage = Mathf.RoundToInt(damage * 1.75f); // 1.75x damage for critical hits
@@ -356,7 +387,7 @@ public class PlayerManager : MonoBehaviour
     {
         float baseDodgeChance = 10f; // 10% base dodge chance
         float dodgeChance = baseDodgeChance + (SPD * 2.5f); // 2.5% dodge chance per SPD point + base dodge chance
-        float randomValue = Random.Range(0f, 100f); // Random value between 0 and 100
+        float randomValue = UnityEngine.Random.Range(0f, 100f); // Random value between 0 and 100
         return randomValue <= dodgeChance;
     }
 
@@ -364,7 +395,7 @@ public class PlayerManager : MonoBehaviour
     {
         float baseCritChance = 10f; // 10% base crit chance
         float criticalChance = baseCritChance + (LUCK * 2.5f); // 2.5% critical chance per LUCK point
-        float randomValue = Random.Range(0f, 100f); // Random value between 0 and 100
+        float randomValue = UnityEngine.Random.Range(0f, 100f); // Random value between 0 and 100
         return randomValue <= criticalChance;
     }
 
@@ -372,7 +403,7 @@ public class PlayerManager : MonoBehaviour
     {
         float baseCritChance = 10f; // 10% base crit chance
         float criticalChance = baseCritChance + (LUCK * 2.5f); // 2.5% critical chance per LUCK point
-        float randomValue = Random.Range(0f, 100f); // Random value between 0 and 100
+        float randomValue = UnityEngine.Random.Range(0f, 100f); // Random value between 0 and 100
         return randomValue <= criticalChance;
     }
 
