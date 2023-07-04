@@ -165,8 +165,13 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
 
         if (localSpd > otherSpd)
         {
-            if (PhotonNetwork.LocalPlayer.IsLocal)
+            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() == 0)
             {
+                CheckStunAndChooseAction();
+            }
+            else
+            {
+                //yield return new WaitForSeconds(waitTime);
                 CheckStunAndChooseAction();
             }
         }
@@ -200,11 +205,9 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
         }
         else
         {
+            
             yield return new WaitForSeconds(waitTime);
-            if (PhotonNetwork.LocalPlayer.IsLocal)
-            {
-                CheckStunAndChooseAction();
-            }
+            CheckStunAndChooseAction();
         }
 
         // reset variables for the next turn
