@@ -21,12 +21,14 @@ public class NFTPanel : MonoBehaviour
 
     PlayfabManager playfabManager;
     LaunchManager launchManager;
+    PlayerManager playerManager;
 
     // Start is called before the first frame update
     void Start()
     {
         playfabManager = FindObjectOfType<PlayfabManager>();
         launchManager = FindObjectOfType<LaunchManager>();
+        playerManager = FindObjectOfType<PlayerManager>();
     }
     private void OnEnable()
     {
@@ -91,6 +93,52 @@ public class NFTPanel : MonoBehaviour
         playfabManager.SelectedNftImageURL = selectedNFTData.imageUrl;
         launchManager.ModifyPlayerCustomImageURL(playfabManager.SelectedNftImageURL);
         GlobalData.instance.SaveSelectedNFTData(selectedNFTData);
+
+        float atk = 1;
+        float def = 1;
+        float spd = 1;
+        float luck = 1;
+        float gold = 1;
+        float honor = 1;
+        if (selectedNFTData.unit != "" && selectedNFTData.unit != null)
+        {
+            string[] policyIds = selectedNFTData.unit.Split(new string[] { selectedNFTData.hexEncodedName }, System.StringSplitOptions.None);
+
+            if (policyIds[0] == "25fef4794291774ee90ef721259460c2c00b655b718285e27ffa4ebe") // DRAGONs
+            {
+                List<NFTMetadataProperty> properties = GlobalData.instance.GetNFTProperties(selectedNFTData.property);
+                for (int i = 0; i < properties.Count; i++)
+                {
+                    if (properties[i].key == "PFPPB ATK")
+                    {
+                        atk += float.Parse(properties[i].value);
+                    }
+                    else if (properties[i].key == "PFPPB DEF")
+                    {
+                        def += float.Parse(properties[i].value);
+                    }
+                    else if (properties[i].key == "PFPPB SPD")
+                    {
+                        spd += float.Parse(properties[i].value);
+                    }
+                    else if (properties[i].key == "PFPPB LUCK")
+                    {
+                        luck += float.Parse(properties[i].value);
+                    }
+                }
+            }
+        }
+        Debug.Log("//////////////////////////////////////////////////" + atk + def + spd + luck);
+        PlayerSavedData playerSavedData = new PlayerSavedData(
+            atk,//ATT
+            def,//DEF
+            spd,//SPD
+            luck,//LUCK
+            0,//Gold
+            1//Honor
+        );
+
+        playfabManager.SavePlayerSavedData(playerSavedData);
     }
     public void OnClickGetSavedNFTData()
     {

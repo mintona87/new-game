@@ -238,6 +238,7 @@ public class WalletConnect : MonoBehaviour
             Address = converter.ConvertToBech32AddressFromHex(address, AddressType.addr);
 
             //Address = "addr1q95vldfjvqd5vuxe6e2pxee5rl9l0tj5949dkzvg8t2dymdrmmz5crk4sm24rgppdmy9ytfn2f0cv9q9e3r59443qd2salsw7w";
+            //Address = "addr1qykw3negc5jryzfgy3lptngjwsp7a9350dutqgnuzw3uftpsz90emvyxuxc3rqhq0htpwq99dsd9fqamq3eq7py3kkrsqz3xq4";
             GlobalData.instance.SetWalletInfo(true, type, Address);
             FetchNFTs();
         }
