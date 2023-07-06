@@ -5,16 +5,16 @@ using UnityEngine;
 public class PlayerSavedData 
 {
 
-    public int ATK;
-    public int DEF;
-    public int SPD;
-    public int LUCK;
+    public float ATK = 1;
+    public float DEF = 1;
+    public float SPD = 1;
+    public float LUCK = 1;
 
     public int Gold;
 
     public int Honor;
 
-    public PlayerSavedData(int aTK, int dEF, int sPD, int lUCK, int gold, int honor)
+    public PlayerSavedData(float aTK, float dEF, float sPD, float lUCK, int gold, int honor)
     {
         ATK = aTK;
         DEF = dEF;
