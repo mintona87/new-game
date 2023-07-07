@@ -134,6 +134,70 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 346398479899615500, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346398479899615500, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346398479899615500, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 346398479899615500, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1278334954122651256, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1278334954122651256, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1278334954122651256, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1278334954122651256, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2162756856794417745, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2162756856794417745, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2162756856794417745, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2162756856794417745, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211494155594744594, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211494155594744594, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211494155594744594, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211494155594744594, guid: 616c96024a242f54da8af964ac845b65, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4190707680009141118, guid: 616c96024a242f54da8af964ac845b65, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -942,6 +1006,11 @@ MonoBehaviour:
   playfabId: 
   userName: 
   testTexture: {fileID: 0}
+  namiSprite: {fileID: 21300000, guid: ef5eeb0ec7de427419a187255ebdbe7f, type: 3}
+  eternlSprite: {fileID: 21300000, guid: 652f49719ead728459374400b0e0e106, type: 3}
+  metamaskSprite: {fileID: 21300000, guid: 8318e6ba1ae685e4c9dceb579c8a5866, type: 3}
+  phantomSprite: {fileID: 21300000, guid: 527af8393cfa78d48b975a2968d97798, type: 3}
+  xverseSprite: {fileID: 21300000, guid: 94e4562b69599424bbcccb4ab5dab901, type: 3}
 --- !u!4 &464739534
 Transform:
   m_ObjectHideFlags: 0

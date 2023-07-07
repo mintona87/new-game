@@ -5,6 +5,10 @@ using PlayFab;
 using PlayFab.ClientModels;
 using System;
 
+public enum walletType
+{
+    metamask
+}
 [System.Serializable]
 public class NFTMEtadata
 {
@@ -64,6 +68,11 @@ public class GlobalData : MonoBehaviour
 
     public WalletInfo connectedWallet;
 
+    public Sprite namiSprite;
+    public Sprite eternlSprite;
+    public Sprite metamaskSprite;
+    public Sprite phantomSprite;
+    public Sprite xverseSprite;
 
     // Start is called before the first frame update
     void Start()
