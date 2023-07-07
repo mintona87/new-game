@@ -88,9 +88,9 @@ public class NFTPanel : MonoBehaviour
         int honor = GlobalData.instance.GetNFTHonor(_nftData.unit);
         nftHonor.text = "Honor: " + honor.ToString();
 
-        Debug.Log("ne localhonor " + launchManager.GetCustomHonor() + " nfthonor" + honor);
+        //Debug.Log("ne localhonor " + launchManager.GetCustomHonor() + " nfthonor" + honor);
 
-        launchManager.ModifyPlayerCustomHonor(honor);
+        //launchManager.ModifyPlayerCustomHonor(honor);
 
         for (int i = 0; i < nftTraits.Length; i++)
         {
