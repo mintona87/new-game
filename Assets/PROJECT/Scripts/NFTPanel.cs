@@ -18,6 +18,12 @@ public class NFTPanel : MonoBehaviour
     public TMP_Text walletAddress;
     public Image walletImage;
     public TMP_Text nftHonor;
+    public TMP_Text nftAtk;
+    public TMP_Text nftDef;
+    public TMP_Text nftSpd;
+    public TMP_Text nftLuck;
+    public TMP_Text nftGold;
+
 
     PlayfabManager playfabManager;
     LaunchManager launchManager;
@@ -137,6 +143,14 @@ public class NFTPanel : MonoBehaviour
             0,//Gold
             1//Honor
         );
+
+            // Update the UI elements with the new stats
+            nftAtk.text = "Attack: " + atk.ToString();
+            nftDef.text = "Defense: " + def.ToString();
+            nftSpd.text = "Speed: " + spd.ToString();
+            nftLuck.text = "Luck: " + luck.ToString();
+            nftGold.text = "Gold: " + gold.ToString();
+            nftHonor.text = "Honor: " + honor.ToString();
 
         playfabManager.SavePlayerSavedData(playerSavedData);
     }
