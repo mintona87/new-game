@@ -43,7 +43,26 @@ public class NFTPanel : MonoBehaviour
     public void InitPanel()
     {
         walletAddress.text = GlobalData.instance.connectedWallet.address;
-        walletImage.sprite = Resources.Load<Sprite>("Assets/Resources/Sprites/" + GlobalData.instance.connectedWallet.type + "80");
+        switch (GlobalData.instance.connectedWallet.type)
+        {
+            case "nami":
+                walletImage.sprite = GlobalData.instance.namiSprite;
+                break;
+            case "eternl":
+                walletImage.sprite = GlobalData.instance.eternlSprite;
+                break;
+            case "metamask":
+                walletImage.sprite = GlobalData.instance.metamaskSprite;
+                break;
+            case "phantom":
+                walletImage.sprite = GlobalData.instance.phantomSprite;
+                break;
+            case "xverse":
+                walletImage.sprite = GlobalData.instance.xverseSprite;
+                break;
+            default:
+                break;
+        }
 
         for (int i = 0; i < GlobalData.instance.nftDataList.Length; i++)
         {
