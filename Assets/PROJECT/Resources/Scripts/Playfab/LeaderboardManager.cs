@@ -18,7 +18,7 @@ public class LeaderboardManager : MonoBehaviour
     {
         var request = new GetLeaderboardRequest
         {
-            StatisticName = "Zeitaku_Leaderboard",
+            StatisticName = "Honor_Leaderboard",
             StartPosition = 0,
             MaxResultsCount = 100
         };
