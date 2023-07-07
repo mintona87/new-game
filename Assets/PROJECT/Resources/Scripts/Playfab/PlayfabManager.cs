@@ -132,6 +132,10 @@ public class PlayfabManager : MonoBehaviour
 
         LoginSettings();
         GlobalData.instance.InitGlobalData(result.PlayFabId);
+
+        InitDefaultNFTData();
+
+
     }
 
 
@@ -232,6 +236,9 @@ public class PlayfabManager : MonoBehaviour
             LoginSettings();
         }
         GlobalData.instance.InitGlobalData(result.PlayFabId);
+
+        InitDefaultNFTData();
+
     }
 
     void LoginSettings()
@@ -392,5 +399,31 @@ public class PlayfabManager : MonoBehaviour
             SavePlayerSavedData(playerSavedData);
         }
         GlobalData.instance.playerData["PlayerSavedData"] = JsonConvert.SerializeObject(playerSavedData);
+    }
+
+    void InitDefaultNFTData()
+    {
+        playerSavedData = new PlayerSavedData(
+            1,//ATT
+            1,//DEF
+            1,//SPD
+            1,//LUCK
+            0,//Gold
+            1//Honor
+              );
+        SavePlayerSavedData(playerSavedData);
+
+        NFTMEtadata defaultNFTData = new NFTMEtadata
+        {
+            unit = "",
+            name = "Default Croc",
+            description = "",
+            rawImage = false,
+            imageUrl = "https://ipfs.io/ipfs/QmXfB96Nm16Yf8eSnYUw69vx54iP64oVcyfS8BEKWv3CfN",
+            hexEncodedName = "",
+            website = "",
+            property = ""
+        };
+        GlobalData.instance.SaveSelectedNFTData(defaultNFTData);
     }
 }
