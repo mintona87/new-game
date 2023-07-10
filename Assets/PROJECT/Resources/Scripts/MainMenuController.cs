@@ -89,4 +89,8 @@ public class MainMenuController : MonoBehaviour
     {
         WndManager.instance.OpenDialog(DLGType.CHAT_DLG);
     }
+    public void ShopButtonPressed()
+    {
+        SceneManager.LoadScene("Shop");
+    }
 }

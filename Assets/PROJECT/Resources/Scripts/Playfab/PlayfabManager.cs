@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using System.Threading.Tasks;
+using static UnityEditor.Progress;
 
 public class PlayfabManager : MonoBehaviour
 {
@@ -47,6 +48,7 @@ public class PlayfabManager : MonoBehaviour
 
     //DebugUI debugUI;
     PlayerSavedData playerSavedData;
+    Inventory inventoryData;
 
 
     private void Awake()
@@ -68,13 +70,25 @@ public class PlayfabManager : MonoBehaviour
     }
 
 
-    //private void Update()
-    //{
-    //    if (SceneManager.GetActiveScene().name != "LoginScreen")
-    //    {
-    //        Debug.Log("honorplayfab " + GetPlayerSavedData().Honor);
-    //    }
-    //}
+    public Inventory GetInventoryData()
+    {
+        return inventoryData;
+    }
+
+    #region inventoryManager
+    public void AddItemToInventory(Item item)
+    {
+        inventoryData.itemList.Add(item);
+        SaveIventoryData(inventoryData);
+        Debug.Log(item.itemName+ "was added to the inventory" );
+    }
+
+    public void RemoveItemFromInventory(Item item)
+    {
+        inventoryData.itemList.Remove(item);
+        SaveIventoryData(inventoryData);
+    }
+    #endregion
 
 
     // Registering
@@ -120,6 +134,7 @@ public class PlayfabManager : MonoBehaviour
         Debug.Log("SHOW NICKNAME FORM");
 
         GetLoadedPlayerDatas();//load and create data if no data
+        GetLoadedIventoryDatas();
 
         nickname = RegisterUsernameInput.text;
         GlobalData.instance.userName = nickname;
@@ -137,6 +152,9 @@ public class PlayfabManager : MonoBehaviour
 
 
     }
+
+
+
 
 
     #region Send Leaderboard initial stats
@@ -222,7 +240,8 @@ public class PlayfabManager : MonoBehaviour
         //debugUI.NickNameText.text = nickname;
 
         GetLoadedPlayerDatas();
-        
+        GetLoadedIventoryDatas();
+
         if (name == null)
         {
             Debug.Log("no name, show set name form ...");
@@ -311,8 +330,16 @@ public class PlayfabManager : MonoBehaviour
     {
         Debug.Log("Error: " + error.ErrorMessage);
     }
+    void OnSaveInventoryDataError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
 
     void GetLoadedPlayerDatasError(PlayFabError error)
+    {
+        Debug.Log("Error: " + error.ErrorMessage);
+    }
+    void GetLoadedIventoryDatasError(PlayFabError error)
     {
         Debug.Log("Error: " + error.ErrorMessage);
     }
@@ -364,7 +391,18 @@ public class PlayfabManager : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnSavePlayerDataError);
     }
 
-   
+    public void SaveIventoryData(Inventory data)
+    {
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string> {
+                {"Inventory", JsonConvert.SerializeObject(data) },
+            }
+        };
+        PlayFabClientAPI.UpdateUserData(request, OnDataSend, OnSaveInventoryDataError);
+    }
+
+
 
     void OnDataSend(UpdateUserDataResult result)
     {
@@ -376,6 +414,12 @@ public class PlayfabManager : MonoBehaviour
     {
         PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnCharacterDataReceived, GetLoadedPlayerDatasError);
     }
+
+    public void GetLoadedIventoryDatas()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnInventoryDataReceived, GetLoadedIventoryDatasError);
+    }
+
     void OnCharacterDataReceived(GetUserDataResult result)
     {
         Debug.Log("Received data");
@@ -401,17 +445,40 @@ public class PlayfabManager : MonoBehaviour
         GlobalData.instance.playerData["PlayerSavedData"] = JsonConvert.SerializeObject(playerSavedData);
     }
 
+    void OnInventoryDataReceived(GetUserDataResult result)
+    {
+        Debug.Log("Received Inventory data");
+        if (result.Data != null && result.Data.ContainsKey("Inventory"))
+        {
+            Inventory loadedInventory = JsonConvert.DeserializeObject<Inventory>(result.Data["Inventory"].Value);
+            inventoryData = loadedInventory;
+
+            Debug.Log(inventoryData.itemList[0].itemName + " is in the inventory");
+
+        }
+        else
+        {
+            Debug.Log("No inventory key, initializing...");
+            inventoryData = new Inventory();
+            SaveIventoryData(inventoryData);
+        }
+    }
+
+
     void InitDefaultNFTData()
     {
-        playerSavedData = new PlayerSavedData(
-            1,//ATT
-            1,//DEF
-            1,//SPD
-            1,//LUCK
-            0,//Gold
-            1//Honor
-              );
-        SavePlayerSavedData(playerSavedData);
+        //playerSavedData = new PlayerSavedData(
+        //    1,//ATT
+        //    1,//DEF
+        //    1,//SPD
+        //    1,//LUCK
+        //    0,//Gold
+        //    1//Honor
+        //      );
+        //SavePlayerSavedData(playerSavedData);
+
+        //inventoryData = new Inventory();
+        //SaveIventoryData(inventoryData);
 
         NFTMEtadata defaultNFTData = new NFTMEtadata
         {
