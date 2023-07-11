@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using System.Threading.Tasks;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 
 public class PlayfabManager : MonoBehaviour
 {
