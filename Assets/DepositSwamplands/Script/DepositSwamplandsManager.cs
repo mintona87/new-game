@@ -29,7 +29,7 @@ public class DepositSwamplandsManager : MonoBehaviour
     [SerializeField] private Button _getC4BalanceBtn;
     [SerializeField] private TMP_Text _resultMessageText;
 
-    private string _playerPlayFabID = string.Empty;
+    private string _playerPlayFabID = "";
 
     private void Start()
     {
@@ -42,7 +42,8 @@ public class DepositSwamplandsManager : MonoBehaviour
         Debug.Log($"Your PlayFabID: {_playerPlayFabID}");
 
         //check if user already connected
-        GetSwampConnectionStatus();
+        //GetSwampConnectionStatus();
+        OnGetGoldBalanceBtnClick();
     }
     private void OnClickSwampLandsAuth()
     {
@@ -90,15 +91,21 @@ public class DepositSwamplandsManager : MonoBehaviour
             if (responseData.responseContent.status == true)
             {
                 //success deposit
-                _currentBalanceGold.text = $"Balance: {responseData.responseContent.newBalance}";
+                _currentBalanceGold.text = $"Gold balance: {responseData.responseContent.newBalance}";
                 _resultMessageText.text = responseData.responseContent.msg;
                 _swamplandsClientAuthBtn.interactable = false;
+            }
+            else if(responseData.responseContent.code == 1)
+            {
+                OnClickSwampLandsAuth();
+                _resultMessageText.text = "Please try agian after sign in via swamplands.";
             }
             else
             {
                 //fail deposit  
                 _resultMessageText.text = responseData.responseContent.msg;
                 //check if is token expired issue
+                GetSwampConnectionStatus();
                 _swamplandsClientAuthBtn.interactable = true;
             }
         }
@@ -152,7 +159,7 @@ public class DepositSwamplandsManager : MonoBehaviour
         {
             int goldBalance = result.InfoResultPayload.UserVirtualCurrency["GD"];
             _resultMessageText.text = $"Your balance: {goldBalance}"; 
-            _currentBalanceGold.text = $"Balance: {goldBalance}";
+            _currentBalanceGold.text = $"Gold balance: {goldBalance}";
         }
         else
         {
@@ -183,6 +190,7 @@ public class DepositResponse
 [Serializable]
 public class DepositResponseContent
 {
+    public int code; // 1 - not connected; // 0 - connected
     public bool status; // success deposit true/false
     public string msg; // error/success msg
     public int newBalance; // current balance after deposit OR previous balance if status = false.
