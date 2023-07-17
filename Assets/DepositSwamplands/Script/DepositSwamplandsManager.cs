@@ -6,6 +6,7 @@ using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using Newtonsoft.Json;
 
 #if UNITY_WEBGL
     using System.Runtime.InteropServices;
@@ -148,22 +149,24 @@ public class DepositSwamplandsManager : MonoBehaviour
 
     private void OnGetGoldBalanceBtnClick()
     {
-        var request = new GetPlayerCombinedInfoRequest();
-        request.InfoRequestParameters = new GetPlayerCombinedInfoRequestParams() { GetUserVirtualCurrency = true };
-        PlayFabClientAPI.GetPlayerCombinedInfo(request, OnGetGetGoldBalanceSuccess, OnPlayFabError);
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest(), OnCharacterDataReceived, OnPlayFabError);
     }
 
-    private void OnGetGetGoldBalanceSuccess(GetPlayerCombinedInfoResult result)
+    private void OnCharacterDataReceived(GetUserDataResult result)
     {
-        if (result.InfoResultPayload != null && result.InfoResultPayload.UserVirtualCurrency.ContainsKey("GD"))
+
+        if (result.Data != null && result.Data.ContainsKey("PlayerSavedData"))
         {
-            int goldBalance = result.InfoResultPayload.UserVirtualCurrency["GD"];
-            _resultMessageText.text = $"Your balance: {goldBalance}"; 
+            PlayerSavedData playerSavedData = JsonConvert.DeserializeObject<PlayerSavedData>(result.Data["PlayerSavedData"].Value);
+            int goldBalance = playerSavedData.Gold;
+            _resultMessageText.text = $"Your balance: {goldBalance}";
             _currentBalanceGold.text = $"Gold balance: {goldBalance}";
         }
         else
         {
-            string errorText = "No internal data for C4Balance found.";
+            string errorText = "No saved data for gold found.";
+            int goldBalance = 0;
+            _currentBalanceGold.text = $"Gold balance: {goldBalance}";
             _resultMessageText.text = errorText;
             Debug.LogWarning(errorText);
         }

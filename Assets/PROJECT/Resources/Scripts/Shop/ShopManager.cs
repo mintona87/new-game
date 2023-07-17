@@ -13,21 +13,31 @@ public class ShopManager : MonoBehaviour
     private void Awake()
     {
         playfabManager = FindObjectOfType<PlayfabManager>();
+        playfabManager.OnSavedDataChanged += GoldBalanceChanged;
     }
 
     private void Start()
     {
-        playerGoldText.text = "Gold : "+playfabManager.GetPlayerSavedData().Gold.ToString();
+        UpdatePlayerTextGold();
     }
 
     public void UpdatePlayerTextGold()
     {
-        playerGoldText.text = "Gold : " + playfabManager.GetPlayerSavedData().Gold.ToString();
+        playfabManager.GetLoadedPlayerDatas();
     }
 
+    private void GoldBalanceChanged(PlayerSavedData playerSavedData)
+    {
+        playerGoldText.text = "Gold : " + playerSavedData.Gold.ToString();
+    }
 
     public void BackToMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private void OnDestroy()
+    {
+        playfabManager.OnSavedDataChanged -= GoldBalanceChanged;
     }
 }

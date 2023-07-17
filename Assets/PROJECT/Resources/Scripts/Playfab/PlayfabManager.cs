@@ -50,6 +50,7 @@ public class PlayfabManager : MonoBehaviour
     PlayerSavedData playerSavedData;
     Inventory inventoryData;
 
+    public Action<PlayerSavedData> OnSavedDataChanged;
 
     private void Awake()
     {
@@ -427,6 +428,7 @@ public class PlayfabManager : MonoBehaviour
         {
             PlayerSavedData loadedStats = JsonConvert.DeserializeObject<PlayerSavedData>(result.Data["PlayerSavedData"].Value);
             playerSavedData = loadedStats;
+            OnSavedDataChanged?.Invoke(playerSavedData);
             Debug.Log("honor " + playerSavedData.Honor);
         }
         else
