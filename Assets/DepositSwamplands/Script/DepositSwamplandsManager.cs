@@ -177,6 +177,8 @@ public class DepositSwamplandsManager : MonoBehaviour
 
     private void GetSwampConnectionStatus()
     {
+        _swamplandsDepositBtn.interactable = false;
+        _resultMessageText.text = "Please wait...";
         var request = new ExecuteCloudScriptRequest
         {
             FunctionName = "isPlayerSwampConnectionActive",
