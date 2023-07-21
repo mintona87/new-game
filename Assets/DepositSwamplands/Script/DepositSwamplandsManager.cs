@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 #if UNITY_WEBGL
     using System.Runtime.InteropServices;
@@ -17,6 +18,7 @@ public class DepositSwamplandsManager : MonoBehaviour
     //jslib with one function - open page that open _blank (new tab)
 #if UNITY_WEBGL
     [DllImport("__Internal")] private static extern void OpenNewPage(string str);
+    [DllImport("__Internal")] private static extern void FocusTabChangeListen();
 #endif
     [Header("URLs")] // link to swamplands page for client to sign in.
     [SerializeField] private string _swamplandsClientAuthURL;
@@ -24,6 +26,7 @@ public class DepositSwamplandsManager : MonoBehaviour
     [Header("UIs"), Space(20)]
     [SerializeField] private TMP_Text _currentBalanceGold;
     [SerializeField] private Button _swamplandsClientAuthBtn; // btn to call open page function
+    [SerializeField] private TMP_Text _connectBtnText;
     [SerializeField] private TMP_InputField _depositAmountInput;
     [SerializeField] private Button _swamplandsDepositBtn; // btn to call cloud script "makeDepositRequest" function on playFab -> page in admin panel: Automation/Revisions(Legacy) 
 
@@ -31,31 +34,42 @@ public class DepositSwamplandsManager : MonoBehaviour
     [SerializeField] private TMP_Text _resultMessageText;
 
     private string _playerPlayFabID = "";
+    private bool _isUserConnected = false;
 
-    private void Start()
+    private IEnumerator Start()
     {
-        _swamplandsClientAuthBtn.onClick.AddListener(OnClickSwampLandsAuth);
+        _swamplandsClientAuthBtn.onClick.AddListener(SwamplandsAuth);
         _swamplandsDepositBtn.onClick.AddListener(OnDepositBtnClick);
         _getC4BalanceBtn.onClick.AddListener(OnGetGoldBalanceBtnClick);
 
         _playerPlayFabID = GlobalData.instance?.playfabId;
-        _resultMessageText.text = $"Your PlayFabID: {_playerPlayFabID}";
-        Debug.Log($"Your PlayFabID: {_playerPlayFabID}");
+        _resultMessageText.text = "";
 
         //check if user already connected
-        //GetSwampConnectionStatus();
+#if UNITY_WEBGL
+        FocusTabChangeListen();
+#endif
         OnGetGoldBalanceBtnClick();
+        yield return new WaitForSeconds(2);
+
+        GetSwampConnectionStatus();
     }
-    private void OnClickSwampLandsAuth()
+    private void SwamplandsAuth()
     {
-    #if UNITY_WEBGL
+#if UNITY_WEBGL
         if (!string.IsNullOrWhiteSpace(_playerPlayFabID))
         {
-            OpenNewPage(_swamplandsClientAuthURL + _playerPlayFabID);
+            if (!_isUserConnected)
+            {
+                _resultMessageText.text = "Please wait...";
+                OpenNewPage(_swamplandsClientAuthURL + _playerPlayFabID);
+            }
+            else
+                CallDisconnectOnPlayFab();
         }
         else
-            _resultMessageText.text = "GlobalData playfabId is empty";
-    #endif
+            _resultMessageText.text = "Player ID error.";
+#endif
     }
 
     #region Swamplands C4 deposit
@@ -67,9 +81,21 @@ public class DepositSwamplandsManager : MonoBehaviour
             CallDepositOnPlayFab(depositAmount);
         }
         else
-            _resultMessageText.text = "Wrong deposit amount";
+            _resultMessageText.text = "Wrong deposit amount.";
     }
 
+    public void OnWindowActivate()
+    {
+        Debug.Log("RUN CHECK IN 3sec");
+        if(gameObject.activeSelf)
+            StartCoroutine(WindowActivateIE());
+    }
+    IEnumerator WindowActivateIE()
+    {
+        _resultMessageText.text = "Please wait...";
+        yield return new WaitForSeconds(1.5f);
+        GetSwampConnectionStatus();
+    }
     private void CallDepositOnPlayFab(int c4Amount)
     {
         var request = new ExecuteCloudScriptRequest
@@ -80,6 +106,27 @@ public class DepositSwamplandsManager : MonoBehaviour
         };
         PlayFabClientAPI.ExecuteCloudScript(request, OnMakeDepositRequestCompleted, OnPlayFabError);
         _resultMessageText.text = "Please wait...";
+        _swamplandsDepositBtn.interactable = false;
+    }
+
+    private void CallDisconnectOnPlayFab()
+    {
+        var request = new ExecuteCloudScriptRequest
+        {
+            FunctionName = "disconnectSwamplads",
+            FunctionParameter = new {},
+            GeneratePlayStreamEvent = true
+        };
+        PlayFabClientAPI.ExecuteCloudScript(request, OnDisconnectOnPlayFabCompleted, OnPlayFabError);
+        _resultMessageText.text = "Please wait...";
+        _swamplandsDepositBtn.interactable = false;
+    }
+
+    public void OnDisconnectOnPlayFabCompleted(ExecuteCloudScriptResult result)
+    {
+        _isUserConnected = false;
+        _resultMessageText.text = "Disconnected from swamplands.";
+        _connectBtnText.text = _isUserConnected ? "Disconnect from Swamplands" : "Connect to Swamplands";
         _swamplandsDepositBtn.interactable = false;
     }
 
@@ -94,12 +141,12 @@ public class DepositSwamplandsManager : MonoBehaviour
                 //success deposit
                 _currentBalanceGold.text = $"Gold balance: {responseData.responseContent.newBalance}";
                 _resultMessageText.text = responseData.responseContent.msg;
-                _swamplandsClientAuthBtn.interactable = false;
+                //_swamplandsClientAuthBtn.interactable = false;
             }
             else if(responseData.responseContent.code == 1)
             {
-                OnClickSwampLandsAuth();
-                _resultMessageText.text = "Please try agian after sign in via swamplands.";
+                _resultMessageText.text = "Please wait...";
+                SwamplandsAuth();
             }
             else
             {
@@ -107,7 +154,7 @@ public class DepositSwamplandsManager : MonoBehaviour
                 _resultMessageText.text = responseData.responseContent.msg;
                 //check if is token expired issue
                 GetSwampConnectionStatus();
-                _swamplandsClientAuthBtn.interactable = true;
+                //_swamplandsClientAuthBtn.interactable = true;
             }
         }
         else
@@ -143,8 +190,11 @@ public class DepositSwamplandsManager : MonoBehaviour
         string resultJson = result.FunctionResult.ToString();
         DepositResponse responseData = JsonUtility.FromJson<DepositResponse>(resultJson);
 
-        _swamplandsClientAuthBtn.interactable = !responseData.responseContent.status;
-        _resultMessageText.text = responseData.responseContent.msg;
+        _isUserConnected = responseData.responseContent.status;
+        _swamplandsDepositBtn.interactable = _isUserConnected;
+        Debug.Log("CHECK: " + _isUserConnected);
+        _resultMessageText.text = _isUserConnected ? responseData.responseContent.msg : "Please connect to swamplands first.";
+        _connectBtnText.text = _isUserConnected ? "Disconnect from Swamplands" : "Connect to Swamplands";
     }
 
     private void OnGetGoldBalanceBtnClick()
@@ -154,17 +204,16 @@ public class DepositSwamplandsManager : MonoBehaviour
 
     private void OnCharacterDataReceived(GetUserDataResult result)
     {
-
         if (result.Data != null && result.Data.ContainsKey("PlayerSavedData"))
         {
             PlayerSavedData playerSavedData = JsonConvert.DeserializeObject<PlayerSavedData>(result.Data["PlayerSavedData"].Value);
             int goldBalance = playerSavedData.Gold;
-            _resultMessageText.text = $"Your balance: {goldBalance}";
+            _resultMessageText.text = $"Your gold balance: {goldBalance} gold";
             _currentBalanceGold.text = $"Gold balance: {goldBalance}";
         }
         else
         {
-            string errorText = "No saved data for gold found.";
+            string errorText = "Empty";
             int goldBalance = 0;
             _currentBalanceGold.text = $"Gold balance: {goldBalance}";
             _resultMessageText.text = errorText;
