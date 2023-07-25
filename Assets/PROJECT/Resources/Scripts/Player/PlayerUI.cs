@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using PlayFab.EconomyModels;
+using Image = UnityEngine.UI.Image;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -23,6 +25,8 @@ public class PlayerUI : MonoBehaviour
     PlayerManager player;
 
     public Image PlayerPicture;
+
+    public GameObject itemSlotPrefab;
 
     private void Awake()
     {
@@ -95,5 +99,28 @@ public class PlayerUI : MonoBehaviour
         return (float)hp / (float)maxHealth;
     }
 
+    public void OpenIventoryUiButtonPressed()
+    {
+        UpdateInventoryUI();
+    }
+
+   
+    void UpdateInventoryUI()
+    {
+        // Clear the inventory UI
+        foreach (Transform child in player.gameController.InventoryContentObj.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Create a new item slot for each item in the inventory
+        foreach (Item item in player.inventory.itemList)
+        {
+            GameObject itemSlot = Instantiate(itemSlotPrefab, Vector3.zero,Quaternion.identity);
+            itemSlot.transform.SetParent(player.gameController.InventoryContentObj.transform);
+            //itemSlot.GetComponent<Image>().sprite = item.icon;
+            //itemSlot.GetComponentInChildren<Text>().text = item.quantity.ToString();
+        }
+    }
 
 }

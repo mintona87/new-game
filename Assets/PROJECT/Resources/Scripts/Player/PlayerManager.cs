@@ -44,6 +44,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public int isDefendingTurnIndex;
 
+    public Inventory inventory;
 
     private void Awake()
     {
@@ -56,6 +57,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
     private void Start()
     {
+        inventory = playfabManager.GetInventoryData();
+
         OnLoadingGameScreen.Instance.SetLoadingScreenActive(true);
 
         StartCoroutine(WaitFinishLoad());
