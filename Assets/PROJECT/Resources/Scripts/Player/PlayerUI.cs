@@ -101,9 +101,11 @@ public class PlayerUI : MonoBehaviour
 
     public void OpenIventoryUiButtonPressed()
     {
+        player.gameController.InventoryPanelObj.SetActive(true);
         UpdateInventoryUI();
     }
 
+    
    
     void UpdateInventoryUI()
     {
@@ -118,6 +120,9 @@ public class PlayerUI : MonoBehaviour
         {
             GameObject itemSlot = Instantiate(itemSlotPrefab, Vector3.zero,Quaternion.identity);
             itemSlot.transform.SetParent(player.gameController.InventoryContentObj.transform);
+
+            ItemSlotManager itemSlotManager = itemSlot.GetComponent<ItemSlotManager>();
+            itemSlotManager.SetupItem(item.itemName);
             //itemSlot.GetComponent<Image>().sprite = item.icon;
             //itemSlot.GetComponentInChildren<Text>().text = item.quantity.ToString();
         }
