@@ -12,6 +12,9 @@ public class ItemSlotManager : MonoBehaviour
 
      string itemName;
 
+    Item item;
+
+    PlayerManager ownerPlayerManager;
 
     void Start()
     {
@@ -23,16 +26,17 @@ public class ItemSlotManager : MonoBehaviour
         UseItem(itemName);
    }
 
-    public void SetupItem(string ItemName)
+    public void SetupItem(PlayerManager owner, string ItemName, Item Item)
     {
         itemName = ItemName;
         itemNameText.text = itemName;
+        item = Item;
+        ownerPlayerManager = owner;
     }
 
 
     void UseItem(string ItemName)
     {
-
         switch (ItemName) 
         {
             case "testItem1":
@@ -40,6 +44,12 @@ public class ItemSlotManager : MonoBehaviour
             case "testItem2":
                 break;
         }
+        UpdateItemUI();
+    }
+    void UpdateItemUI()
+    {
+        ownerPlayerManager.playfabManager.RemoveItemFromInventory(item);
+        Destroy(gameObject);
 
     }
 }

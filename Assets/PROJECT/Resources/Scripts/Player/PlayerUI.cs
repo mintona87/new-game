@@ -122,7 +122,7 @@ public class PlayerUI : MonoBehaviour
             itemSlot.transform.SetParent(player.gameController.InventoryContentObj.transform);
 
             ItemSlotManager itemSlotManager = itemSlot.GetComponent<ItemSlotManager>();
-            itemSlotManager.SetupItem(item.itemName);
+            itemSlotManager.SetupItem(player,item.itemName, item);
             //itemSlot.GetComponent<Image>().sprite = item.icon;
             //itemSlot.GetComponentInChildren<Text>().text = item.quantity.ToString();
         }
