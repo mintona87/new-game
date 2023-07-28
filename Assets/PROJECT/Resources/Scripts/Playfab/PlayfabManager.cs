@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Photon.Realtime;
 //using static UnityEditor.Progress;
 
 public class PlayfabManager : MonoBehaviour
@@ -78,14 +79,36 @@ public class PlayfabManager : MonoBehaviour
     #region inventoryManager
     public void AddItemToInventory(Item item)
     {
-        inventoryData.itemList.Add(item);
+        // Check if the item is already in the inventory
+        Item existingItem = inventoryData.itemList.Find(i => i.itemName == item.itemName);
+        if (existingItem != null)
+        {
+            Debug.Log("increase quantity");
+            // If the item is already in the inventory, increase the quantity
+            existingItem.itemQuantity+= item.itemQuantity;
+        }
+        else
+        {
+            inventoryData.itemList.Add(item);
+        }
         SaveIventoryData(inventoryData);
         Debug.Log(item.itemName+ "was added to the inventory" );
     }
 
     public void RemoveItemFromInventory(Item item)
     {
-        inventoryData.itemList.Remove(item);
+        Item existingItem = inventoryData.itemList.Find(i => i.itemName == item.itemName);
+        if (existingItem != null)
+        {
+            // If the item is already in the inventory, increase the quantity
+            existingItem.itemQuantity -= 1;
+        }
+        else
+        {
+            inventoryData.itemList.Remove(item);
+        }
+
+        
         SaveIventoryData(inventoryData);
     }
     #endregion

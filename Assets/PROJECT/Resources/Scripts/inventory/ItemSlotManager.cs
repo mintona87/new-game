@@ -7,6 +7,7 @@ using TMPro;
 public class ItemSlotManager : MonoBehaviour
 {
     public TextMeshProUGUI itemNameText;
+    public TextMeshProUGUI itemQuantityText;
 
     public Image itemImage;
 
@@ -31,6 +32,7 @@ public class ItemSlotManager : MonoBehaviour
         itemName = ItemName;
         itemNameText.text = itemName;
         item = Item;
+        itemQuantityText.text = item.itemQuantity.ToString();
         ownerPlayerManager = owner;
     }
 
@@ -44,12 +46,16 @@ public class ItemSlotManager : MonoBehaviour
             case "testItem2":
                 break;
         }
+        ownerPlayerManager.playfabManager.RemoveItemFromInventory(item);
         UpdateItemUI();
     }
     void UpdateItemUI()
     {
-        ownerPlayerManager.playfabManager.RemoveItemFromInventory(item);
-        Destroy(gameObject);
+        itemQuantityText.text = item.itemQuantity.ToString();
+        if (item.itemQuantity <= 0)
+        {
+            Destroy(gameObject);
+        }
 
     }
 }
