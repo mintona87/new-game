@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close Shop text
+  m_text: X
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -208,7 +208,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22.05
+  m_fontSize: 44.75
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -332,8 +332,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 323, y: 175.15}
-  m_SizeDelta: {x: 100, y: 50}
+  m_AnchoredPosition: {x: 345, y: 175.15}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &595791490
 MonoBehaviour:
@@ -1799,6 +1799,30 @@ PrefabInstance:
     - target: {fileID: 3295071626910168989, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: itemPrice
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093261, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_text
+      value: Alpha Investor (TEST)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093261, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_fontSize
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 144.0912
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 3308702464286738225, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_Pivot.x
