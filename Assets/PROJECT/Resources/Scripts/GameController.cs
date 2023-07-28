@@ -37,6 +37,10 @@ public class GameController : MonoBehaviourPunCallbacks
     public GameOverManager gameOverManager;
 
     public Shaker cameraShaker;
+
+    public GameObject InventoryPanelObj;
+    public GameObject InventoryContentObj;
+
     private void Awake()
     {
         audioManager = GetComponent<AudioManager>();
