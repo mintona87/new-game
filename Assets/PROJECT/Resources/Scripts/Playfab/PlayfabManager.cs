@@ -98,7 +98,7 @@ public class PlayfabManager : MonoBehaviour
     public void RemoveItemFromInventory(Item item)
     {
         Item existingItem = inventoryData.itemList.Find(i => i.itemName == item.itemName);
-        if (existingItem != null)
+        if (existingItem != null && existingItem.itemQuantity !=0 )
         {
             // If the item is already in the inventory, increase the quantity
             existingItem.itemQuantity -= 1;

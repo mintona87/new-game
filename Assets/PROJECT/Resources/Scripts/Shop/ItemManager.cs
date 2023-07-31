@@ -32,7 +32,7 @@ public class ItemManager : MonoBehaviour
     {
         itemPriceText.text = itemPrice.ToString() + " Gold";
 
-        thisItem = new Item(itemNameText.text,itemId,itemDescriptionText.text, itemPrice,1);
+        thisItem = new Item(itemNameText.text,itemId,itemDescriptionText.text, itemPrice,1,itemSprite.name);
     }
 
     
