@@ -168,10 +168,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-            {
+            //if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            //{
                 photonView.RPC("LoadBattleScreen", RpcTarget.All);
-            }
+            //}
         }
     }
 

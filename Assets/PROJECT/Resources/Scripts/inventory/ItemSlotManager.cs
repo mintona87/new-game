@@ -10,8 +10,10 @@ public class ItemSlotManager : MonoBehaviour
     public TextMeshProUGUI itemQuantityText;
 
     public Image itemImage;
+    string itemSpriteName;
 
      string itemName;
+
 
     Item item;
 
@@ -27,13 +29,15 @@ public class ItemSlotManager : MonoBehaviour
         UseItem(itemName);
    }
 
-    public void SetupItem(PlayerManager owner, string ItemName, Item Item)
+    public void SetupItem(PlayerManager owner, string ItemName, Item Item,string ItemSpriteName)
     {
         itemName = ItemName;
         itemNameText.text = itemName;
         item = Item;
-        itemQuantityText.text = item.itemQuantity.ToString();
         ownerPlayerManager = owner;
+        itemSpriteName = ItemSpriteName;
+
+        UpdateItemUI();
     }
 
 
@@ -51,6 +55,8 @@ public class ItemSlotManager : MonoBehaviour
     }
     void UpdateItemUI()
     {
+
+        itemImage.sprite = Resources.Load<Sprite>("Sprites/CustomUIimages/"+ itemSpriteName);
         itemQuantityText.text = item.itemQuantity.ToString();
         if (item.itemQuantity <= 0)
         {

@@ -13,7 +13,6 @@ public class ShopManager : MonoBehaviour
     private void Awake()
     {
         playfabManager = FindObjectOfType<PlayfabManager>();
-        playfabManager.OnSavedDataChanged += GoldBalanceChanged;
     }
 
     private void Start()
@@ -23,12 +22,13 @@ public class ShopManager : MonoBehaviour
 
     public void UpdatePlayerTextGold()
     {
-        playfabManager.GetLoadedPlayerDatas();
+        GoldBalanceChanged();
+        //playfabManager.GetLoadedPlayerDatas();
     }
 
-    private void GoldBalanceChanged(PlayerSavedData playerSavedData)
+    private void GoldBalanceChanged()
     {
-        playerGoldText.text = "Gold : " + playerSavedData.Gold.ToString();
+        playerGoldText.text = "Gold : " + playfabManager.GetPlayerSavedData().Gold.ToString();
     }
 
     public void BackToMainMenu()
@@ -36,8 +36,5 @@ public class ShopManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    private void OnDestroy()
-    {
-        playfabManager.OnSavedDataChanged -= GoldBalanceChanged;
-    }
+    
 }

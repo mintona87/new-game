@@ -10,13 +10,14 @@ public class Item
     public int itemPrice;
     public int itemQuantity;
     public int itemId;
-
-    public Item(string name, int id, string description, int price, int quantity)
+    public string spriteName;
+    public Item(string name, int id, string description, int price, int quantity,string SpriteName)
     {
         itemName = name;
         itemId = id;
         itemDescription = description;
         itemQuantity = quantity;
         itemPrice = price;
+        spriteName = SpriteName;
     }
 }

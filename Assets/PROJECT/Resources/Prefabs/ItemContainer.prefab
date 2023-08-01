@@ -813,7 +813,7 @@ MonoBehaviour:
   itemNameText: {fileID: 3308702463137093261}
   itemDescriptionText: {fileID: 3308702463053154351}
   itemImage: {fileID: 3308702464487206393}
-  itemSprite: {fileID: 0}
+  itemSprite: {fileID: 21300000, guid: 28388cf35aa1c274cb9949cfe55a59ec, type: 3}
 --- !u!1 &3308702464487206399
 GameObject:
   m_ObjectHideFlags: 0
