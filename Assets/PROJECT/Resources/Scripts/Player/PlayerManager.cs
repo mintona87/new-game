@@ -209,6 +209,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             playerUI.playerAttackButton.interactable = canPlay;
             playerUI.playerHealButton.interactable = canPlay;
             playerUI.playerDefendButton.interactable = canPlay;
+            playerUI.playerInventoryButton.interactable = canPlay;
+
             playerUI.playerChargeButton.interactable = canPlay && TurnsSinceCharge >= 6;
         }
         yield return null;

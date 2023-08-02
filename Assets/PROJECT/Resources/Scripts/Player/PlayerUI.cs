@@ -20,6 +20,7 @@ public class PlayerUI : MonoBehaviour
     public Button playerHealButton;
     public Button playerDefendButton;
     public Button playerChargeButton;
+    public Button playerInventoryButton;
 
     public Slider hpSlider;
     PlayerManager player;
@@ -27,6 +28,8 @@ public class PlayerUI : MonoBehaviour
     public Image PlayerPicture;
 
     public GameObject itemSlotPrefab;
+
+
 
     private void Awake()
     {
@@ -58,6 +61,8 @@ public class PlayerUI : MonoBehaviour
         playerAttackButton.gameObject.SetActive(condition);
         playerHealButton.gameObject.SetActive(condition);
         playerDefendButton.gameObject.SetActive(condition);
+        playerInventoryButton.gameObject.SetActive(condition);
+
         playerChargeButton.gameObject.SetActive(condition);
     }
 
@@ -66,6 +71,7 @@ public class PlayerUI : MonoBehaviour
         player.playerCombat.targetScript.playerUI.playerAttackButton.gameObject.SetActive(condition);
         player.playerCombat.targetScript.playerUI.playerHealButton.gameObject.SetActive(condition);
         player.playerCombat.targetScript.playerUI.playerDefendButton.gameObject.SetActive(condition);
+        player.playerCombat.targetScript.playerUI.playerInventoryButton.gameObject.SetActive(condition);
         player.playerCombat.targetScript.playerUI.playerChargeButton.gameObject.SetActive(condition);
     }
 

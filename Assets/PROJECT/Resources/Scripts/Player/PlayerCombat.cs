@@ -257,6 +257,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             playerManager.playerUI.playerHealButton.interactable = false;
             playerManager.playerUI.playerDefendButton.interactable = false;
             playerManager.playerUI.playerChargeButton.interactable = false;
+            playerManager.playerUI.playerInventoryButton.interactable = false;
         }
     }
     public void SetButtonUIAccordingToCanPlay()
@@ -266,6 +267,7 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             playerManager.playerUI.playerAttackButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerHealButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerDefendButton.interactable = playerManager.canPlay;
+            playerManager.playerUI.playerInventoryButton.interactable = playerManager.canPlay;
             playerManager.playerUI.playerChargeButton.interactable = playerManager.canPlay && playerManager.TurnsSinceCharge >= 6;
 
             if (playerManager.isDefendingTurnIndex >= 2)

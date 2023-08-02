@@ -77,6 +77,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             Debug.Log("inside honor did not load");
             yield return null;
         }
+        //PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "jp";
 
         PhotonNetwork.ConnectUsingSettings();
 
@@ -120,6 +121,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        //Debug.Log("current country " + PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion);
         if (shouldStartCheckForDisctonnectedTime)
         {
             disconnectedTime += Time.deltaTime;
@@ -266,6 +268,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         honor = playfabManager.localPlayerHonor;
 #endif
 
+        Debug.Log("localhonor " +honor);
         //defaultSpriteName is added in the MainMenuController
         //PhotonNetwork.LocalPlayer.CustomProperties.Add("SpriteData", "");SpriteDatais added in the MainMenuController
         PhotonNetwork.LocalPlayer.CustomProperties.Add("Honor", honor);
