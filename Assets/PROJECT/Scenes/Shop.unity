@@ -1798,15 +1798,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3295071626910168989, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: itemPrice
-      value: 2
+      value: 150000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3308702463053154351, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
+      propertyPath: m_text
+      value: The "Alpha Caller" title is only available as a limited edition title
+        with a maximum supply of 250. This title belongs, exclusively, to early contributors
+        and legends of the arena.
       objectReference: {fileID: 0}
     - target: {fileID: 3308702463137093261, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_text
-      value: Alpha Investor (TEST)
+      value: Alpha Caller
       objectReference: {fileID: 0}
     - target: {fileID: 3308702463137093261, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_fontSize
-      value: 18
+      value: 26.4
       objectReference: {fileID: 0}
     - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1814,7 +1820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 55
+      value: 33.3844
       objectReference: {fileID: 0}
     - target: {fileID: 3308702463137093266, guid: b03852d48a7a5fa4bb56c8920d89c5cc, type: 3}
       propertyPath: m_AnchoredPosition.x
