@@ -3014,6 +3014,7 @@ MonoBehaviour:
   playerHealButton: {fileID: 2606115087992365010}
   playerDefendButton: {fileID: 6198613966863275068}
   playerChargeButton: {fileID: 7951688899535026233}
+  playerInventoryButton: {fileID: 2204178483418124573}
   hpSlider: {fileID: 5811933411392954460}
   PlayerPicture: {fileID: 4050771914199452855}
   itemSlotPrefab: {fileID: 9212078634866056306, guid: 3fa56d8b54810514893432a37e0bdc8f, type: 3}
