@@ -13,6 +13,7 @@ public class PlayerUI : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI ActionText;
     //public TextMeshProUGUI playerNumberText;
+    public TextMeshProUGUI PlayerTitleText;
     public TextMeshProUGUI playerUsernameText;
     public TextMeshProUGUI HPText;
 
@@ -105,6 +106,23 @@ public class PlayerUI : MonoBehaviour
         return (float)hp / (float)maxHealth;
     }
 
+    public void UpdatePlayerTitle(int itemId)
+    {
+        // Check if the ItemId corresponds to a player title
+        if (itemId == 1) // Assuming ItemId 1 corresponds to a player title
+        {
+            // Find the corresponding item in the inventory
+            Item titleItem = player.inventory.itemList.Find(item => item.itemId == itemId);
+
+            // Update the PlayerTitleText with the ItemName
+            if (titleItem != null)
+            {
+                PlayerTitleText.text = titleItem.itemName;
+            }
+        }
+    }
+
+
     public void OpenIventoryUiButtonPressed()
     {
         player.gameController.InventoryPanelObj.SetActive(true);
@@ -132,6 +150,9 @@ public class PlayerUI : MonoBehaviour
             //itemSlot.GetComponent<Image>().sprite = item.icon;
             //itemSlot.GetComponentInChildren<Text>().text = item.quantity.ToString();
         }
+        
+        // Update the player's title based on the ItemId
+        UpdatePlayerTitle(1); // Assuming ItemId 1 corresponds to the player title we want to display
     }
 
 }
