@@ -21,7 +21,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"D:/pfppb-zeitaku;E:/Work/work/Mab/Task/cardano-uniy/work/webgl;C:/xampp/htdocs/DecimalistBuildWebGL;D:/New folder (2);D:/New folder;D:/pfppb-mvp1-build-06072023-web3;C:/xampp/htdocs;E:/Work/work/Mab/Task/cardano-uniy/work/pfppb/Build;C:/Users/yohan/Desktop/DecimalistBuildWebGL;E:/Work/Tasks/backup/result/Build\"}"
+                "value": "{\"m_Value\":\"D:/pfppb-mobile-candidate2;D:/pfppb-mobile-candidate;D:/pfppb-zeitaku;E:/Work/work/Mab/Task/cardano-uniy/work/webgl;C:/xampp/htdocs/DecimalistBuildWebGL;D:/New folder (2);D:/New folder;D:/pfppb-mvp1-build-06072023-web3;C:/xampp/htdocs;E:/Work/work/Mab/Task/cardano-uniy/work/pfppb/Build\"}"
             }
         ]
     }
