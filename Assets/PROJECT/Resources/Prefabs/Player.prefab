@@ -2777,6 +2777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionText: {fileID: 6209164223717555204}
+  PlayerTitleText: {fileID: 4304494640241430124}
   playerUsernameText: {fileID: 4369451804256594433}
   HPText: {fileID: 2774526152743073311}
   playerAttackButton: {fileID: 282194620351039636}

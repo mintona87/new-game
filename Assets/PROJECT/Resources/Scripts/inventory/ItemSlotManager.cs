@@ -43,6 +43,12 @@ public class ItemSlotManager : MonoBehaviour
 
     void UseItem(string ItemName)
     {
+        if (itemName == "Alpha Caller" || itemName == "Zeitaku Zealot") // Titles
+        {
+            OnTitleClicked(); // Show the title selection menu
+            return; // Don't remove the item
+        }
+
         switch (ItemName) 
         {
             case "testItem1":
@@ -50,9 +56,10 @@ public class ItemSlotManager : MonoBehaviour
             case "testItem2":
                 break;
         }
-        ownerPlayerManager.playfabManager.RemoveItemFromInventory(item);
+        ownerPlayerManager.playfabManager.RemoveItemFromInventory(item); // Remove other items
         UpdateItemUI();
     }
+
     void UpdateItemUI()
     {
 
@@ -64,4 +71,24 @@ public class ItemSlotManager : MonoBehaviour
         }
 
     }
+
+
+    public void OnTitleClicked()
+    {
+        Debug.Log("Title clicked: " + itemName);
+        Debug.Log("Item details: " + item.itemName + ", " + item.itemDescription);
+        if (itemName == "Alpha Caller" || itemName == "Zeitaku Zealot") // Adjust as needed
+        {
+            // Get the position of the clicked item
+            Vector3 position = transform.position;
+
+            // Show the title selection menu at the clicked position
+            FindObjectOfType<TitleSelectionMenu>().ShowMenu(item, position);
+        }
+    }
+
+
+
+
+
 }
