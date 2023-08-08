@@ -114,15 +114,28 @@ public class GameController : MonoBehaviourPunCallbacks
         Turn++;
 
         Debug.Log("playerturn " + Turn + "calc " + Turn % 2 + " local player  " + PhotonNetwork.LocalPlayer.GetPlayerNumber());
+       
         if (Turn % 2 == 0)
         {
             playerList[1].canPlay = true;
             playerList[0].canPlay = false;
+
+            // If player 1 is an AI, take its turn here
+            if (playerList[0].isAI)
+            {
+                playerList[0].GetComponent<AICombat>().TakeTurn();
+            }
         }
         else
         {
             playerList[0].canPlay = true;
             playerList[1].canPlay = false;
+
+            // If player 2 is an AI, take its turn here
+            if (playerList[1].isAI)
+            {
+                playerList[1].GetComponent<AICombat>().TakeTurn();
+            }
         }
 
         foreach (PlayerManager playerManager in playerList)

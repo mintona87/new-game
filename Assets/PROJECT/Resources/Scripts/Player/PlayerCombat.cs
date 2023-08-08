@@ -574,7 +574,8 @@ public class PlayerCombat : MonoBehaviourPunCallbacks
             return;
         }
 
-        int damage = playerManager.Charge(targetScript);
+        int damage = playerManager.Charge();
+
 
         targetScript.ChangeHP(-damage);
         Debug.Log("changeHPDefending " + (bool)GetOtherPlayer().CustomProperties["isDefending"]);

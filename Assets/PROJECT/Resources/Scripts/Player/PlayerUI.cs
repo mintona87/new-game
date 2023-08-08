@@ -78,8 +78,16 @@ public class PlayerUI : MonoBehaviour
     }
 
 
-    public void SetPlayerPicture(string imageURL,string defaultImageName)
+    public void SetPlayerPicture(string imageURL, string defaultImageName)
     {
+        // Check if the player is controlled by the AI
+        if (player.isAI)
+        {
+            // Set the default image for the AI
+            PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/DefaultSprite/" + defaultImageName);
+            return; // Exit the method early
+        }
+
         if (imageURL != "")
         {
             if (player.playfabManager.getSelectedNFTData.rawImage)
@@ -96,6 +104,7 @@ public class PlayerUI : MonoBehaviour
             PlayerPicture.sprite = Resources.Load<Sprite>("Sprites/DefaultSprite/" + defaultImageName);
         }
     }
+
     void OnNFTImgDownloaded(Texture2D nftTexture)
     {
         player.playfabManager.getNFTSprite = GlobalData.instance.LoadSpriteFromTexture(nftTexture);

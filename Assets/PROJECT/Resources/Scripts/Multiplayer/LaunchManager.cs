@@ -51,6 +51,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     public float disconnectedTime;
     public bool shouldStartCheckForDisctonnectedTime;
 
+    private float aiMatchmakingTimer = 60f; // Timer for AI matchmaking
+    private bool isSearchingForOpponent = false; // Flag to indicate if the player is searching for an opponent
+
+
     void Awake()
     {
         Instance = this;
@@ -130,13 +134,20 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         {
             disconnectedTime = 0;
         }
-        Debug.Log("disconnected time " + disconnectedTime);
+
         if (shouldStartSearchHonorTimer)
         {
+            // Decrement the AI matchmaking timer
+            aiMatchmakingTimer -= Time.deltaTime;
+            if (aiMatchmakingTimer <= 0)
+            {
+                MatchWithAI();
+            }
+
             if (timeBeforeIncreaseHonorOtherPlayer > 0)
             {
                 timeBeforeIncreaseHonorOtherPlayer -= Time.deltaTime;
-                TimerText.text = Mathf.Round(timeBeforeIncreaseHonorOtherPlayer).ToString()+"s" ;
+                TimerText.text = Mathf.Round(timeBeforeIncreaseHonorOtherPlayer).ToString() + "s";
             }
             else
             {
@@ -153,16 +164,49 @@ public class LaunchManager : MonoBehaviourPunCallbacks
         }
     }
 
+    // Add this method to handle matching with an AI opponent
+    private void MatchWithAI()
+    {
+        shouldStartSearchHonorTimer = false; // Stop searching for a human opponent
+
+        // Instantiate AI opponent
+        GameObject aiOpponent = new GameObject("AI Opponent");
+        AICombat aiCombat = aiOpponent.AddComponent<AICombat>();
+        PlayerManager aiPlayerManager = aiOpponent.AddComponent<PlayerManager>();
+        aiPlayerManager.isAI = true; // Mark this player as an AI
+
+        // Set up references
+        aiCombat.playerManager = aiPlayerManager;
+        //aiCombat.playerEffect = /* Reference to the PlayerEffect for the AI */;
+
+        // You may need to set up additional properties or call other methods to properly initialize the AI
+
+        Debug.Log("Matched with AI opponent!");
+
+        // Load the battle scene (if not already loaded)
+        if (SceneManager.GetActiveScene().name != "BattleScreen")
+        {
+            PhotonNetwork.LoadLevel("BattleScreen");
+        }
+
+        // Start the game with the AI opponent
+        // You may need to call other methods or set other properties to properly start the game
+    }
+
+
+
+    
+
     #endregion
 
     public void JoinMatchClicked()
     {
         isJoinMatchClicked = true;
         shouldStartSearchHonorTimer = true;
+        aiMatchmakingTimer = 60f; // Reset the AI matchmaking timer
         UpdateLobby();
         LoadingText.text = "Searching room...";
         OnLoadingScreen.Instance.SetLoadingScreenActive(true);
-        Debug.Log("SetLoadingScreenActivetrue4");
         Debug.Log("join match clicked");
     }
 
@@ -628,6 +672,7 @@ public class LaunchManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
 
 
     

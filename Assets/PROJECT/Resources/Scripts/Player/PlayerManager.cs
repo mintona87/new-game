@@ -8,6 +8,7 @@ using System;
 
 public class PlayerManager : MonoBehaviourPunCallbacks
 {
+    public bool isAI = false;
     public int HP = 100;
     public int MaxHP = 100;
     public bool HasCharged = false;
@@ -165,15 +166,23 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
         if (isItMyPlayer)
         {
-            localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
-            playerUI.playerUsernameText.text = localPlayerNickname;
-            playerUI.PlayerPicture.raycastTarget = true; 
+        localPlayerNickname = PhotonNetwork.LocalPlayer.CustomProperties["Nickname"].ToString();
+        if (isAI)
+        {
+            playerUI.playerUsernameText.text = "AI Player"; // Set the name for the AI player
+        }
+        else
+        {
+            playerUI.playerUsernameText.text = localPlayerNickname; // Set the name for the human player
+        }
+        playerUI.PlayerPicture.raycastTarget = true; 
         }
         else
         {
             playerUI.playerUsernameText.text = playerCombat.GetOtherPlayer().CustomProperties["Nickname"].ToString();
             playerUI.PlayerPicture.raycastTarget = false;
         }
+
 
 
         StartCoroutine(actionTextHandler.SetActionPosition());
@@ -343,7 +352,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     }
    
 
-    public int Charge(PlayerManager opponent)
+    public int Charge()
     {
         int damage = 0;
         if (!HasCharged)
@@ -376,6 +385,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         }
         return damage;
     }
+
+
+
     public void OnPlayerWin()
     {
         Debug.Log("OnWin");
